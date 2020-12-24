@@ -1,0 +1,111 @@
+@charset "UTF-8";
+
+* {
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+	background: url('../image/bg.jpg');
+}
+
+.signup_form {
+	background-color: rgba(54, 54, 54, 0.3);
+	border-radius: 40px;
+	padding: 20px;
+	color: white;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.signup_form h1 {
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 40px;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.msg {
+	color: rgb(43, 10, 43);
+	height: 10px;
+	text-align: center;
+	display: block;
+}
+
+.int_area {
+	width: 250px;
+	margin: 5px 5px 12px 5px;
+}
+
+#phone {
+	margin-bottom: 20px;
+}
+
+.int_area label {
+	font-size: 16px;
+}
+
+.int_area input {
+	width: 100%;
+	padding: 5px 10px 2px 20px;
+	background-color: transparent;
+	border: none;
+	border-bottom: 1px solid white;
+	color: white;
+	font-size: 16px;
+	outline: none;
+	transition: 0.7s;
+}
+
+.int_area input:focus {
+	background-color: rgba(93, 19, 94, 0.15);
+	border-color: rgb(93, 19, 94);
+	color: rgb(93, 19, 94);
+}
+
+
+#user_id {
+	border: none;
+}
+
+#idck {
+	background-color: rgba(255, 255, 255, 0.8);
+	padding: 5px;
+	border: none;
+	color: black;
+	margin-bottom: 0px;
+	cursor: pointer;
+	transition: 0.5s;
+}
+
+#idck:hover {
+	background-color: rgba(93, 19, 94, 0.5);
+	font-weight: bold;
+}
+
+.btn_area {
+	text-align: center;
+}
+
+.btn_area input {
+	width: 35%;
+	height: 25px;
+	background-color: rgba(255, 255, 255, 0.8);
+	transition: 0.5s;
+	border: none;
+	font-size: 15px;
+	cursor: pointer;
+}
+
+.btn_area input:hover {
+	background-color: rgba(93, 19, 94, 0.5);
+	font-weight: bold;
+}
+
+.btn_area input:focus {
+	outline: 1px solid rgba(255, 255, 255, 0.8);
+}

@@ -12,11 +12,6 @@
 			<li><a href="list.in">소개</a></li>
 			<li><a href="list.re">레시피</a></li>
 			
-			<!-- 로그인 안한 상태 -->
-			<li><a href="login">로그인</a></li>
-			<li><a href="member">회원가입</a></li>
-			
-			<!-- 로그인 한 상태 -->
 			<li><a href="mypage">마이페이지</a></li>
 			<li><a href="logout">로그아웃</a></li>
 		</ul>
