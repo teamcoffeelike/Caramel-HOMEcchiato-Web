@@ -16,5 +16,9 @@
 	<definition name="*/*" extends="layout">
 		<put-attribute name="content" value="/WEB-INF/views/{1}{2}.jsp"/>
 	</definition>
+	
+	<definition name="login" template="/WEB-INF/views/tiles/default.jsp">
+		<put-attribute name="content" value="/WEB-INF/views/login.jsp"/>
+	</definition>
 
 </tiles-definitions>
