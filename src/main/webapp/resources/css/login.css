@@ -14,9 +14,9 @@ body {
 }
 
 .login-form {
-	background: rgba(78, 41, 99, 0.6);
+	background: rgba(151, 167, 118, 0.6);
 	padding: 15px;
-	color: rgb(231, 229, 229);
+	color: rgb(103, 67, 42);
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -39,7 +39,7 @@ body {
 	padding: 5px 0px 2px 10px;
 	background-color: transparent;
 	border: none;
-	border-bottom: 1px solid rgb(231, 229, 229);
+	border-bottom: 1px solid rgb(103, 67, 42);
 	color: rgb(231, 229, 229);
 	font-size: 18px;
 	outline: none;
@@ -51,42 +51,41 @@ body {
 	color: rgb(78, 41, 99);
 }
 
-.btn-area {
+.btn-area, .btn-kakao {
 	margin-top: 30px;
 	text-align: center;
 }
 
-.btn-area input {
+.btn-area a {
 	width: 30%;
 	height: 30px;
+	line-height: 30px;
+	display: inline-block;
 	background-color: rgb(78, 41, 99);
 	border: none;
-	color:  rgba(231, 229, 229, 0.7);
+	color:  rgba(103, 67, 42, 0.7);
 	cursor: pointer;
 	transition: 0.5s;
 }
 
-.btn-area input:focus, .btn-kakao input:focus {
+.btn-area a:focus, .btn-kakao a:focus {
 	outline: 1px solid rgba(231, 229, 229, 0.7);
 }
 
-.btn-area input:hover, .btn-kakao input:hover {
+.btn-area a:hover, .btn-kakao a:hover {
 	background-color: rgba(231, 229, 229, 0.5);
 	color: rgb(78, 41, 99);
 	font-weight: bold;
 }
 
-.btn-kakao {
-	margin-top: 30px;
-	text-align: center;
-}
-
-.btn-kakao input {
-	width: 100%;
+.btn-kakao a {
+	width: 62%;
 	height: 30px;
-	background-color: rgb(78, 41, 99);
+	display: inline-block;
+	line-height: 30px;
+	background-color: rgb(231, 203, 109);
 	border: none;
-	color:  rgba(231, 229, 229, 0.7);
+	color:  rgba(103, 67, 42, 0.7);
 	cursor: pointer;
 	transition: 0.5s;
 }
