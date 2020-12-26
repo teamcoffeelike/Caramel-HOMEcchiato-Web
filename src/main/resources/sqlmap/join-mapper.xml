@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="join">
+    
+    <!-- 이메일로 회원가입 -->
+    <insert id="joinWithEmail" parameterType="JoinData">
+    	INSERT INTO users(name, email, password)
+    	VALUES (#{name, jdbcType=VARCHAR}, #{email, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR})
+    </insert>
+    
+    <!-- 핸드폰번호로 회원가입 -->
+    <insert id="joinWithPhone">
+    	INSERT INTO users(name, phoneNumber, password)
+    	VALUES (#{name, jdbcType=VARCHAR}, #{phone, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR})
+    </insert>
+    
+</mapper>

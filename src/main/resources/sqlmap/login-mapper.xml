@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="login">
+	
+	<!-- 이메일로 로그인 -->
+	<select id="findUserWithEmail" resultType="UserLoginData">
+		SELECT *
+		  FROM users
+		 WHERE email=#{email} and password=#{password}
+	</select>
+
+	<select id="findWithPhoneNumber" resultType="UserLoginData">
+		SELECT *
+		  FROM users
+		 WHERE phoneNumber=#{phoneNumber} and password=#{password}
+	</select>
+
+</mapper>
