@@ -1,1 +1,11 @@
 @charset "UTF-8";
+
+* {
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+	color: #865449;
+}
+
+a:link, a:visited { text-decoration:none;}		
+a:hover { cursor:pointer; }
