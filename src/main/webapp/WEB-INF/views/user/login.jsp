@@ -9,6 +9,9 @@
 <link rel="stylesheet" href="css/login.css">
 <link rel="stylesheet" href="css/signup.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="js/join.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+<script type="text/javascript" src="js/joinCheck.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	/* 이메일 가입 팝업 */
@@ -78,7 +81,7 @@ $(document).ready(function(){
 			</div>
 			<div class="join">
 				<label for=pw_check class="field">비밀번호 확인</label>
-				<input type="password" id="pw_check" required>
+				<input type="password" id="pw_check" name="password_ck" required>
 				<div class="msg" id="pwc_msg"></div>
 			</div>
 			<div class="join-btn">
@@ -111,7 +114,7 @@ $(document).ready(function(){
 			</div>
 			<div class="join">
 				<label for=pw_check class="field">비밀번호 확인</label>
-				<input type="password" id="pw_check" required>
+				<input type="password" id="pw_check" name="password_ck" required>
 				<div class="msg" id="pwc_msg"></div>
 			</div>
 			<div class="join-btn">
@@ -122,76 +125,6 @@ $(document).ready(function(){
 </div>
 
 <div class="dim"></div>
-
-
-
-
-
-<script type="text/javascript">
-
-/* 이메일 로그인 처리 */
-function go_login() {
-	if($("#user_id").val() == "") {
-		alert("이메일 또는 핸드폰번호를 입력하세요!");
-		$("#user_id").focus();
-		return;
-	}else if($("#user_pw").val() == "") {
-		alert("비밀번호를 입력하세요!");
-		$("#user_pw").focus();
-		return;
-	}
-
-		$.ajax({
-
-			type: "post",
-			url: "loginWithEmail",
-			data: { email:$("#user_id").val(), password:$("#user_pw").val() },
-			success: function(response) {
-				if(response) {
-					alert("로그인 성공!");
-				}else {
-					alert("로그인 실패!");
-				}
-				
-			}, error: function(req, text) {
-				alert(text + " : " + req.status);
-			}
-			
-		});
-	
-		$.ajax({
-
-			type: "post",
-			url: "loginWithPhone",
-			data: { phoneNumber:$("#user_id").val(), password:$("#user_pw").val() },
-			success: function(response) {
-				if(response) {
-					alert("로그인 성공!");
-				}else {
-					alert("로그인 실패!");
-				}
-				
-			}, error: function(req, text) {
-				alert(text + " : " + req.status);
-			}
-			
-		});
-
-
-	
-}
-
-
-/* 이메일 회원가입 */
-function join_email() {
-	$("form").submit();
-}
-
-/* 핸드폰번호 회원가입*/
-function join_phone() {
-	$("form").submit();
-}
-</script>
 
 </body>
 </html>
