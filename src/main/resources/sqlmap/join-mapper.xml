@@ -13,4 +13,9 @@
         INSERT INTO users(name, kakaoAccountId)
         VALUES (#{name}, #{kakaoAccountId})
     </insert>
+    <select id="emailExists" resultType="integer">
+    	SELECT COUNT(*)
+    	  FROM users
+    	 WHERE email=#{email}
+    </select>
 </mapper>

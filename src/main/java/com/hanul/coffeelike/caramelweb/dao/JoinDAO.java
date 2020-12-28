@@ -35,4 +35,7 @@ public class JoinDAO{
 						null,
 						kakaoAccountId));
 	}
+	public boolean emailExists(String email) {
+		return (Integer)sql.selectOne("join.emailExists", email)==0 ? true:false;
+	}
 }

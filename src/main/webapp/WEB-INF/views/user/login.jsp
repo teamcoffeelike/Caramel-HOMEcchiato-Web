@@ -11,28 +11,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="js/join.js"></script>
 <script type="text/javascript" src="js/login.js"></script>
-<script type="text/javascript" src="js/joinCheck.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	/* 이메일 가입 팝업 */
-	$("#joinEmail").on("click", function(){
-		$(".popupEmail").show();
-		$(".dim").show();
-	});
-
-	/* 핸드폰번호 가입 팝업 */
-	$("#joinPhone").on("click", function(){
-		$(".popupPhone").show();
-		$(".dim").show();
-	});
-	
-	$(".back").on("click", function(){
-		$(".popupEmail").hide();
-		$(".popupPhone").hide();
-		$(".dim").hide();
-	});
-});
-</script>
 </head>
 <body>
 <!-- 로그인 폼 -->
@@ -63,29 +41,29 @@ $(document).ready(function(){
 	<form method="post" action="joinWithEmail">
 		<div><h1>JOIN</h1></div>
 			<div class="join">
-				<label for=user_name class="field"  id="name">닉네임</label>
-				<input type="text" id="join_name" name="name" required>
-				<div class="msg" id="name_msg"></div>
+				<label for=name class="field">닉네임</label>
+				<input type="text" id="joinEmailName" name="name" required>
+				<div class="msg" id="joinEmailName_msg"></div>
 			</div>
 			<div class="join">
-				<label for=user_email class="field">이메일</label>
-				<input type="text" id="join_email" name="email">
-				<input type="button" id="check" value="Check">			
-				<div class="msg" id="id_msg"></div>
-				<div class="msg" id="email_msg"></div>
+				<label for=email class="field">이메일</label>
+				<input type="text" id="joinEmail" name="email">
+				<input type="button" id="joinEmailcheck" value="Check">			
+				<div class="msg" id="joinEmailCheck_msg"></div>
+				<div class="msg" id="joinEmail_msg"></div>
 			</div>
 			<div class="join">
-				<label for=user_pw class="field">비밀번호</label>
-				<input type="password" id="join_pw" name="password" required>
-				<div class="msg" id="pw_msg"></div>
+				<label for=password class="field">비밀번호</label>
+				<input type="password" id="joinEmailPassword" name="password" required>
+				<div class="msg" id="joinEmailPassword_msg"></div>
 			</div>
 			<div class="join">
 				<label for=pw_check class="field">비밀번호 확인</label>
-				<input type="password" id="pw_check" name="password_ck" required>
-				<div class="msg" id="pwc_msg"></div>
+				<input type="password" id="joinEmailPasswordCheck" name="pw_check" required>
+				<div class="msg" id="joinEmailPasswordCheck_msg"></div>
 			</div>
 			<div class="join-btn">
-				<a class="join" onclick="join_email()">가입</a>
+				<a class="join" onclick="joinWithEmail()">가입</a>
 				<a class="back">닫기</a>
 		</div>
 	</form>
@@ -96,29 +74,29 @@ $(document).ready(function(){
 	<form method="post" action="joinWithPhone">
 		<div><h1>JOIN</h1></div>
 			<div class="join">
-				<label for=user_name class="field"  id="name">닉네임</label>
-				<input type="text" id="join_name" name="name" required>
-				<div class="msg" id="name_msg"></div>
+				<label for=name class="field">닉네임</label>
+				<input type="text" id="joinPhoneName" name="name" required>
+				<div class="msg" id="joinPhoneName_msg"></div>
 			</div>
 			<div class="join">
-				<label for=user_phone class="field">핸드폰번호</label>
-				<input type="text" id="join_phone" name="phone">
-				<input type="button" id="check" value="Check">			
-				<div class="msg" id="id_msg"></div>
-				<div class="msg" id="email_msg"></div>
+				<label for=phone class="field">핸드폰번호</label>
+				<input type="text" id="joinPhone" name="phone">
+				<input type="button" id="joinPhoneCheck" value="Check">			
+				<div class="msg" id="joinPhoneCheck_msg"></div>
+				<div class="msg" id="joinPhone_msg"></div>
 			</div>
 			<div class="join">
-				<label for=user_pw class="field">비밀번호</label>
-				<input type="password" id="join_pw" name="password" required>
-				<div class="msg" id="pw_msg"></div>
+				<label for=password class="field">비밀번호</label>
+				<input type="password" id="joinPhonePassword" name="password" required>
+				<div class="msg" id="joinPhonePassword_msg"></div>
 			</div>
 			<div class="join">
 				<label for=pw_check class="field">비밀번호 확인</label>
-				<input type="password" id="pw_check" name="password_ck" required>
-				<div class="msg" id="pwc_msg"></div>
+				<input type="password" id="joinPhonePasswordCheck" name="pw_check" required>
+				<div class="msg" id="joinPhonePasswordCheck_msg"></div>
 			</div>
 			<div class="join-btn">
-				<a class="join" onclick="join_phone()">가입</a>
+				<a class="join" onclick="joinWithPhone">가입</a>
 				<a class="back">닫기</a>
 		</div>
 	</form>

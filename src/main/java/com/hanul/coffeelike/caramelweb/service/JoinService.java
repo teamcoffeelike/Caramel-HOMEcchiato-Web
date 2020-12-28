@@ -36,4 +36,8 @@ public class JoinService{
 		if(user==null) return new LoginResult("join_failed");
 		return new LoginResult(user, authService.generateAuthToken(user));
 	}
+
+	public boolean emailExists(String email) {
+		return joinDAO.emailExists(email);
+	}
 }
