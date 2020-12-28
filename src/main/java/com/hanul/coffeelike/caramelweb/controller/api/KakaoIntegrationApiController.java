@@ -21,30 +21,22 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @RestController
-public class KakaoIntegrationApiController{
+public class KakaoIntegrationApiController extends BaseExceptionHandlingController{
 	@Autowired
 	private LoginService loginService;
 	@Autowired
 	private JoinService joinService;
 
-	@ResponseBody
-	@ExceptionHandler(MissingServletRequestParameterException.class)
-	public String onException(MissingServletRequestParameterException ex){
-		return JsonHelper.failure("bad_parameter");
-	}
-
 	/**
 	 * 카카오 계정 연동을 사용한 로그인<br>
 	 * <br>
 	 * <b>성공 시:</b>
-	 *
-	 * <pre>
-	 * <code> {
+	 * <pre>{@code
+	 * {
 	 *   userId: Integer
 	 *   authToken: UUID
-	 * }</code>
-	 * </pre>
-	 *
+	 * }
+	 * }</pre>
 	 * <b>에러: </b><br>
 	 * bad_kakao_login_token     : 유효하지 않은 kakaoLoginToken 인자<br>
 	 * kakao_service_unavailable : 카카오 플랫폼 서비스의 일시적 문제 등으로 인해 서비스 제공이 불가<br>
@@ -74,14 +66,12 @@ public class KakaoIntegrationApiController{
 	 * 카카오 계정 연동을 사용한 회원가입<br>
 	 * <br>
 	 * <b>성공 시:</b>
-	 *
-	 * <pre>
-	 * <code> {
+	 * <pre>{@code
+	 * {
 	 *   userId: Integer
 	 *   authToken: UUID
-	 * }</code>
-	 * </pre>
-	 *
+	 * }
+	 * }</pre>
 	 * <b>에러: </b><br>
 	 * bad_kakao_login_token     : 유효하지 않은 kakaoLoginToken 인자<br>
 	 * kakao_service_unavailable : 카카오 플랫폼 서비스의 일시적 문제 등으로 인해 서비스 제공이 불가<br>

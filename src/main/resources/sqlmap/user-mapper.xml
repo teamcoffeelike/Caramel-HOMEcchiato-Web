@@ -4,8 +4,8 @@
 <mapper namespace="user">
 
 	<select id="userSettings"
-			parameterType="Integer"
-			resultType="UserSettingData">
+	        parameterType="Integer"
+	        resultType="UserSettingData">
 		SELECT id,
 			   name,
 			   motd,
@@ -15,82 +15,109 @@
 			   notifyFollows
 		  FROM users
 		 WHERE id = #{id}
+		   AND isDeleted = 'N'
 	</select>
+	
+	<sql id="isFollowedByYou">
+		<choose>
+			<when test="loginUser == null">NULL</when>
+			<when test="loginUser == userId">NULL</when>
+			<otherwise>
+				(SELECT COUNT(*)
+		           FROM follows
+				  WHERE userId = #{loginUser}
+		            AND following = #{userId})
+			</otherwise>
+		</choose>
+	</sql>
+
+	<sql id="isFollowingYou">
+		<choose>
+			<when test="loginUser == null">NULL</when>
+			<when test="loginUser == userId">NULL</when>
+			<otherwise>
+				(SELECT COUNT(*)
+		           FROM follows
+				  WHERE userId = #{userId}
+		            AND following = #{loginUser})
+			</otherwise>
+		</choose>
+	</sql>
 
 	<select id="selectProfile"
-			parameterType="map"
-			resultType="UserProfileData">
+	        parameterType="map"
+	        resultType="UserProfileData">
 		SELECT id,
 		       name,
 		       motd,
 		       profileImage,
-		       (CASE WHEN #{loginUser, jdbcType=INTEGER} IS NULL THEN NULL
-		             WHEN #{loginUser, jdbcType=INTEGER} = #{userId} THEN NULL
-		             ELSE (SELECT COUNT(*)
-		                     FROM follows
-		                    WHERE userId = #{loginUser, jdbcType=INTEGER}
-		                      AND following = #{userId})
-		        END) isFollowedByYou,
-		       (CASE WHEN #{loginUser, jdbcType=INTEGER} IS NULL THEN NULL
-		             WHEN #{loginUser, jdbcType=INTEGER} = #{userId} THEN NULL
-		             ELSE (SELECT COUNT(*)
-		                     FROM follows
-		                    WHERE userId = #{userId}
-		                      AND following = #{loginUser, jdbcType=INTEGER})
-		        END) isFollowingYou
+		       <include refid="isFollowedByYou">
+			       <property name="userId" value="${userId}"/>
+		       </include> isFollowedByYou,
+		       <include refid="isFollowingYou">
+			       <property name="userId" value="${userId}"/>
+		       </include> isFollowingYou
 		  FROM users
 		 WHERE id = #{userId}
+		   AND isDeleted = 'N'
 	</select>
 
 	<update id="setName"
-			parameterType="map">
+	        parameterType="map">
 		UPDATE users
 		   SET name = #{name}
 		 WHERE id = #{id}
+		   AND isDeleted = 'N'
 	</update>
 
 	<select id="getUserPasswordById"
-			parameterType="Integer">
+	        parameterType="Integer">
 		SELECT password
 		  FROM users
 		 WHERE id = #{userId}
+		   AND isDeleted = 'N'
 	</select>
 
 	<update id="setPassword"
-			parameterType="map">
+	        parameterType="map">
 		UPDATE users
 		   SET password = #{newPassword}
 		 WHERE id = #{userId}
+		   AND isDeleted = 'N'
 	</update>
 
 	<select id="getFollower"
-			parameterType="Integer"
-			resultType="UserProfileData">
+	        parameterType="Integer"
+	        resultType="UserProfileData">
 		SELECT f.userId id,
 		       u.name name,
 		       u.profileImage profileImage
-		  FROM follows f JOIN users u ON f.userId = u.id
+		  FROM follows f
+		       JOIN users u
+		         ON f.userId = u.id
+		        AND u.isDeleted = 'N'
 		 WHERE f.following = #{it}
 	</select>
 
 	<insert id="follow"
-			parameterType="map">
+	        parameterType="map">
 		INSERT INTO follows(userId, following)
 		VALUES (#{loginUser}, #{followingId})
 	</insert>
 
 	<delete id="unfollow"
-			parameterType="map">
+	        parameterType="map">
 		DELETE FROM follows
 		 WHERE userId = #{loginUser}
 		   AND following = #{followingId}
 	</delete>
 
-	<update id="setNotification"
-			parameterType="map">
-		UPDATE users
-		   SET ${type} = #{value}
-		 WHERE id = #{user}
-	</update>
+	<select id="checkIfUserExists"
+	        parameterMap="Integer">
+		SELECT id
+		  FROM users
+		 WHERE id = #{it}
+		   AND isDeleted = 'N'
+	</select>
 
 </mapper>

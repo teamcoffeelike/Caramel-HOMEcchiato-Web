@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import com.hanul.coffeelike.caramelweb.data.Post;
@@ -13,8 +14,12 @@ import com.hanul.coffeelike.caramelweb.data.Post;
 public class PostDAO {
 
 	@Autowired private SqlSession sql;
+
+	public List<Post> recentPosts(@Nullable Integer integer){
+		return sql.selectList("post.recentPosts", integer);
+	}
 	
-	public Post post(int id, Integer loginUser) {
+	@Nullable public Post post(int id, Integer loginUser) {
 		HashMap<String, Integer> m = new HashMap<>();
 		m.put("id", id);
 		m.put("userId", loginUser);
@@ -61,5 +66,4 @@ public class PostDAO {
 		m.put("post", post);
 		return sql.delete("post.cancleLike", m);
 	}
-	
 }

@@ -22,6 +22,8 @@ public class JoinController{
 	                            @RequestParam String name,
 	                            @RequestParam String email,
 	                            @RequestParam String password){
+		name = name.trim();
+
 		StringBuilder stb = new StringBuilder();
 		stb.append("<script>");
 		if(Validate.name(name)&&
@@ -39,6 +41,8 @@ public class JoinController{
 	@ResponseBody @RequestMapping(value = "/joinWithPhone", produces = "text/html; charset=utf-8")
 	public String joinWithPhone(HttpServletRequest request, HttpSession session,
 	                            String name, String phone, String password){
+		name = name.trim();
+
 		StringBuilder stb = new StringBuilder();
 		stb.append("<script>");
 		if(Validate.name(name)&&

@@ -44,4 +44,9 @@ public class UserAuthService{
 			System.out.println("Removed "+removed+" auth tokens.");
 		}
 	}
+
+	@Scheduled(cron = "0 * * * * ?")
+	public void yo(){
+		System.out.println("yo what up");
+	}
 }
