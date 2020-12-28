@@ -2,13 +2,16 @@ package com.hanul.coffeelike.caramelweb.data;
 
 import org.springframework.lang.Nullable;
 
+/**
+ * 유저의 로그인 체크에 필요한 데이터
+ */
 public class UserLoginData {
 	private int id;
 	@Nullable private String email;
 	@Nullable private String phoneNumber;
 	@Nullable private String password;
 	
-	public UserLoginData(int id, String email, String phoneNumber, String password) {
+	public UserLoginData(int id, @Nullable String email, @Nullable String phoneNumber, @Nullable String password) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -19,33 +22,25 @@ public class UserLoginData {
 	public int getId() {
 		return id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public String getEmail() {
+	@Nullable public String getEmail() {
 		return email;
 	}
-
-	public void setEmail(String email) {
+	public void setEmail(@Nullable String email) {
 		this.email = email;
 	}
-
-	public String getPhoneNumber() {
+	@Nullable public String getPhoneNumber() {
 		return phoneNumber;
 	}
-
-	public void setPhoneNumber(String phoneNumber) {
+	public void setPhoneNumber(@Nullable String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-
-	public String getPassword() {
+	@Nullable public String getPassword() {
 		return password;
 	}
-
-	public void setPassword(String password) {
+	public void setPassword(@Nullable String password) {
 		this.password = password;
 	}
-		
 }

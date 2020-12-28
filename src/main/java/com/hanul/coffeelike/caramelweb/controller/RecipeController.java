@@ -1,4 +1,4 @@
-package com.hanul.coffeelike.caramelweb;
+package com.hanul.coffeelike.caramelweb.controller;
 
 import org.springframework.stereotype.Controller;
 

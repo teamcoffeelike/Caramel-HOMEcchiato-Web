@@ -13,5 +13,7 @@
 
 	<context:component-scan base-package="
             com.hanul.coffeelike.caramelweb.service,
-			com.hanul.coffeelike.caramelweb.dao"/>
+			com.hanul.coffeelike.caramelweb.dao,
+		    com.hanul.coffeelike.caramelweb.converter,
+		    com.hanul.coffeelike.caramelweb.converter.api"/>
 </beans>

@@ -6,4 +6,7 @@
     <typeAliases>
         <package name="com.hanul.coffeelike.caramelweb.data"/>
     </typeAliases>
+    <typeHandlers>
+        <package name="com.hanul.coffeelike.caramelweb.typehandler"/>
+    </typeHandlers>
 </configuration>
