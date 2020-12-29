@@ -38,7 +38,7 @@
 
 <!-- 이메일 회원가입 팝업창 -->
 <div class="popupEmail">
-	<form method="post" action="joinWithEmail">
+	<form method="post" action="joinWithEmail" id="joinWithEmailForm">
 		<div><h1>JOIN</h1></div>
 			<div class="join">
 				<label for=name class="field">닉네임</label>
@@ -47,7 +47,7 @@
 			</div>
 			<div class="join">
 				<label for=email class="field">이메일</label>
-				<input type="text" id="joinEmail" name="email">
+				<input type="text" id="joinUserEmail" name="email">
 				<input type="button" id="joinEmailcheck" value="Check">			
 				<div class="msg" id="joinEmailCheck_msg"></div>
 				<div class="msg" id="joinEmail_msg"></div>
@@ -71,7 +71,7 @@
 
 <!-- 핸드폰번호 회원가입 팝업창 -->
 <div class="popupPhone">
-	<form method="post" action="joinWithPhone">
+	<form method="post" action="joinWithPhoneNumber" id="joinWithPhoneForm">
 		<div><h1>JOIN</h1></div>
 			<div class="join">
 				<label for=name class="field">닉네임</label>
@@ -80,7 +80,7 @@
 			</div>
 			<div class="join">
 				<label for=phone class="field">핸드폰번호</label>
-				<input type="text" id="joinPhone" name="phone">
+				<input type="text" id="joinUserPhone" name="phoneNumber">
 				<input type="button" id="joinPhoneCheck" value="Check">			
 				<div class="msg" id="joinPhoneCheck_msg"></div>
 				<div class="msg" id="joinPhone_msg"></div>
@@ -96,13 +96,11 @@
 				<div class="msg" id="joinPhonePasswordCheck_msg"></div>
 			</div>
 			<div class="join-btn">
-				<a class="join" onclick="joinWithPhone">가입</a>
+				<a class="join" onclick="joinWithPhone()">가입</a>
 				<a class="back">닫기</a>
 		</div>
 	</form>
 </div>
-
-<div class="dim"></div>
-
+<div class="dim" onclick='$(".popupEmail, .popupPhone, .dim").css("display", "none");'></div>
 </body>
 </html>

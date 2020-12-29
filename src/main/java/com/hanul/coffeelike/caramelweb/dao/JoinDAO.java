@@ -38,4 +38,8 @@ public class JoinDAO{
 	public boolean emailExists(String email) {
 		return (Integer)sql.selectOne("join.emailExists", email)==0 ? true:false;
 	}
+	
+	public boolean phoneNumberExists(String phoneNumber) {
+		return (Integer)sql.selectOne("join.phoneNumberExists", phoneNumber)==0 ? true:false;
+	}
 }

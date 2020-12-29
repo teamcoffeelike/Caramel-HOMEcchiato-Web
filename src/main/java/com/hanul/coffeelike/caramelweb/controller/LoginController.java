@@ -13,4 +13,10 @@ public class LoginController{
 	public String home(HttpSession session){
 		return "user/login";
 	}
+	
+	//소개화면 요청
+	@RequestMapping("/list.in")
+	public String Introduce(HttpSession session) {
+		return "introduce/context";
+	}
 }

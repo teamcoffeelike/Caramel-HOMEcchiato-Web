@@ -106,4 +106,14 @@ public class JoinApiController{
 		jsonObject.addProperty("exists", exists);
 		return JsonHelper.GSON.toJson(jsonObject);
 	}
+	
+	@ResponseBody
+	@RequestMapping("/api/phoneNumberExists")
+	public String phoneNumberExists(@RequestParam String phoneNumber) {
+		boolean exists = joinService.phoneNumberExists(phoneNumber);
+		
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("exists", exists);
+		return JsonHelper.GSON.toJson(jsonObject);
+	}
 }

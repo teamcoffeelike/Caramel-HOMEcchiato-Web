@@ -40,4 +40,8 @@ public class JoinService{
 	public boolean emailExists(String email) {
 		return joinDAO.emailExists(email);
 	}
+
+	public boolean phoneNumberExists(String phoneNumber) {
+		return joinDAO.phoneNumberExists(phoneNumber);
+	}
 }

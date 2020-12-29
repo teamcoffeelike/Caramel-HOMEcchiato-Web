@@ -22,6 +22,7 @@ function go_login() {
 					alert("로그인 실패!");
 				}else {
 					alert("로그인 성공!");
+					location.href="list.in";
 				}
 			}, error: function(req, text) {
 				alert(text + " : " + req.status);
@@ -31,7 +32,7 @@ function go_login() {
 		$.ajax({
 
 			type: "post",
-			url: "api/loginWithPhone",
+			url: "api/loginWithPhoneNumber",
 			data: { phoneNumber:$("#user_id").val(), password:$("#user_pw").val() },
 			success: function(response) {
 				if(response.error) {

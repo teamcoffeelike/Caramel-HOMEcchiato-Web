@@ -18,4 +18,9 @@
     	  FROM users
     	 WHERE email=#{email}
     </select>
+    <select id="phoneNumberExists" resultType="integer">
+    	SELECT COUNT(*)
+    	  FROM users
+    	 WHERE phoneNumber=#{phoneNumber}
+    </select>
 </mapper>
