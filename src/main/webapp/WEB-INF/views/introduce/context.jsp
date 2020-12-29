@@ -14,6 +14,11 @@
 $(document).ready(function(){
 	$(".header-info").fadeIn(1000);
 });
+
+$(".scrollTop").click(function(){
+	$("html, body").animate( { scrollTop : 0 }, 400);
+	return false;
+});
 </script>
 <style type="text/css">
 .title {
@@ -62,6 +67,19 @@ $(document).ready(function(){
 	width: 400px; height: 600px;
 }
 
+.scrollTop {
+	position: fixed;
+	width: 45px;
+	height: 40px;
+	right: 2%;
+	bottom: 20px;
+	font-size: 20px;
+	background-color: #e67461;
+	color: #ffffff;
+	text-align: center;
+	padding-top: 5px;
+}
+
 </style>
 </head>
 <body>
@@ -87,7 +105,7 @@ $(document).ready(function(){
 		<div class="section-recipe">
 			<div class="inner">
 				<div data-aos="fade-right" data-aos-duration="2000">
-					<h1 class="contents-title1"><span>Recipe</span></h1>
+					<h1 class="contents-title1" onclick="location='list.re'"><span>Recipe</span></h1>
 				</div>
 				<p class="contents-text1">기본 레시피를 보며<br/>레시피를 만들어보세요!</p>
 				<div data-aos="fade-up" data-aos-duration="3000">
@@ -119,7 +137,7 @@ $(document).ready(function(){
 		</div>
 	</div>
 	<div id="footer">
-		<button type="button" class="scrollTop" href="#">맨위로↑</button>
+		<a class="scrollTop" href="#">TOP</a>
 	</div>
 </div>
 </body>
