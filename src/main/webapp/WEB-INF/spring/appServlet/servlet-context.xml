@@ -13,9 +13,9 @@
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
-	<resources mapping="/resources/**" location="/resources/" />
-	<resources location="/resources/css/" mapping="/css/**"/>
-	<resources location="/resources/js/" mapping="/js/**"/>
+	<resources location="/resources/"        mapping="/resources/**"/>
+	<resources location="/resources/css/"    mapping="/css/**"/>
+	<resources location="/resources/js/"     mapping="/js/**"/>
 	<resources location="/resources/images/" mapping="/imgs/**"/>
 	<resources location="/resources/upload/" mapping="/upload/**"/>
 

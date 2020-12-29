@@ -12,6 +12,7 @@ public class UserProfileData{
 	@Nullable private Boolean isFollowingYou;
 	@Nullable private Boolean isFollowedByYou;
 
+	public UserProfileData() {}
 	public UserProfileData(int id,
 	                       String name,
 	                       @Nullable String motd,
