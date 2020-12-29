@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>로그인</title>
 <link rel="stylesheet" href="css/login.css">
-<link rel="stylesheet" href="css/signup.css">
+<link rel="stylesheet" href="css/join.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="js/join.js"></script>
 <script type="text/javascript" src="js/login.js"></script>
@@ -27,7 +27,7 @@
 	</div>
 	<div class="login-btn">
 		<a onclick="go_login()" id="btnLogin">로그인</a>
-		<a onclick="#" id="btnKakao">카카오계정으로 로그인</a>
+		<a href="loginWithKakao" id="btnKakao">카카오계정으로 로그인</a>
 	</div>
 	<div class="join-area">
 		<a class="joinBtn" id="joinEmail">이메일</a> 또는 
