@@ -5,60 +5,71 @@ import com.hanul.coffeelike.caramelweb.data.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Service
 public class PostService{
-
-	@Autowired private PostDAO dao;
+	@Autowired
+	private PostDAO postDAO;
+	@Autowired
+	private FileService fileService;
 
 	public List<Post> recentPosts(@Nullable Integer integer){
-		return dao.recentPosts(integer);
+		return postDAO.recentPosts(integer);
 	}
 
 	@Nullable public Post post(int id, @Nullable Integer loginUser){
-		return dao.post(id, loginUser);
+		return postDAO.findPost(id, loginUser);
 	}
 
-	public int writePost(int loginUser, String text){
-		int postId = dao.generatePostId();
-		dao.writePost(postId, loginUser, text);
+	@Nullable public Integer writePost(int loginUser, String text, MultipartFile image){
+		int postId = postDAO.generatePostId();
+
+		String imageId = fileService.savePostImage(postId, image);
+		if(imageId==null) return null;
+
+		if(!postDAO.writePost(postId, loginUser, text, imageId)){
+			fileService.removePostImage(imageId);
+			return null;
+		}
 		return postId;
 	}
 
 	public PostResult editPost(int loginUser, int post, String text){
-		Post postData = dao.findPostData(post);
+		Post postData = postDAO.findPost(post, null);
 
 		if(postData==null)
 			return new PostResult("no_post");
-		if(loginUser!=postData.getAuthor())
+		if(loginUser!=postData.getAuthor().getId())
 			return new PostResult("cannot_edit");
 
-		dao.editPost(post, text);
+		postDAO.editPost(post, text);
 		return new PostResult();
 	}
 
 	public PostResult deletePost(int loginUser, int post){
-		Post postData = dao.findPostData(post);
+		Post postData = postDAO.findPost(post, null);
 
 		if(postData==null)
 			return new PostResult("no_post");
-		if(loginUser!=postData.getAuthor())
+		if(loginUser!=postData.getAuthor().getId())
 			return new PostResult("cannot_delete");
 
-		dao.deletePost(post);
+		postDAO.deletePost(post);
+		if(postData.getImage()!=null) fileService.removePostImage(postData.getImage());
 		return new PostResult();
 	}
 
 	public PostResult likePost(int loginUser, int post, boolean like){
-		Post postData = dao.findPostData(post);
+		Post postData = postDAO.findPost(post, null);
 
 		if(postData==null)
 			return new PostResult("no_post");
 
-		if(like) dao.likePost(loginUser, post);
-		else dao.cancleLikePost(loginUser, post);
+		if(like) postDAO.like(loginUser, post);
+		else postDAO.removeLike(loginUser, post);
 		return new PostResult();
 	}
 

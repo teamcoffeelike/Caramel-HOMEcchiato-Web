@@ -51,12 +51,12 @@
 		       name,
 		       motd,
 		       profileImage,
-		       <include refid="isFollowedByYou">
-			       <property name="userId" value="${userId}"/>
-		       </include> isFollowedByYou,
 		       <include refid="isFollowingYou">
 			       <property name="userId" value="${userId}"/>
-		       </include> isFollowingYou
+		       </include> isFollowingYou,
+		       <include refid="isFollowedByYou">
+			       <property name="userId" value="${userId}"/>
+		       </include> isFollowedByYou
 		  FROM users
 		 WHERE id = #{userId}
 		   AND isDeleted = 'N'
@@ -113,7 +113,7 @@
 	</delete>
 
 	<select id="checkIfUserExists"
-	        parameterMap="Integer">
+	        parameterType="Integer">
 		SELECT id
 		  FROM users
 		 WHERE id = #{it}

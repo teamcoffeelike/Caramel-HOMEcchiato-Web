@@ -6,28 +6,38 @@ import java.sql.Date;
 
 public class Post{
 	private int id;
+	@Nullable private String image;
 	private String text;
 	private UserProfileData author;
 	private Date postDate;
-	@Nullable
-	private Date lastEditDate;
+	@Nullable private Date lastEditDate;
 	private String isDeleted;
 
-	private int postLikes;
+	private int likes;
 	private int reactions;
-	@Nullable
-	private Boolean likedByYou;
+	@Nullable private Boolean likedByYou;
 
+	public Post(){}
 	public Post(int id,
+	            @Nullable String image,
 	            String text,
-	            UserProfileData autuor,
+	            UserProfileData author,
 	            Date postDate,
-	            @Nullable Date lastEditDate){
+	            @Nullable Date lastEditDate,
+	            String isDeleted,
+	            int likes,
+	            int reactions,
+	            @Nullable Boolean likedByYou){
 		this.id = id;
+		this.image = image;
 		this.text = text;
-		this.author = autuor;
+		this.author = author;
 		this.postDate = postDate;
 		this.lastEditDate = lastEditDate;
+		this.isDeleted = isDeleted;
+		this.likes = likes;
+		this.reactions = reactions;
+		this.likedByYou = likedByYou;
 	}
 
 	public int getId(){
@@ -35,6 +45,12 @@ public class Post{
 	}
 	public void setId(int id){
 		this.id = id;
+	}
+	@Nullable public String getImage(){
+		return image;
+	}
+	public void setImage(@Nullable String image){
+		this.image = image;
 	}
 	public String getText(){
 		return text;
@@ -67,11 +83,11 @@ public class Post{
 	public void setIsDeleted(String isDeleted){
 		this.isDeleted = isDeleted;
 	}
-	public int getPostLikes(){
-		return postLikes;
+	public int getLikes(){
+		return likes;
 	}
-	public void setPostLikes(int postLikes){
-		this.postLikes = postLikes;
+	public void setLikes(int likes){
+		this.likes = likes;
 	}
 	public int getReactions(){
 		return reactions;

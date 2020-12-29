@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 
@@ -35,7 +36,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 *         [ profileImage ]: URL
 	 *         [ isFollowingYou ]: Boolean
 	 *         [ isFollowedByYou ]: Boolean
-	 * 	     }
+	 *       }
 	 * 	     [ image ]: URL # 첨부된 이미지 URL
 	 * 	     text: String # 포스트 내용
 	 * 	     postDate: Date
@@ -67,7 +68,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 *     [ profileImage ]: URL
 	 *     [ isFollowingYou ]: Boolean
 	 *     [ isFollowedByYou ]: Boolean
-	 * 	 }
+	 *   }
 	 * 	 [ image ]: URL # 첨부된 이미지 URL
 	 * 	 text: String # 포스트 내용
 	 * 	 postDate: Date
@@ -104,21 +105,26 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * <b>에러: </b><br>
 	 * not_logged_in : 로그인 상태가 아님<br>
 	 * bad_text  : 유효하지 않은 text 인자<br>
-	 * bad_image : 유효하지 않은 imageN 인자<br>
-	 * no_image : 존재하지 않는 imageN 인자<br>
 	 */
 	@RequestMapping("/api/writePost")
 	public String writePost(HttpSession session,
-	                        @RequestParam String text){
+	                        @RequestParam String text,
+	                        @RequestParam MultipartFile image){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
 
 		text = text.trim();
 		if(Validate.postText(text)) return JsonHelper.failure("bad_text");
-		//if () return JsonHelper.failure("bad_image");
-		//if (!image.exists()) return JsonHelper.failure("no_image");
 
-		int postId = postService.writePost(loginUser.getUserId(), text);
+		if(image.isEmpty()){
+			return JsonHelper.failure("bad_image");
+		}
+
+		Integer postId = postService.writePost(loginUser.getUserId(), text, image);
+		if(postId==null){ // 오류로 인해 포스트 생성 불가
+			return JsonHelper.failure("unexpected");
+		}
+
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("postId", postId);
 
@@ -194,6 +200,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	                       @RequestParam boolean like){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
+
 		PostResult result = postService.likePost(loginUser.getUserId(), post, like);
 
 		return JsonHelper.GSON.toJson(result);

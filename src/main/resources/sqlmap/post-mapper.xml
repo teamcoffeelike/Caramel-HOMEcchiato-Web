@@ -2,64 +2,70 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="post">
+	<resultMap id="postResultMap" type="Post">
+		<id property="id" column="id"/>
+		<result property="image" column="image"/>
+		<result property="text" column="text"/>
+		<result property="postDate" column="postDate"/>
+		<result property="lastEditDate" column="lastEditDate"/>
+		<result property="likes" column="likes"/>
+		<result property="reactions" column="reactions"/>
+		<result property="likedByYou" column="likedByYou"/>
+		<association property="author" javaType="UserProfileData">
+			<id property="id" column="authorId"/>
+			<result property="name" column="authorName"/>
+			<result property="profileImage" column="authorProfileImage"/>
+			<result property="isFollowingYou" column="authorIsFollowingYou"/>
+			<result property="isFollowedByYou" column="authorIsFollowedByYou"/>
+		</association>
+	</resultMap>
+
 	<sql id="postColumns">
-		SELECT posts.id           id,
-		       posts.author       authorId,
-		       users.name         authorName,
-		       users.profileImage authorProfileImage,
-		       <include refid="user.isFollowedByYou">
-			       <property name="userId" value="posts.author"/>
-		       </include> isFollowedByYou,
-		       <include refid="user.isFollowingYou">
-			       <property name="userId" value="posts.author"/>
-		       </include> isFollowingYou,
-		       posts.text,
-		       postDate,
-		       lastEditDate,
-		       (SELECT COUNT(*)
-		          FROM postlikes
-		         WHERE post = #{id}) postLikes,
-		       (SELECT COUNT(*)
-		          FROM reactions
- 		         WHERE post = #{id}) reactions,
- 		       (SELECT COUNT(*)
- 		          FROM postlikes
- 		         WHERE userId = #{loginUser, jdbcType=INTEGER}
-		           AND post = #{id}) likedByYou
+		posts.id           id,
+		posts.author       authorId,
+		users.name         authorName,
+		users.profileImage authorProfileImage,
+		<include refid="user.isFollowingYou">
+		    <property name="userId" value="posts.author"/>
+		</include>         authorIsFollowingYou,
+		<include refid="user.isFollowedByYou">
+		    <property name="userId" value="posts.author"/>
+		</include>         authorIsFollowedByYou,
+		posts.image        image,
+		posts.text         text,
+		posts.postDate     postDate,
+		posts.lastEditDate lastEditDate,
+		(SELECT COUNT(*)
+		   FROM postLikes
+		  WHERE post = posts.id) likes,
+		(SELECT COUNT(*)
+		   FROM reactions
+		  WHERE post = posts.id) reactions,
+		(SELECT COUNT(*)
+		   FROM postLikes
+		  WHERE userId = #{loginUser, jdbcType=INTEGER}
+		    AND post = posts.id) likedByYou
 	</sql>
 
-	<select id="recentPosts">
+	<select id="recentPosts"
+	        resultMap="postResultMap">
 		SELECT *
 		  FROM (SELECT <include refid="postColumns"/>
 		          FROM posts
 		         WHERE isDeleted = 'N'
 		         ORDER BY postDate DESC)
-		 WHERE ROWNUM &lt;= 10
+		 WHERE ROWNUM &lt;= 20
 	</select>
 
-	<select id="postDetail"
+	<select id="findPost"
 	        parameterType="map"
-	        resultType="Post">
-		SELECT id,
-		       text,
-		       author,
-		       postDate,
-		       lastEditDate,
-		       (SELECT COUNT(*)
-		          FROM postlikes
-		         WHERE	post = #{id}) postLikes,
-		       (SELECT COUNT(*)
-		          FROM	reactions
- 		         WHERE	post = #{id}) reactions,
- 		       (SELECT COUNT(*)
- 		          FROM	postlikes
- 		         WHERE	userId = #{loginUser, jdbcType=INTEGER}
- 		         	AND	post = #{id}) likedByYou
+	        resultMap="postResultMap">
+		SELECT <include refid="postColumns"/>
 		  FROM posts
 		 WHERE id = #{id}
 		   AND isDeleted = 'N'
 	</select>
-	
+
 	<select id="generatePostId"
 	        resultType="Integer">
 		SELECT seq_posts.nextval
@@ -68,40 +74,33 @@
 	
 	<insert id="writePost"
 	        parameterType="map">
-		INSERT INTO posts(id, text, author)
-		VALUES (#{postId}, #{text}, #{loginUser})
+		INSERT INTO posts(id, text, author, image)
+		VALUES (#{postId}, #{text}, #{loginUser}, #{image})
 	</insert>
-	
-	<select id="findPostData"
-	        parameterType="Integer"
-	        resultType="Post">
-		SELECT *
-		  FROM posts 
-		 WHERE id = #{post}
-		   AND isDeleted = 'N'
-	</select>
-	
+
 	<update id="editPost"
 	        parameterType="map">
 		UPDATE posts
-		   SET text = #{text}
+		   SET text = #{text},
+		       lastEditDate = SYSDATE
 		 WHERE id = #{post}
 	</update>
 	
 	<update id="deletePost"
 	        parameterType="Integer">
 		UPDATE posts
-		   SET isdeleted = 'Y'
+		   SET isDeleted = 'Y',
+		       image = NULL
 		 WHERE id = #{post}
 	</update>
 	
-	<insert id="likePost"
+	<insert id="like"
 	        parameterType="map">
 		INSERT INTO postlikes(userId, post)
 		VALUES (#{loginUser}, #{post})
 	</insert>
 	
-	<delete id="cancleLike"
+	<delete id="removeLike"
 	        parameterType="map">
 		DELETE FROM postlikes
 		 WHERE userId = #{loginUser}
