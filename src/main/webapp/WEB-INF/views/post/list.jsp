@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h3>프로필 글쓰기</h3>
+	
 </body>
 </html>

@@ -9,14 +9,24 @@
 </head>
 <body>
 	
-	<div id="header">
-		<div><img class="profileImg" src="" />프로필 사진</div>
+<div id="mypage">	
+	<div id="profile">
+		<div class="imgBox">
+			<label>
+				<img class="profileImg" src="imgs/profile.png" />
+			</label>
+		</div>
 		<section>
-			<div>${data.name }</div>
-			<div>${data.motd }</div>
+			<div>${data.name }닉네임</div>
+			<div>${data.motd }상태메세지</div>
+			<c:if test="${loginUser.userId eq data.id}">
+				<div class="btnSet">
+					<a id="btnWrite" class="btn-empty" href="writePostView">글쓰기</a>
+					<a id="btnProfile" class="btn-empty" href="mymodify">프로필 편집</a>
+				</div>
+			</c:if>
 		</section>
 	</div>
-	
 	<!-- 포스트 -->
 	<div id="post_grid">
 		<ul>
@@ -25,5 +35,6 @@
 			</c:forEach>	
 		</ul>
 	</div>
+</div>
 </body>
 </html>
