@@ -63,7 +63,7 @@ public class KakaoIntegrationApiController{
 		long kakaoUserId = response.getResponse().get("id").getAsLong();
 		LoginResult result = loginService.loginWithKakao(kakaoUserId);
 		if(result.getUserId()!=null){
-			session.setAttribute(SessionAttributes.LOGIN_USER, result.getUserId());
+			SessionAttributes.setLoginUser(session, result.createAuthToken());
 			return JsonHelper.GSON.toJson(result);
 		}
 
