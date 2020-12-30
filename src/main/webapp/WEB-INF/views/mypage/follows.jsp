@@ -13,7 +13,7 @@
 <body>
 <div class="container">
 	<ul class="tabs">
-		<li class="follow button on">팔로우</li>
+		<li class="follow button on">팔로워</li>
 		<li class="follow button">팔로잉</li>
 	</ul>
 	<div class="tab-content">
@@ -22,8 +22,9 @@
 			<ul>
 				<c:forEach var="u" items="${followers}">
 					<li>
-						<img src="${u.profileImage }">
-						<li>${u.name }</li>
+						<img src="${empty u.profileImage ? "imgs/profile.png" : u.profileImage }">
+						<li class="followList-name">${u.name }</li>
+						<a class="btnFollow">삭제</a>
 					</li>
 				</c:forEach>
 			</ul>
@@ -33,8 +34,9 @@
 			<ul>
 				<c:forEach var="u" items="${followers}">
 					<li>
-						<img src="${u.profileImage }">
-						<li>${u.name }</li>
+						<img src="${empty u.profileImage ? "imgs/profile.png" : u.profileImage }">
+						<li class="followList-name">${u.name }</li>
+						<a class="btnFollow">팔로잉</a>
 					</li>
 				</c:forEach>
 			</ul>

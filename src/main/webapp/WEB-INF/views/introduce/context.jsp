@@ -28,7 +28,6 @@ $(".scrollTop").click(function(){
 	display: none;
 }
 .header-info span { font-size: 18px; font-weight: bold; }
-
 #contents {
 	margin-top: 100px;
 }
@@ -137,7 +136,7 @@ $(".scrollTop").click(function(){
 		</div>
 	</div>
 	<div id="footer">
-		<a class="scrollTop" href="#">TOP</a>
+		<a class="scrollTop" href="#">↑</a>
 	</div>
 </div>
 </body>

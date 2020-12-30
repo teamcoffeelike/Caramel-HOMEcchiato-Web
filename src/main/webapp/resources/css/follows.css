@@ -5,8 +5,8 @@
 }
 
 .container {
-	width: 500px;
-	margin: 20px auto;
+	width: 400px;
+	margin: 30px auto;
 }
 
 .tabs li {
@@ -41,5 +41,24 @@
 }
 
 .tab-content div.on li {
-	list-style: none;	
+	list-style: none;
+	margin: 20px;
+}
+
+.tab-content img {
+	width: 70px;
+	height: 70px;
+	float: left;
+}
+
+.followList-name {
+	float: left;
+	font-size: 18px;
+}
+
+.btnFollow {
+	padding: 6px 15px;
+	color: #e67461;
+	border: 1px solid #e67461;
+	border-radius: 5px;
 }

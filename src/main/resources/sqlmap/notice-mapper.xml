@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="notice">
+	<select id="getNotices"
+			parameterType="Page"
+			resultType="Notice">
+		SELECT *
+ 		  FROM (SELECT *
+                FROM notices
+                ORDER BY writeDate DESC)
+ 		 WHERE rownum between #{currentPage}*10 and ((#{currentPage}+1)*10)-1
+	</select>
+	
+	<select id="getTotalCount"
+			resultType="integer">
+		SELECT count(*)
+		FROM notices
+	</select>
+
+</mapper>

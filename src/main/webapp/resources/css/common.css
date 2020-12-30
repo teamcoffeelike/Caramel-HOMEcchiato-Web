@@ -5,6 +5,7 @@
 	padding: 0px;
 	box-sizing: border-box;
 	color: #865449;
+	list-style: none;
 }
 
 a:link, a:visited { text-decoration:none;}		
