@@ -24,5 +24,9 @@
 	<definition name="user/join" template="/WEB-INF/views/tiles/default.jsp">
 		<put-attribute name="content" value="/WEB-INF/views/user/join.jsp"/>
 	</definition>
+
+	<definition name="introduce/context" template="/WEB-INF/views/tiles/default.jsp">
+		<put-attribute name="content" value="/WEB-INF/views/introduce/context.jsp"/>
+	</definition>
 	
 </tiles-definitions>

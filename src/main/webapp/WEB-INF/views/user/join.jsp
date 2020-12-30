@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
-<link rel="stylesheet" href="css/signup.css">
+<link rel="stylesheet" href="css/join.css">
 </head>
 <body>
 <div class="signup_form">

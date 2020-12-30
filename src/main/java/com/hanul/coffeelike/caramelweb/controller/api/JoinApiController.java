@@ -1,5 +1,6 @@
 package com.hanul.coffeelike.caramelweb.controller.api;
 
+import com.google.gson.JsonObject;
 import com.hanul.coffeelike.caramelweb.data.LoginResult;
 import com.hanul.coffeelike.caramelweb.service.JoinService;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
@@ -85,5 +86,25 @@ public class JoinApiController extends BaseExceptionHandlingController{
 			SessionAttributes.setLoginUser(session, result.createAuthToken());
 		}
 		return JsonHelper.GSON.toJson(result);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/api/emailExists")
+	public String emailExists(@RequestParam String email) {
+		boolean exists = joinService.emailExists(email);
+		
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("exists", exists);
+		return JsonHelper.GSON.toJson(jsonObject);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/api/phoneNumberExists")
+	public String phoneNumberExists(@RequestParam String phoneNumber) {
+		boolean exists = joinService.phoneNumberExists(phoneNumber);
+		
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("exists", exists);
+		return JsonHelper.GSON.toJson(jsonObject);
 	}
 }

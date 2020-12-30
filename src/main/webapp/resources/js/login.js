@@ -15,13 +15,14 @@ function go_login() {
 		$.ajax({
 
 			type: "post",
-			url: "loginWithEmail",
+			url: "api/loginWithEmail",
 			data: { email:$("#user_id").val(), password:$("#user_pw").val() },
 			success: function(response) {
-				if(response) {
-					alert("로그인 성공!");
-				}else {
+				if(response.error) {
 					alert("로그인 실패!");
+				}else {
+					alert("로그인 성공!");
+					location.href="list.in";
 				}
 			}, error: function(req, text) {
 				alert(text + " : " + req.status);
@@ -31,13 +32,13 @@ function go_login() {
 		$.ajax({
 
 			type: "post",
-			url: "loginWithPhone",
+			url: "api/loginWithPhoneNumber",
 			data: { phoneNumber:$("#user_id").val(), password:$("#user_pw").val() },
 			success: function(response) {
-				if(response) {
-					alert("로그인 성공!");
-				}else {
+				if(response.error) {
 					alert("로그인 실패!");
+				}else {
+					alert("로그인 성공!");
 				}
 			}, error: function(req, text) {
 				alert(text + " : " + req.status);

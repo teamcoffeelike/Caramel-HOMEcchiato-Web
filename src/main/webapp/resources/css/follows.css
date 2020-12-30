@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+* {
+	list-style: none;
+}
+
+.container {
+	width: 500px;
+	margin: 20px auto;
+}
+
+.tabs li {
+  list-style: none;
+  float: left;
+  width: 50%;
+  padding: 10px 15px;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid #bebebe;
+}
+
+.tabs li.on {
+  background-color: #e67461;
+  font-weight: bold;
+  color: #f4eae1;
+}
+
+.tab-content {
+  clear: both;
+  border: 1px solid #dedede;
+  height: 600px;
+}
+
+.tab-content div {
+  display: none;
+  text-align: center;
+}
+
+.tab-content div.on {
+  display: block;
+}
+
+.tab-content div.on li {
+	list-style: none;	
+}

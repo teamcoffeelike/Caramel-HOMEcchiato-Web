@@ -12,12 +12,12 @@
 			
 			<li class="subMenu"><a href="#">마이페이지</a>
 				<ul class="hide">
-					<li><a href="profile.my">내 프로필</a></li>
-					<li><a href="follows.my">팔로워/팔로잉</a></li>
-					<li><a href="like.my">좋아요</a></li>
-					<li><a href="recipe.my">내 레시피</a></li>
-					<li><a href="search.my">친구찾기</a></li>
-					<li><a href="settings.my">설정</a></li>
+					<li><a href="profile<%-- ?userId=${loginUser.userId} --%>">내 프로필</a></li>
+					<li><a href="myfollows">팔로워/팔로잉</a></li>
+					<li><a href="mylike">좋아요</a></li>
+					<li><a href="myrecipe">내 레시피</a></li>
+					<li><a href="search">친구찾기</a></li>
+					<li><a href="settings">설정</a></li>
 					<li><a href="logout">로그아웃</a></li>
 				</ul>
 			</li>
@@ -27,7 +27,7 @@
 <style>
 header div.category { font-size: 18px; }
 header div.category a:hover, header div.category a.active { font-weight: bold; }
-#mainMenu { margin: 0px auto; padding: 0px;  list-style: none;}
+#mainMenu {margin: 0px auto; padding: 0px;  list-style: none;}
 #mainMenu>li { float: left;}
 #mainMenu>li a {display:inline-block; width:150px; padding:10px 5px; } 
 #mainMenu>li a:hover, #mainMenu>li a:active { font-weight: bold; color: #e67461;}
