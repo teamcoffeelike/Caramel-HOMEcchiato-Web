@@ -22,7 +22,7 @@ function go_login() {
 					alert("로그인 실패!");
 				}else {
 					alert("로그인 성공!");
-					location.href="list.in";
+					location.href="follows";
 				}
 			}, error: function(req, text) {
 				alert(text + " : " + req.status);
