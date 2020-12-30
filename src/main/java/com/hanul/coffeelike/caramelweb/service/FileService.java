@@ -2,14 +2,19 @@ package com.hanul.coffeelike.caramelweb.service;
 
 import com.hanul.coffeelike.caramelweb.dao.FileDAO;
 import com.hanul.coffeelike.caramelweb.data.ProfileImageData;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Instant;
 import java.util.Random;
 
@@ -18,13 +23,19 @@ public class FileService{
 	private static final String PROFILE_IMAGE = "profileImage";
 	private static final String POST_IMAGE = "postImage";
 
-	private final Logger logger = LoggerFactory.getLogger(FileService.class);
+	private static final Logger logger = LoggerFactory.getLogger(FileService.class);
+
+	static{
+		System.out.println("Logger : "+(logger));
+	}
 
 	@Autowired
 	private FileDAO fileDAO;
 
 	private final File storageRoot = new File("/images");
 	private final Random rng = new Random();
+
+	private final Tika tika = new Tika();
 
 	///////////////////////////////////////////////////////////////////////
 	//
@@ -176,9 +187,48 @@ public class FileService{
 		}
 	}
 
-	private static String extension(MultipartFile multipartFile){
-		return extension(multipartFile.getOriginalFilename());
+	private String extension(MultipartFile multipartFile){ // TODO ????
+		String contentType = multipartFile.getContentType();
+		if(contentType!=null){
+			switch(contentType){
+			case MediaType.IMAGE_GIF_VALUE:
+				return "gif";
+			case MediaType.IMAGE_JPEG_VALUE:
+				return "jpeg";
+			case MediaType.IMAGE_PNG_VALUE:
+				return "png";
+			}
+		}
+		try(InputStream is = multipartFile.getInputStream()){
+			contentType = tika.detect(is);
+		}catch(IOException e){
+			logger.error("파일 Mime 타입 확인 중 오류 발생", e);
+		}
+
+		if(contentType!=null){
+			switch(contentType){
+			case MediaType.IMAGE_GIF_VALUE:
+				return "gif";
+			case MediaType.IMAGE_JPEG_VALUE:
+				return "jpeg";
+			case MediaType.IMAGE_PNG_VALUE:
+				return "png";
+			}
+		}
+
+
+		String originalFilename = multipartFile.getOriginalFilename();
+		if(originalFilename!=null){
+			try{
+				return FilenameUtils.getExtension(originalFilename);
+			}catch(Exception ex){
+				logger.error("파일 확장자 확인 중 오류 발생", ex);
+			}
+		}
+
+		return "";
 	}
+
 	private static String extension(@Nullable String filename){
 		if(filename==null) return "";
 		int lastDot = filename.lastIndexOf('.');

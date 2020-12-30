@@ -51,7 +51,7 @@
 	        resultMap="postResultMap">
 		SELECT *
 		  FROM (SELECT <include refid="postColumns"/>
-		          FROM posts
+		          FROM posts JOIN users ON posts.author = users.id
 		         WHERE isDeleted = 'N'
 		         ORDER BY postDate DESC)
 		 WHERE ROWNUM &lt;= 20
@@ -61,7 +61,7 @@
 	        parameterType="map"
 	        resultMap="postResultMap">
 		SELECT <include refid="postColumns"/>
-		  FROM posts
+		  FROM posts JOIN users ON posts.author = users.id
 		 WHERE id = #{id}
 		   AND isDeleted = 'N'
 	</select>

@@ -4,10 +4,10 @@ import com.google.gson.JsonObject;
 import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.Post;
 import com.hanul.coffeelike.caramelweb.service.PostService;
-import com.hanul.coffeelike.caramelweb.service.PostService.PostResult;
+import com.hanul.coffeelike.caramelweb.service.PostService.PostModifyResult;
+import com.hanul.coffeelike.caramelweb.service.PostService.PostWriteResult;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
-import com.hanul.coffeelike.caramelweb.util.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 public class PostApiController extends BaseExceptionHandlingController{
@@ -52,7 +53,11 @@ public class PostApiController extends BaseExceptionHandlingController{
 	@RequestMapping("/api/recentPosts")
 	public String recentPosts(HttpSession session){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
-		return JsonHelper.GSON.toJson(postService.recentPosts(loginUser==null ? null : loginUser.getUserId()));
+		List<Post> posts = postService.recentPosts(loginUser==null ? null : loginUser.getUserId());
+
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.add("posts", JsonHelper.GSON.toJsonTree(posts));
+		return JsonHelper.GSON.toJson(jsonObject);
 	}
 
 	/**
@@ -113,22 +118,8 @@ public class PostApiController extends BaseExceptionHandlingController{
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
 
-		text = text.trim();
-		if(Validate.postText(text)) return JsonHelper.failure("bad_text");
-
-		if(image.isEmpty()){
-			return JsonHelper.failure("bad_image");
-		}
-
-		Integer postId = postService.writePost(loginUser.getUserId(), text, image);
-		if(postId==null){ // 오류로 인해 포스트 생성 불가
-			return JsonHelper.failure("unexpected");
-		}
-
-		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("postId", postId);
-
-		return JsonHelper.GSON.toJson(jsonObject);
+		PostWriteResult result = postService.writePost(loginUser.getUserId(), text, image);
+		return JsonHelper.GSON.toJson(result);
 	}
 
 	/**
@@ -151,16 +142,13 @@ public class PostApiController extends BaseExceptionHandlingController{
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("cannot_edit");
 
-		text = text.trim();
-		if(Validate.postText(text)) return JsonHelper.failure("bad_text");
-
-		PostResult result = postService.editPost(loginUser.getUserId(), post, text);
+		PostModifyResult result = postService.editPost(loginUser.getUserId(), post, text);
 
 		return JsonHelper.GSON.toJson(result);
 	}
 
 	/**
-	 * 포스트 수정<br>
+	 * 포스트 삭제<br>
 	 * <br>
 	 * <b>성공 시:</b>
 	 * <pre>{@code
@@ -177,7 +165,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("cannot_edit");
 
-		PostResult result = postService.deletePost(loginUser.getUserId(), post);
+		PostModifyResult result = postService.deletePost(loginUser.getUserId(), post);
 
 		return JsonHelper.GSON.toJson(result);
 	}
@@ -201,7 +189,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
 
-		PostResult result = postService.likePost(loginUser.getUserId(), post, like);
+		PostModifyResult result = postService.likePost(loginUser.getUserId(), post, like);
 
 		return JsonHelper.GSON.toJson(result);
 	}

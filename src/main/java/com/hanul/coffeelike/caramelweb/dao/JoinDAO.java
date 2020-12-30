@@ -36,10 +36,10 @@ public class JoinDAO{
 						kakaoAccountId));
 	}
 	public boolean emailExists(String email) {
-		return (Integer)sql.selectOne("join.emailExists", email)==0 ? true:false;
+		return sql.<Integer>selectOne("join.emailExists", email)==0;
 	}
 	
 	public boolean phoneNumberExists(String phoneNumber) {
-		return (Integer)sql.selectOne("join.phoneNumberExists", phoneNumber)==0 ? true:false;
+		return sql.<Integer>selectOne("join.phoneNumberExists", phoneNumber)==0;
 	}
 }

@@ -78,7 +78,7 @@ public class JoinApiController extends BaseExceptionHandlingController{
 		name = name.trim();
 
 		if(!Validate.name(name)) return JsonHelper.failure("bad_name");
-		if(!Validate.phoneNumber(phoneNumber)) return JsonHelper.failure("bad_email");
+		if(!Validate.phoneNumber(phoneNumber)) return JsonHelper.failure("bad_phone_number");
 		if(!Validate.password(password)) return JsonHelper.failure("bad_password");
 
 		LoginResult result = joinService.joinWithPhoneNumber(name, phoneNumber, password);
@@ -87,22 +87,20 @@ public class JoinApiController extends BaseExceptionHandlingController{
 		}
 		return JsonHelper.GSON.toJson(result);
 	}
-	
-	@ResponseBody
+
 	@RequestMapping("/api/emailExists")
-	public String emailExists(@RequestParam String email) {
+	public String emailExists(@RequestParam String email){
 		boolean exists = joinService.emailExists(email);
-		
+
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("exists", exists);
 		return JsonHelper.GSON.toJson(jsonObject);
 	}
-	
-	@ResponseBody
+
 	@RequestMapping("/api/phoneNumberExists")
-	public String phoneNumberExists(@RequestParam String phoneNumber) {
+	public String phoneNumberExists(@RequestParam String phoneNumber){
 		boolean exists = joinService.phoneNumberExists(phoneNumber);
-		
+
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("exists", exists);
 		return JsonHelper.GSON.toJson(jsonObject);

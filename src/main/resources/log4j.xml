@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.hanul.coffeelike.caramelweb">
+	<logger name="com.hanul.coffeelike.caramelweb.*">
 		<level value="debug" />
 	</logger>
 	

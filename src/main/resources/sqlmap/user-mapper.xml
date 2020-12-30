@@ -15,7 +15,6 @@
 			   notifyFollows
 		  FROM users
 		 WHERE id = #{id}
-		   AND isDeleted = 'N'
 	</select>
 	
 	<sql id="isFollowedByYou">
@@ -59,7 +58,6 @@
 		       </include> isFollowedByYou
 		  FROM users
 		 WHERE id = #{userId}
-		   AND isDeleted = 'N'
 	</select>
 
 	<update id="setName"
@@ -67,7 +65,6 @@
 		UPDATE users
 		   SET name = #{name}
 		 WHERE id = #{id}
-		   AND isDeleted = 'N'
 	</update>
 
 	<select id="getUserPasswordById"
@@ -75,7 +72,6 @@
 		SELECT password
 		  FROM users
 		 WHERE id = #{userId}
-		   AND isDeleted = 'N'
 	</select>
 
 	<update id="setPassword"
@@ -83,7 +79,6 @@
 		UPDATE users
 		   SET password = #{newPassword}
 		 WHERE id = #{userId}
-		   AND isDeleted = 'N'
 	</update>
 
 	<select id="getFollower"
@@ -95,7 +90,6 @@
 		  FROM follows f
 		       JOIN users u
 		         ON f.userId = u.id
-		        AND u.isDeleted = 'N'
 		 WHERE f.following = #{it}
 	</select>
 
@@ -117,7 +111,6 @@
 		SELECT id
 		  FROM users
 		 WHERE id = #{it}
-		   AND isDeleted = 'N'
 	</select>
 
 </mapper>

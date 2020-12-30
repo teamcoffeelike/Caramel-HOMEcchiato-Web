@@ -3,7 +3,9 @@
 <mapper namespace="auth">
 
     <sql id="compareAcquiredDate">
-        SYSDATE - acquiredDate ${operator} to_date(1, 'MM')
+        CASE WHEN (SYSDATE - acquiredDate) ${operator} 30 THEN 1
+            ELSE 0
+        END
     </sql>
 
     <select id="getAuthTokenInformation"

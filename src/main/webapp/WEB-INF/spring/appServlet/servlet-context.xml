@@ -11,10 +11,15 @@
 
     <!-- Scheduler -->
 
-	<task:annotation-driven executor="executor" scheduler="scheduler"/>
+	<task:annotation-driven scheduler="scheduler"/>
 
-    <task:executor id="executor" pool-size="5"/>
-    <task:scheduler id="scheduler" pool-size="5"/>
+    <task:scheduler id="scheduler"/>
+
+    <beans:bean id="scheduledTasks" class="com.hanul.coffeelike.caramelweb.beans.ScheduledTasks"/>
+
+    <task:scheduled-tasks scheduler="scheduler">
+        <task:scheduled ref="scheduledTasks" method="removeStaleAuthTokens" cron="0 0 0 * * ?"/>
+    </task:scheduled-tasks>
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 
