@@ -17,12 +17,12 @@
 			</label>
 		</div>
 		<section>
-			<div>${data.name }닉네임</div>
-			<div>${data.motd }상태메세지</div>
+			<div>${data.name }</div>
+			<div>${!empty data.motd ? data.motd : '' }</div>
 			<c:if test="${loginUser.userId eq data.id}">
 				<div class="btnSet">
 					<a id="btnWrite" class="btn-empty" href="writePostView">글쓰기</a>
-					<a id="btnProfile" class="btn-empty" href="mymodify">프로필 편집</a>
+					<a id="btnProfile" class="btn-empty" href="settings">프로필 편집</a>
 				</div>
 			</c:if>
 		</section>

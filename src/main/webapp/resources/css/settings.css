@@ -23,11 +23,11 @@
 	border: 1px solid #67432a; border-bottom: none; 
 }
 
-#tabContent{ width: 460px; margin: 0 auto;}
+#tabContent{ width: 460px; margin: 0 auto; }
 
 .imgBox {
     width: 150px;	height: 150px; 
-    border-radius: 70%;	margin: 25px auto;
+    border-radius: 70%;	margin: 15px auto;
 }
 
 .post-img {
@@ -60,19 +60,42 @@
 	text-align: center;	border-top: 1px solid #ccc;
 }
 
-.profile {
+.profile, .password {
 	width: 300px;	font-weight: bold;	color: #865449;
+	margin: 0 auto;
 }
 
-.profile:not(:first-child) {
-	margin-top: 30px;
-}
+.profile:not(:first-child),
+ .password:not(:first-child) {margin-top: 50px;}
+ 
+.password:first-child {margin-top: 95px}
 
-.profile input {
-	width: 100%;	padding: 5px 0px 2px 10px;
+.profile input, .password input{
+	width: 93%;	padding: 5px 0px 2px 10px;
 	background-color: transparent;
 	border: none;	border-bottom: 1px solid #67432a;
 	color: #67432a;	font-size: 18px;
-	outline: none;	
+	outline: none;	margin: 0 auto;
+	display: inline-block;
 }
 
+#delete-name, #delete-motd {color: #ccc; display: none;}
+
+.msg {
+	color: #67432a;
+	height: 10px;
+	text-align: center;
+	display: block;
+	font-size: 12px;
+}
+
+.btnSet { margin-top:50px; text-align: center; }
+a.btn-fill, a.btn-empty {
+	text-align: center;
+	padding: 3px 10px;
+	border: 1px solid #e67461;
+	border-radius: 3px; 
+	box-shadow: 2px 2px 3px #ba9165; 
+}
+a.btn-fill { background-color: #e67461; color:#fff; }
+a.btn-empty { background-color: #fff; color:#e67461; }

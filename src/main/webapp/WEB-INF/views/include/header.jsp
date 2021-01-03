@@ -19,7 +19,7 @@
 			<c:if test="${!empty loginUser}">
 			<li class="subMenu"><a href="#">마이페이지</a>
 				<ul class="hide">
-					<li><a href="profile<%-- ?userId=${loginUser.userId} --%>">내 프로필</a></li>
+					<li><a href="profile?userId=${loginUser.userId}">내 프로필</a></li>
 					<li><a href="myfollows">팔로워/팔로잉</a></li>
 					<li><a href="mylike">좋아요</a></li>
 					<li><a href="myrecipe">내 레시피</a></li>
