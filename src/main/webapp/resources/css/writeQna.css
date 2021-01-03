@@ -1,7 +1,7 @@
 
 table {
-	width: 80%;
-	margin: 0 auto;
+	width: 50%;
+	margin: 20px auto;
 	border: 1px solid #bebebe;
 }
 
@@ -11,27 +11,28 @@ table th, table td {
 }
 
 h3 {
+	margin: 30px auto;
 	text-align: center;
 }
 
 input[type=text] {
-    width: 97%;
-    margin: 10px;
+    width: 98.5%;
+    margin: 5px;
     height: 30px;
     padding-left: 10px;
     font-size: 16px;
 }
 
 textarea {
-    width: 97%;
+    width: 98.5%;
     height: 200px;
-    margin: 10px;
+    margin: 5px;
     padding: 5px 10px;
     font-size: 16px;
 }
 
 .btn {
-	width: 80%;
+	width: 50%;
 	margin: 20px auto;
 	text-align: center;
 }
@@ -39,4 +40,8 @@ textarea {
 .btn a {
 	background-color: #FCD092;
 	padding: 5px 10px;
+}
+
+.modify, .delete {
+	float: right;
 }

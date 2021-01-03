@@ -32,7 +32,7 @@
                 </select>
             </li>
         </ul>
-
+	<input type='hidden' name='id' />
     </form>
 
     </div>
@@ -41,10 +41,10 @@
     <table>
     	<c:forEach items="${qnas }" var="page">
         <tr>
-            <td><a onclick="go_detail()" class="title">${page.title }</a></td>
-            <td class="w-px100">${page.writer }</td>
+            <td><a onclick="go_detail(${page.id})" class="title">${page.title }</a></td>
+            <td class="w-px130">${page.name }</td>
             <td class="w-px120">${page.writeDate }</td>
-            <td class="w-px150"><a class="answer">답변대기</a></td>
+            <td class="w-px150"><a class="answer" style="cursor: default;">답변대기</a></td>
         </tr>
         </c:forEach>
     </table>
@@ -53,6 +53,11 @@
     </ul>
 </div>
 <script>
+function go_detail(id) {
+	$("[name=id]").val(id);
+	$("form").attr("action", "detail.qna");
+	$("form").submit();
+}
 
 
 $(".keyword").on({

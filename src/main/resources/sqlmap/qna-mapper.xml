@@ -4,15 +4,29 @@
 	<select id="getQnas"
 			parameterType="Page"
 			resultType="Qna">
-		SELECT q.*, (SELECT name FROM users u where u.id=q.id) writer
+		SELECT q.*, (SELECT name FROM users u WHERE u.id=q.writer) name
  		  FROM (SELECT *
                 FROM qna
                 ORDER BY writeDate DESC) q
  		 WHERE rownum between #{currentPage}*10 and ((#{currentPage}+1)*10)-1
 	</select>
 	
+	
 	<insert id="insert">
-		INSERT INTO qna (id, title, content, writer)
-			 VALUES (#{id}, #{title}, #{content}, #{writer});
+		INSERT INTO qna (id, writer, title, content)
+			   VALUES (qna_seq.nextval, #{writer}, #{title}, #{content})
 	</insert>
+	
+	<select id="detail" 
+			resultType="Qna">
+		SELECT q.*, (SELECT name FROM users u WHERE u.id=q.writer) name
+	      FROM qna q
+	     WHERE id = #{id}
+	</select>
+	
+	<update id="update">
+		UPDATE qna
+		   SET title=#{title}, content=#{content}
+		 WHERE id=#{id}
+	</update>
 </mapper>

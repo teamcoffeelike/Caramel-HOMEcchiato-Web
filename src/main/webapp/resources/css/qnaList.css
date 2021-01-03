@@ -65,7 +65,7 @@ table, .text {
     border-collapse: collapse;
 }
 
-table td:not(:last-child) {
+table td {
     padding: 15px 10px;
     border-bottom: 1px solid #bebebe;
 }

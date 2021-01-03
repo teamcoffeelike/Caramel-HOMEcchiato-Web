@@ -7,7 +7,9 @@ public class Qna {
 	private String title;
 	private String content;
 	private String writer;
+	private String name;
 	private Date writeDate;
+	
 	
 	
 	public String getWriter() {
@@ -15,6 +17,12 @@ public class Qna {
 	}
 	public void setWriter(String writer) {
 		this.writer = writer;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public int getId() {
 		return id;

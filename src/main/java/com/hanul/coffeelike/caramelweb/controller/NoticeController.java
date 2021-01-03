@@ -79,4 +79,33 @@ public class NoticeController {
 		noticeService.qna_insert(qna);
 		return "redirect:qna";
 	}
+	
+	//문의글 상세화면 요청
+	@RequestMapping("/detail.qna")
+	public String detailQna(int id, Model model) {
+		model.addAttribute("data", noticeService.qna_detail(id));
+		model.addAttribute("crlf", "\r\n");
+		
+		return "qna/detail";
+	}
+	
+	//문의글 수정화면 요청
+	//제목 공백 글자 뒤에 제거되는 문제가 있답니다...
+	@RequestMapping("modify.qna")
+	public String deleteQna(Model model,
+							@RequestParam int id) {
+		model.addAttribute("data", noticeService.qna_detail(id));
+		return "qna/modify";
+	}
+	
+	//문의글 수정저장 처리
+	@RequestMapping("update.qna")
+	public String updateQna(HttpSession session,
+							Model model,
+							Qna qna) {
+		noticeService.qna_update(qna);
+		model.addAttribute("id", qna.getId());
+		model.addAttribute("url", "detail.qna");
+		return "redirect:detail.qna";
+	}
 }

@@ -1,30 +1,30 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="css/writeQna.css">
 </head>
 <body>
-<h3>¹®ÀÇ±Û ¾²±â</h3>
+<h3>ë¬¸ì˜ê¸€ ì“°ê¸°</h3>
 	<form method="post" action="insert.qna">
-	<input type="hidden" name="id" value="${loginUser.userId }" />
+	<input type="hidden" name="writer" value="${loginUser.userId }" />
 		<table>
 			<tr>
-				<th class="w-px150">Á¦¸ñ</th>
-				<td><input type="text" name="title" title="Á¦¸ñ" class="mandatory"/></td>
+				<th class="w-px150">ì œëª©</th>
+				<td><input type="text" name="title" title="ì œëª©" class="mandatory"/></td>
 			</tr>
 			<tr>
-				<th>³»¿ë</th>
-				<td><textarea name="content" title="³»¿ë" class="mandatory"></textarea></td>
+				<th>ë‚´ìš©</th>
+				<td><textarea name="content" title="ë‚´ìš©" class="mandatory"></textarea></td>
 			</tr>		
 		</table>
 
 	<div class="btn">
-            <a class="save" onclick="if( necessary() ){ $('form').submit() }">ÀúÀå</a>
-            <a href="qna">Ãë¼Ò</a>
+            <a class="save" onclick="if( necessary() ){ $('form').submit() }">ì €ìž¥</a>
+            <a href="qna">ì·¨ì†Œ</a>
     </div>
 <script type="text/javascript" src='js/mandatory_check.js'></script>
 	</form>

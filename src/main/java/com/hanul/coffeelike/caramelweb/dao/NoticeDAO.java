@@ -29,4 +29,12 @@ public class NoticeDAO {
 	public int qna_insert(Qna qna) {
 		return sql.insert("qna.insert", qna);
 	}
+
+	public Qna qna_detail(int id) {
+		return sql.selectOne("qna.detail", id);
+	}
+
+	public int qna_update(Qna qna) {
+		return sql.update("qna.update", qna);
+	}
 }
