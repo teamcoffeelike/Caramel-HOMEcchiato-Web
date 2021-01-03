@@ -75,8 +75,7 @@ public class NoticeController {
 	//문의글쓰기 저장 처리 요청
 	@RequestMapping("/insert.qna")
 	public String insertQna(HttpSession session,
-							@RequestParam Qna qna,
-							@RequestParam UserProfileData userProfileData) {
+							Qna qna) {
 		noticeService.qna_insert(qna);
 		return "redirect:qna";
 	}
