@@ -24,7 +24,7 @@
 					<li>
 						<img src="${empty u.profileImage ? "imgs/profile.png" : u.profileImage }">
 						<li class="followList-name">${u.name }</li>
-						<a class="btnFollow">삭제</a>
+						<a class="btnFollow" onclick="if(confirm('정말 삭제하시겠습니까?') ){ href='delete.no?id=${page.id}' }">삭제</a>
 					</li>
 				</c:forEach>
 			</ul>

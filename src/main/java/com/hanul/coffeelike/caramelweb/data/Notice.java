@@ -7,7 +7,14 @@ public class Notice {
 	private String title;
 	private String content;
 	private Date writeDate;
+	private int writer;
 	
+	public int getWriter() {
+		return writer;
+	}
+	public void setWriter(int writer) {
+		this.writer = writer;
+	}
 	public int getId() {
 		return id;
 	}

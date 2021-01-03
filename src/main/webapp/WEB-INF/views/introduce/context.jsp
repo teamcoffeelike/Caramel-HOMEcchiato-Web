@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$(".header-info").fadeIn(1000);
+	$(".header-info").fadeIn(500);
 });
 
 $(".scrollTop").click(function(){
@@ -22,12 +22,16 @@ $(".scrollTop").click(function(){
 </script>
 <style type="text/css">
 .title {
-	color: #E67461; font-size: 20px; margin-bottom: 20px;
+	color: #E67461; font-size: 20px; position: relative;
+	transform: translate(50%, 20px);
 }
+
 .header-info {
-	display: none;
+	display: none; margin: 20px;
 }
+
 .header-info span { font-size: 18px; font-weight: bold; }
+
 #contents {
 	margin-top: 100px;
 }
@@ -36,34 +40,40 @@ $(".scrollTop").click(function(){
 	font-size: 50px; font-weight: bold;
 	margin-top: 50px;
 }
+
 .contents-title1 span {
 	box-shadow: inset 0 -15px 0 #f0dc51;
 }
+
 .contents-title2 span {
 	box-shadow: inset 0 -15px 0 #e67461;
 }
+
 .contents-title3 span {
 	box-shadow: inset 0 -15px 0 #8eba92;	
 }
 
 .img-latte {
-	width: 500px; height: 350px;
+	width: 600px; height: 450px;
 	position: absolute;
 }
+
 .img-lemonade {
-	width: 400px; height: 600px;
-	position: relative;	top: 0px; left: 700px;
+	width: 550px; height: 700px;
+	position: relative;	top: 0px; left: 1000px;
 }
+
 .img-couple {
-	width: 450px; height: 250px;
+	width: 500px; height: 350px;
 	position: relative; top: 100px;	right: 400px;
 }
 
 .section-recipe img {
-	width: 400px; height: 600px;
+	width: 550px; height: 700px;
 }
+
 .section-post img, .section-myPage img {
-	width: 400px; height: 600px;
+	width: 550px; height: 700px;
 }
 
 .scrollTop {
@@ -87,10 +97,10 @@ $(".scrollTop").click(function(){
 		<div class="title">
 			<h3>Caramel<br/>HOMEcchiato</h3>
 		</div>
-		<div class="header-info">
-			<p><span>집</span>에서도 여유롭게</p>
-			<p><span>휴식</span>을 취하며</p>
-			<p><span>카페</span> 분위기를 즐겨보세요</p>
+ 		<div class="header-info">
+			<p><span class="point1">집</span>에서도 여유롭게</p>
+			<p><span class="point2">휴식</span>을 취하며</p>
+			<p><span class="point3">카페</span> 분위기를 즐겨보세요</p>
 		</div>
 		<div data-aos="fade-up" data-aos-duration="1000">
 			<div class="header-imgs">
@@ -109,6 +119,8 @@ $(".scrollTop").click(function(){
 				<p class="contents-text1">기본 레시피를 보며<br/>레시피를 만들어보세요!</p>
 				<div data-aos="fade-up" data-aos-duration="3000">
 					<img src="imgs/smoothie.jpg" alt="사진"/>
+					<img src="imgs/coffee4.jpg" alt="사진"/>
+					<img src="" alt="사진"/>
 				</div>
 			</div>
 		</div>

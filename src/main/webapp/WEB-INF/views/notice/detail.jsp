@@ -7,6 +7,20 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h3>공지사항 상세화면</h3>
+<h3>공지사항</h3>
+<table>
+<tr><th>제목</th>
+	<td>${page.title }</td>
+</tr>
+<%-- <tr><th>작성자</th>
+	<td>${page.title }</td>
+</tr> --%>
+<tr><th>내용</th>
+	<td>${page.content }</td>
+</tr>
+<tr><th>작성일</th>
+	<td>${page.writeDate }</td>
+</tr>
+</table>
 </body>
 </html>

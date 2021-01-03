@@ -21,6 +21,7 @@ public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
 	
+	//공지글목록 화면 요청
 	@RequestMapping("/notice")
 	public String notice(HttpSession session,
 			Model model,
@@ -44,6 +45,7 @@ public class NoticeController {
 		return "notice/list";
 	}
 	
+<<<<<<< HEAD
 	//문의게시판 목록
 	@RequestMapping("/qna")
 	public String Qna(HttpSession session,
@@ -71,6 +73,21 @@ public class NoticeController {
 	public String writeQna() {
 		return "qna/new";
 	}
+=======
+	//신규공지글 작성화면 요청
+	@RequestMapping("/new")
+	public String newNotice() {
+		return "notice/new";
+	}
+	
+	/*
+	 * //신규공지글 저장처리 요청
+	 * 
+	 * @RequestMapping("/insert") public String insert(HttpSession session) {
+	 * 
+	 * return "redirect:notice"; }
+	 */
+>>>>>>> 178446c... notice 수정중..ㅠ
 	
 	//문의글쓰기 저장 처리 요청
 	@RequestMapping("/insert.qna")
