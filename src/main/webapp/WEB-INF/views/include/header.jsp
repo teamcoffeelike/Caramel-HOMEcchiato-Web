@@ -10,6 +10,13 @@
 			<li><a href="list.in">소개</a></li>
 			<li><a href="list.re">레시피</a></li>
 			
+			<!-- 로그인 안한 상태 -->
+			<c:if test="${empty loginUser }">
+				<li><a href="login">로그인</a></li>
+			</c:if>
+			
+			<!-- 로그인한 상태 -->
+			<c:if test="${!empty loginUser}">
 			<li class="subMenu"><a href="#">마이페이지</a>
 				<ul class="hide">
 					<li><a href="profile<%-- ?userId=${loginUser.userId} --%>">내 프로필</a></li>
@@ -20,7 +27,7 @@
 					<li><a href="settings">설정</a></li>
 					<li><a href="logout">로그아웃</a></li>
 				</ul>
-			</li>
+			</c:if>
 		</ul>
 	</div>
 </header>

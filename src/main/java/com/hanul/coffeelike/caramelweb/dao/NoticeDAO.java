@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hanul.coffeelike.caramelweb.data.Page;
+import com.hanul.coffeelike.caramelweb.data.Qna;
 
 @Repository
 public class NoticeDAO {
@@ -19,5 +20,13 @@ public class NoticeDAO {
 
 	public int getTotalCount() {
 		return sql.selectOne("notice.getTotalCount");
+	}
+
+	public List<Object> getQna(Page qna) {
+		return sql.selectList("qna.getQnas", qna);
+	}
+
+	public int qna_insert(Qna qna) {
+		return sql.insert("qna.insert", qna);
 	}
 }

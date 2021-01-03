@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hanul.coffeelike.caramelweb.data.Page;
 import com.hanul.coffeelike.caramelweb.service.NoticeService;
+import com.hanul.coffeelike.caramelweb.data.Qna;
+import com.hanul.coffeelike.caramelweb.data.UserProfileData;
 
 @Controller
 public class NoticeController {
@@ -42,5 +44,40 @@ public class NoticeController {
 		return "notice/list";
 	}
 	
+	//문의게시판 목록
+	@RequestMapping("/qna")
+	public String Qna(HttpSession session,
+					  Model model,
+					  @Nullable @RequestParam(required = false) Integer index) {
+		if(index==null) index=0;
+		
+		Page qna = new Page();
+		qna.setTotalCount(noticeService.totalCount());
+		int maximumPage = qna.getMaximumPage(10);
+		
+		if(index>=maximumPage) {
+			return "";
+		}
+		
+		qna.setCurrentPage(index);
+		
+		List<Object> qnas = noticeService.getQna(qna);
+		model.addAttribute("qnas", qnas);
+		return "qna/list";
+	}
 	
+	//문의글쓰기 화면 요청
+	@RequestMapping("/new.qna")
+	public String writeQna() {
+		return "qna/new";
+	}
+	
+	//문의글쓰기 저장 처리 요청
+	@RequestMapping("/insert.qna")
+	public String insertQna(HttpSession session,
+							@RequestParam Qna qna,
+							@RequestParam UserProfileData userProfileData) {
+		noticeService.qna_insert(qna);
+		return "redirect:qna";
+	}
 }

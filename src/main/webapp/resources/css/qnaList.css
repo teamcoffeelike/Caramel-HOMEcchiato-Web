@@ -1,0 +1,101 @@
+
+.qna {
+	width: 80%;
+	margin: 0px auto;
+}
+
+.qna ul {
+    overflow: hidden;
+}
+
+.qna ul li {
+    float: right;
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.searchBtn {
+    display: inline-block;
+    text-align: center;
+    width: 50px;
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+    border: 1px solid  #bebebe;
+    box-sizing: border-box;
+    border-left: none;
+}
+
+.writeBtn {
+    display: inline-block;
+    margin-top: 10px;
+    background-color: #FCD092;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.option, .keyword {
+    border: 1px solid  #bebebe;
+    height: 40px;
+    outline: none;
+}
+
+.option {
+    text-align: right;
+    width: 120px;
+    line-height: 40px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.keyword {
+    width: 250px;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding-left: 10px;
+}
+
+table, .text {
+	width: 80%;
+	margin: 0px auto;
+    border: 1px solid #bebebe;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+table td:not(:last-child) {
+    padding: 15px 10px;
+    border-bottom: 1px solid #bebebe;
+}
+
+table td:first-child {
+    padding-left: 50px;
+    text-align: left;
+}
+
+.title {
+    display: inline-block;
+    font-weight: bold;
+    padding-left: 0px;
+}
+
+.title:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.text {
+	margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px 0px 20px 0px;
+}
+
+.answer {
+	width: 100px;
+	border: 1px solid #FCD092;
+	font-size: 15px;
+    padding: 10px 20px;
+}
+

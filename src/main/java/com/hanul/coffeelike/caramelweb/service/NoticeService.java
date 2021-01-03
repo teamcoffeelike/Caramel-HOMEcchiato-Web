@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.hanul.coffeelike.caramelweb.dao.NoticeDAO;
 import com.hanul.coffeelike.caramelweb.data.Page;
+import com.hanul.coffeelike.caramelweb.data.Qna;
 
 @Service
 public class NoticeService {
@@ -21,4 +22,13 @@ public class NoticeService {
 	public int totalCount() {
 		return dao.getTotalCount();
 	}
+
+	public List<Object> getQna(Page qna) {
+		return dao.getQna(qna);
+	}
+
+	public int qna_insert(Qna qna) {
+		return dao.qna_insert(qna);
+	}
+	
 }

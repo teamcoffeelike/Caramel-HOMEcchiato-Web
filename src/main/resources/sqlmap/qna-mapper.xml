@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="qna">
+	<select id="getQnas"
+			parameterType="Page"
+			resultType="Qna">
+		SELECT q.*, (SELECT name FROM users u where u.id=q.id) writer
+ 		  FROM (SELECT *
+                FROM qna
+                ORDER BY writeDate DESC) q
+ 		 WHERE rownum between #{currentPage}*10 and ((#{currentPage}+1)*10)-1
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO qna (id, title, content, writer)
+			 VALUES (#{id}, #{title}, #{content}, #{writer});
+	</insert>
+</mapper>

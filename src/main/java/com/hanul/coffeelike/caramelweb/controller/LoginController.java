@@ -6,19 +6,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.LoginResult;
+import com.hanul.coffeelike.caramelweb.data.UserLoginData;
 import com.hanul.coffeelike.caramelweb.service.JoinService;
 import com.hanul.coffeelike.caramelweb.service.LoginService;
+import com.hanul.coffeelike.caramelweb.service.UserAuthService;
 import com.hanul.coffeelike.caramelweb.util.HttpConnector;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.KakaoApiUtils;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -29,6 +34,8 @@ public class LoginController{
 	private JoinService joinService;
 	@Autowired
 	private LoginService loginService;
+	@Autowired
+	private UserAuthService authService;
 	
 	//로그인 화면 요청 -> 메인화면
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -118,6 +125,16 @@ public class LoginController{
 		return nickname.getAsString();
 	}
 	
-	
+	//로그아웃 처리
+	@RequestMapping("/logout")
+	public String logout(HttpSession session){
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		if(loginUser==null) return JsonHelper.failure("not_logged_in");
+
+		SessionAttributes.setLoginUser(session, null);
+		authService.removeAuthToken(loginUser.getAuthToken());
+		
+		return "redirect:/";
+	}
 
 }
