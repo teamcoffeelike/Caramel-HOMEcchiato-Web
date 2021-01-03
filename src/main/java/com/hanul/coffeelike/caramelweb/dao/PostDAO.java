@@ -23,7 +23,7 @@ public class PostDAO{
 	                               @Nullable Integer loginUser){
 		Map<String, Integer> m = new HashMap<>();
 		m.put("id", id);
-		m.put("userId", loginUser);
+		m.put("loginUser", loginUser);
 		return sql.selectOne("post.findPost", m);
 	}
 

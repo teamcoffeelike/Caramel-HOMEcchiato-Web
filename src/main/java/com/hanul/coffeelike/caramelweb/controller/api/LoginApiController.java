@@ -41,7 +41,7 @@ public class LoginApiController extends BaseExceptionHandlingController{
 	 * login_failed : 로그인 실패<br>
 	 */
 	@ResponseBody
-	@RequestMapping("/api/loginWithEmail")
+	@RequestMapping(value = "/api/loginWithEmail", produces = "application/json;charset=UTF-8")
 	public String loginWithEmail(HttpSession session,
 	                             @RequestParam String email,
 	                             @RequestParam String password){
@@ -69,7 +69,7 @@ public class LoginApiController extends BaseExceptionHandlingController{
 	 * login_failed : 로그인 실패<br>
 	 */
 	@ResponseBody
-	@RequestMapping("/api/loginWithPhoneNumber")
+	@RequestMapping(value = "/api/loginWithPhoneNumber", produces = "application/json;charset=UTF-8")
 	public String loginWithPhoneNumber(HttpSession session,
 	                                   @RequestParam String phoneNumber,
 	                                   @RequestParam String password){
@@ -92,7 +92,7 @@ public class LoginApiController extends BaseExceptionHandlingController{
 	 * not_logged_in : 로그인 상태가 아님<br>
 	 */
 	@ResponseBody
-	@RequestMapping("/api/logout")
+	@RequestMapping(value = "/api/logout", produces = "application/json;charset=UTF-8")
 	public String logout(HttpSession session){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
@@ -118,7 +118,7 @@ public class LoginApiController extends BaseExceptionHandlingController{
 	 * login_failed : 로그인 실패<br>
 	 */
 	@ResponseBody
-	@RequestMapping("/api/loginWithAuthToken")
+	@RequestMapping(value = "/api/loginWithAuthToken", produces = "application/json;charset=UTF-8")
 	public String loginWithAuthToken(HttpSession session,
 	                                 @RequestParam String authToken){
 		UUID uuid;

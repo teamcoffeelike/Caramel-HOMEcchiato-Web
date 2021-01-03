@@ -45,7 +45,8 @@
 
     <select id="steps"
             resultType="map">
-        SELECT ordinal index,
+        SELECT recipe,
+               ordinal index,
                image,
                text
           FROM steps s

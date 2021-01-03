@@ -60,7 +60,7 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 * bad_category : 유효하지 않은 category<br>
 	 * no_user : 존재하지 않는 author<br>
 	 */
-	@RequestMapping("/api/recipeList")
+	@RequestMapping(value = "/api/recipeList", produces = "application/json;charset=UTF-8")
 	public String recipeList(HttpSession session,
 	                         @Nullable @RequestParam(required = false) String category,
 	                         @Nullable @RequestParam(required = false) Integer author){
@@ -109,7 +109,7 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 * <b>에러: </b><br>
 	 * no_recipe : 존재하지 않는 레시피 id<br>
 	 */
-	@RequestMapping("/api/recipe")
+	@RequestMapping(value = "/api/recipe", produces = "application/json;charset=UTF-8")
 	public String recipe(HttpSession session,
 	                     @RequestParam int id){
 		Recipe recipe = recipeService.recipe(id);
@@ -130,7 +130,7 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 * <b>에러: </b><br>
 	 * not_logged_in : 로그인 상태가 아님<br>
 	 */
-	@RequestMapping("/api/writeRecipe")
+	@RequestMapping(value = "/api/writeRecipe", produces = "application/json;charset=UTF-8")
 	public String writeRecipe(HttpSession session,
 	                          MultipartRequest request,
 	                          @RequestParam String title,
@@ -156,7 +156,7 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 * no_recipe : 해당 ID의 레시피가 존재하지 않음<br>
 	 * cannot_edit : 해당 글을 수정할 수 없음 (비 로그인 상태 포함)<br>
 	 */
-	@RequestMapping("/api/editRecipe")
+	@RequestMapping(value = "/api/editRecipe", produces = "application/json;charset=UTF-8")
 	public String editRecipe(HttpSession session,
 	                         @RequestParam int recipe,
 	                         @RequestParam String text,
@@ -183,7 +183,7 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 * no_recipe : 해당 ID의 레시피가 존재하지 않음<br>
 	 * cannot_delete : 해당 글을 삭제할 수 없음 (비 로그인 상태 포함)<br>
 	 */
-	@RequestMapping("/api/deleteRecipe")
+	@RequestMapping(value = "/api/deleteRecipe", produces = "application/json;charset=UTF-8")
 	public String deleteRecipe(HttpSession session,
 	                           @RequestParam int recipe){
 		RecipeCover cover = recipeService.getCover(recipe);
@@ -212,7 +212,7 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 * bad_rating : 유효하지 않은 rating 인자<br>
 	 * no_recipe : 해당 ID의 레시피가 존재하지 않음<br>
 	 */
-	@RequestMapping("/api/rateRecipe")
+	@RequestMapping(value = "/api/rateRecipe", produces = "application/json;charset=UTF-8")
 	public String rateRecipe(HttpSession session,
 	                         @RequestParam int recipe,
 	                         @RequestParam double rating){

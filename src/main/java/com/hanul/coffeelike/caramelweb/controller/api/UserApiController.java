@@ -11,8 +11,6 @@ import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 import com.hanul.coffeelike.caramelweb.util.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,36 +36,21 @@ public class UserApiController extends BaseExceptionHandlingController{
 	 *     [ motd ]: String
 	 *     [ profileImage ]: URL
 	 *   }
-	 *   notifyReaction: Boolean
-	 *   notifyLike: Boolean
-	 *   notifyFollow: Boolean
+	 *   isSocialAccount: Boolean
 	 * }
 	 * }</pre>
 	 *
 	 * <b>에러: </b><br>
 	 * not_logged_in : 로그인 상태가 아님<br>
 	 */
-	@RequestMapping("/api/userSettings")
+	@RequestMapping(value = "/api/userSettings", produces = "application/json;charset=UTF-8")
 	public String userSettings(HttpSession session){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
 
 		UserSettingData userSettingData = service.userSettings(loginUser.getUserId());
-		JsonObject jsonObject = new JsonObject();
-		{
-			JsonObject subObject = new JsonObject();
-			subObject.addProperty("id", userSettingData.getId());
-			subObject.addProperty("name", userSettingData.getName());
-			subObject.addProperty("motd", userSettingData.getMotd());
-			subObject.addProperty("profileImage", userSettingData.getProfileImage());
 
-			jsonObject.add("user", subObject);
-		}
-		jsonObject.addProperty("notifyReactions", userSettingData.isNotifyReactions());
-		jsonObject.addProperty("notifyLikes", userSettingData.isNotifyLikes());
-		jsonObject.addProperty("notifyFollows", userSettingData.isNotifyFollows());
-
-		return JsonHelper.GSON.toJson(jsonObject);
+		return JsonHelper.GSON.toJson(userSettingData);
 	}
 
 	/**
@@ -88,7 +71,7 @@ public class UserApiController extends BaseExceptionHandlingController{
 	 * <b>에러: </b><br>
 	 * no_user : 존재하지 않는 유저<br>
 	 */
-	@RequestMapping("/api/profile")
+	@RequestMapping(value = "/api/profile", produces = "application/json;charset=UTF-8")
 	public String profile(HttpSession session,
 	                      @RequestParam int userId){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
@@ -109,7 +92,7 @@ public class UserApiController extends BaseExceptionHandlingController{
 	 * bad_name : 유효하지 않은 name 인자<br>
 	 * not_logged_in : 로그인 상태가 아님<br>
 	 */
-	@RequestMapping("/api/setName")
+	@RequestMapping(value = "/api/setName", produces = "application/json;charset=UTF-8")
 	public String setName(HttpSession session,
 	                      @RequestParam String name){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
@@ -137,7 +120,7 @@ public class UserApiController extends BaseExceptionHandlingController{
 	 * bad_new_password   : 존재하지 않거나 유효하지 않은 newPassword 인자<br>
 	 */
 	@ResponseBody
-	@RequestMapping("/api/setPassword")
+	@RequestMapping(value = "/api/setPassword", produces = "application/json;charset=UTF-8")
 	public String setPassword(HttpSession session,
 	                          @RequestParam String password,
 	                          @RequestParam String newPassword){
@@ -166,15 +149,39 @@ public class UserApiController extends BaseExceptionHandlingController{
 	 *   ]
 	 * }
 	 * }</pre>
-	 * <b>에러: </b><br>
-	 * not_logged_in : 로그인 상태가 아님<br>
 	 */
-	@RequestMapping("/api/getFollower")
-	public String getFollower(HttpSession session){
-		AuthToken loginUser = SessionAttributes.getLoginUser(session);
-		if(loginUser==null) return JsonHelper.failure("not_logged_in");
+	@RequestMapping(value = "/api/getFollower", produces = "application/json;charset=UTF-8")
+	public String getFollower(HttpSession session,
+	                          @RequestParam int user){
+		List<UserProfileData> users = service.getFollower(user);
+		JsonElement e = JsonHelper.GSON.toJsonTree(users);
 
-		List<UserProfileData> users = service.getFollower(loginUser.getUserId());
+		JsonObject o = new JsonObject();
+		o.add("users", e);
+
+		return JsonHelper.GSON.toJson(o);
+	}
+
+	/**
+	 * 팔로잉하는 유저 가져오기<br>
+	 * <br>
+	 * <b>성공 시:</b>
+	 * <pre>{@code
+	 * {
+	 *   users: [
+	 *     {
+	 *       id: Integer
+	 *       name: String
+	 *       [ profileImage ]: URL
+	 *     }
+	 *   ]
+	 * }
+	 * }</pre>
+	 */
+	@RequestMapping(value = "/api/getFollowing", produces = "application/json;charset=UTF-8")
+	public String getFollowing(HttpSession session,
+	                          @RequestParam int user){
+		List<UserProfileData> users = service.getFollowing(user);
 		JsonElement e = JsonHelper.GSON.toJsonTree(users);
 
 		JsonObject o = new JsonObject();
@@ -196,7 +203,7 @@ public class UserApiController extends BaseExceptionHandlingController{
 	 * already_following<br>
 	 * not_following<br>
 	 */
-	@RequestMapping("/api/setFollowing")
+	@RequestMapping(value = "/api/setFollowing", produces = "application/json;charset=UTF-8")
 	public String setFollowing(HttpSession session,
 	                           @RequestParam int followingId,
 	                           @RequestParam boolean following){

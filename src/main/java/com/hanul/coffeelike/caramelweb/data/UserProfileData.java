@@ -1,6 +1,13 @@
 package com.hanul.coffeelike.caramelweb.data;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.hanul.coffeelike.caramelweb.util.AttachmentURLConverter;
 import org.springframework.lang.Nullable;
+
+import java.lang.reflect.Type;
 
 public class UserProfileData{
 	private int id;
@@ -12,7 +19,7 @@ public class UserProfileData{
 	@Nullable private Boolean isFollowingYou;
 	@Nullable private Boolean isFollowedByYou;
 
-	public UserProfileData() {}
+	public UserProfileData(){}
 	public UserProfileData(int id,
 	                       String name,
 	                       @Nullable String motd,
@@ -62,5 +69,27 @@ public class UserProfileData{
 	}
 	public void setFollowedByYou(@Nullable Boolean followedByYou){
 		isFollowedByYou = followedByYou;
+	}
+
+	public enum Json implements JsonSerializer<UserProfileData>{
+		INSTANCE;
+
+		@Override public JsonElement serialize(UserProfileData src,
+		                                       Type typeOfSrc,
+		                                       JsonSerializationContext context){
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("id", src.getId());
+			jsonObject.addProperty("name", src.getName());
+			if(src.getMotd()!=null)
+				jsonObject.addProperty("motd", src.getMotd());
+			if(src.getProfileImage()!=null)
+				jsonObject.addProperty("profileImage",
+						AttachmentURLConverter.profileImageFromId(src.getId()));
+			if(src.getFollowingYou()!=null)
+				jsonObject.addProperty("isFollowingYou", src.getFollowingYou());
+			if(src.getFollowedByYou()!=null)
+				jsonObject.addProperty("isFollowedByYou", src.getFollowedByYou());
+			return jsonObject;
+		}
 	}
 }

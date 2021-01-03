@@ -44,8 +44,11 @@ public class UserDAO{
 		sql.update("user.setPassword", m);
 	}
 
-	public List<UserProfileData> getFollower(int loginUser){
-		return sql.selectList("user.getFollower", loginUser);
+	public List<UserProfileData> getFollower(int user){
+		return sql.selectList("user.getFollower", user);
+	}
+	public List<UserProfileData> getFollowing(int user){
+		return sql.selectList("user.getFollowing", user);
 	}
 
 	public int follow(int loginUser, int followingId){

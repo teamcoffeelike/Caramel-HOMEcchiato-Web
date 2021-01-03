@@ -13,14 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 
 @RestController
 public class AttachmentController{
@@ -34,7 +27,7 @@ public class AttachmentController{
 	@RequestMapping(value = "/images/profileImage")
 	public void profileImage(HttpServletResponse response,
 	                         @RequestParam int id){
-		File profileImage = fileService.getProfileImage(id);
+		File profileImage = fileService.getProfileImageFromUser(id);
 		if(profileImage==null){
 			respondWithBadRequest(response);
 			return;
@@ -51,13 +44,26 @@ public class AttachmentController{
 			return;
 		}
 
-		File image = fileService.getPostImage(post.getImage());
+		File image = fileService.getPostImageFile(post.getImage());
 		if(image==null){
 			respondWithBadRequest(response);
 			return;
 		}
 
 		paste(image, response);
+	}
+
+	@RequestMapping(value = "/images/recipeImage/cover")
+	public void recipeCoverImage(HttpServletResponse response,
+	                             @RequestParam int id){
+		// TODO
+	}
+
+	@RequestMapping(value = "/images/recipeImage/step")
+	public void recipeStepImage(HttpServletResponse response,
+	                            @RequestParam int recipe,
+	                            @RequestParam int index){
+		// TODO
 	}
 
 	private void respondWithBadRequest(HttpServletResponse response){

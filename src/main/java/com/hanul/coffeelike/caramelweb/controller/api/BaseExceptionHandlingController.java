@@ -7,6 +7,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 public class BaseExceptionHandlingController{
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -14,6 +15,7 @@ public class BaseExceptionHandlingController{
 	@ResponseBody
 	@ExceptionHandler({
 			MissingServletRequestParameterException.class,
+			MissingServletRequestPartException.class,
 			MethodArgumentTypeMismatchException.class
 	})
 	public String onBadParameterException(Exception ex){

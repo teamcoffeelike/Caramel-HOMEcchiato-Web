@@ -3,16 +3,22 @@
 
 <mapper namespace="user">
 
+	<resultMap id="userSettingResultMapping" type="UserSettingData">
+		<result column="isSocialAccount" property="isSocialAccount"/>
+
+		<association property="user" autoMapping="true"/>
+	</resultMap>
+
 	<select id="userSettings"
 	        parameterType="Integer"
-	        resultType="UserSettingData">
+	        resultMap="userSettingResultMapping">
 		SELECT id,
 			   name,
 			   motd,
 			   profileImage,
-			   notifyReactions,
-			   notifyLikes,
-			   notifyFollows
+		       CASE WHEN password IS NULL THEN 0
+		            ELSE 0
+		       END isSocialAccount
 		  FROM users
 		 WHERE id = #{id}
 	</select>
@@ -91,6 +97,18 @@
 		       JOIN users u
 		         ON f.userId = u.id
 		 WHERE f.following = #{it}
+	</select>
+
+	<select id="getFollowing"
+			parameterType="Integer"
+			resultType="UserProfileData">
+		SELECT f.userId id,
+		       u.name name,
+		       u.profileImage profileImage
+		  FROM follows f
+		       JOIN users u
+		         ON f.following = u.id
+		 WHERE f.userId = #{it}
 	</select>
 
 	<insert id="follow"

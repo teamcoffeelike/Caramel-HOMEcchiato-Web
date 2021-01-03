@@ -50,7 +50,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * }
 	 * }</pre>
 	 */
-	@RequestMapping("/api/recentPosts")
+	@RequestMapping(value = "/api/recentPosts", produces = "application/json;charset=UTF-8")
 	public String recentPosts(HttpSession session){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		List<Post> posts = postService.recentPosts(loginUser==null ? null : loginUser.getUserId());
@@ -87,7 +87,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * <b>에러: </b><br>
 	 * no_post : 포스트가 존재하지 않음<br>
 	 */
-	@RequestMapping("/api/post")
+	@RequestMapping(value = "/api/post", produces = "application/json;charset=UTF-8")
 	public String post(HttpSession session,
 	                   @RequestParam int id){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
@@ -111,7 +111,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * not_logged_in : 로그인 상태가 아님<br>
 	 * bad_text  : 유효하지 않은 text 인자<br>
 	 */
-	@RequestMapping("/api/writePost")
+	@RequestMapping(value = "/api/writePost", produces = "application/json;charset=UTF-8")
 	public String writePost(HttpSession session,
 	                        @RequestParam String text,
 	                        @RequestParam MultipartFile image){
@@ -135,7 +135,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * cannot_edit   : 해당 글을 수정할 수 없음 (비 로그인 상태 포함)<br>
 	 * bad_text      : 유효하지 않은 text 인자<br>
 	 */
-	@RequestMapping("/api/editPost")
+	@RequestMapping(value = "/api/editPost", produces = "application/json;charset=UTF-8")
 	public String editPost(HttpSession session,
 	                       @RequestParam int post,
 	                       @RequestParam String text){
@@ -159,7 +159,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * no_post : 해당 ID의 포스트가 존재하지 않음<br>
 	 * cannot_delete : 해당 글을 삭제할 수 없음 (비 로그인 상태 포함)<br>
 	 */
-	@RequestMapping("/api/deletePost")
+	@RequestMapping(value = "/api/deletePost", produces = "application/json;charset=UTF-8")
 	public String deletePost(HttpSession session,
 	                         @RequestParam int post){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
@@ -182,7 +182,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * no_post : 해당 ID의 포스트가 존재하지 않음<br>
 	 * not_logged_in : 로그인 상태가 아님<br>
 	 */
-	@RequestMapping("/api/likePost")
+	@RequestMapping(value = "/api/likePost", produces = "application/json;charset=UTF-8")
 	public String likePost(HttpSession session,
 	                       @RequestParam int post,
 	                       @RequestParam boolean like){

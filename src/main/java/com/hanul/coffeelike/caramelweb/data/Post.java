@@ -1,7 +1,13 @@
 package com.hanul.coffeelike.caramelweb.data;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.hanul.coffeelike.caramelweb.util.AttachmentURLConverter;
 import org.springframework.lang.Nullable;
 
+import java.lang.reflect.Type;
 import java.sql.Date;
 
 public class Post{
@@ -11,7 +17,6 @@ public class Post{
 	private UserProfileData author;
 	private Date postDate;
 	@Nullable private Date lastEditDate;
-	private String isDeleted;
 
 	private int likes;
 	private int reactions;
@@ -24,7 +29,6 @@ public class Post{
 	            UserProfileData author,
 	            Date postDate,
 	            @Nullable Date lastEditDate,
-	            String isDeleted,
 	            int likes,
 	            int reactions,
 	            @Nullable Boolean likedByYou){
@@ -34,7 +38,6 @@ public class Post{
 		this.author = author;
 		this.postDate = postDate;
 		this.lastEditDate = lastEditDate;
-		this.isDeleted = isDeleted;
 		this.likes = likes;
 		this.reactions = reactions;
 		this.likedByYou = likedByYou;
@@ -77,12 +80,7 @@ public class Post{
 	public void setLastEditDate(@Nullable Date lastEditDate){
 		this.lastEditDate = lastEditDate;
 	}
-	public String getIsDeleted(){
-		return isDeleted;
-	}
-	public void setIsDeleted(String isDeleted){
-		this.isDeleted = isDeleted;
-	}
+
 	public int getLikes(){
 		return likes;
 	}
@@ -101,5 +99,30 @@ public class Post{
 	}
 	public void setLikedByYou(@Nullable Boolean likedByYou){
 		this.likedByYou = likedByYou;
+	}
+
+
+	public enum Json implements JsonSerializer<Post>{
+		INSTANCE;
+
+		@Override public JsonElement serialize(Post src,
+		                                       Type typeOfSrc,
+		                                       JsonSerializationContext context){
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("id", src.getId());
+			if(src.getImage()!=null)
+				jsonObject.addProperty("image", AttachmentURLConverter.postImageFromId(src.getId()));
+			jsonObject.addProperty("text", src.getText());
+			jsonObject.add("author", context.serialize(src.getAuthor()));
+			jsonObject.add("postDate", context.serialize(src.getPostDate()));
+			if(src.getLastEditDate()!=null)
+				jsonObject.add("lastEditDate", context.serialize(src.getLastEditDate()));
+
+			jsonObject.addProperty("likes", src.getLikes());
+			jsonObject.addProperty("reactions", src.getReactions());
+			if(src.getLikedByYou()!=null)
+				jsonObject.addProperty("likedByYou", src.getLikedByYou());
+			return jsonObject;
+		}
 	}
 }

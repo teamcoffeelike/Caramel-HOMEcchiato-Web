@@ -40,8 +40,11 @@ public class UserService{
 		return new SetPasswordResult(null);
 	}
 
-	public List<UserProfileData> getFollower(int loginUser){
-		return dao.getFollower(loginUser);
+	public List<UserProfileData> getFollower(int user){
+		return dao.getFollower(user);
+	}
+	public List<UserProfileData> getFollowing(int user){
+		return dao.getFollowing(user);
 	}
 
 	public boolean setFollowing(int loginUser, int followingId, boolean following){

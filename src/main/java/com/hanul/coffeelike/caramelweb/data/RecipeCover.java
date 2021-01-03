@@ -1,6 +1,13 @@
 package com.hanul.coffeelike.caramelweb.data;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.hanul.coffeelike.caramelweb.util.AttachmentURLConverter;
 import org.springframework.lang.Nullable;
+
+import java.lang.reflect.Type;
 
 public class RecipeCover{
 	private int id;
@@ -68,5 +75,25 @@ public class RecipeCover{
 	}
 	public void setAverageRating(@Nullable Double averageRating){
 		this.averageRating = averageRating;
+	}
+
+	public enum Json implements JsonSerializer<RecipeCover>{
+		INSTANCE;
+
+		@Override public JsonElement serialize(RecipeCover src,
+		                                       Type typeOfSrc,
+		                                       JsonSerializationContext context){
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("id", src.getId());
+			jsonObject.add("recipeCategory", context.serialize(src.getCategory()));
+			jsonObject.addProperty("title", src.getTitle());
+			if(src.getCoverImage()!=null)
+				jsonObject.addProperty("coverImage", AttachmentURLConverter.recipeCoverImageFromId(src.getId()));
+			jsonObject.addProperty("author", src.getAuthor());
+			jsonObject.addProperty("ratings", src.getRatings());
+			if(src.getAverageRating()!=null)
+				jsonObject.addProperty("averageRating", src.getAverageRating());
+			return jsonObject;
+		}
 	}
 }

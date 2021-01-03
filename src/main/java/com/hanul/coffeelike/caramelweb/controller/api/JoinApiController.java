@@ -35,7 +35,7 @@ public class JoinApiController extends BaseExceptionHandlingController{
 	 * bad_password : 유효하지 않은 비밀번호<br>
 	 * user_exists  : 동일한 이메일을 가진 유저가 이미 존재
 	 */
-	@RequestMapping("/api/joinWithEmail")
+	@RequestMapping(value = "/api/joinWithEmail", produces = "application/json;charset=UTF-8")
 	public String joinWithEmail(HttpSession session,
 	                            @RequestParam String name,
 	                            @RequestParam String email,
@@ -70,7 +70,7 @@ public class JoinApiController extends BaseExceptionHandlingController{
 	 * bad_password     : 유효하지 않은 비밀번호<br>
 	 * user_exists      : 동일한 이메일을 가진 유저가 이미 존재
 	 */
-	@RequestMapping("/api/joinWithPhoneNumber")
+	@RequestMapping(value = "/api/joinWithPhoneNumber", produces = "application/json;charset=UTF-8")
 	public String joinWithPhoneNumber(HttpSession session,
 	                                  @RequestParam String name,
 	                                  @RequestParam String phoneNumber,
@@ -88,7 +88,7 @@ public class JoinApiController extends BaseExceptionHandlingController{
 		return JsonHelper.GSON.toJson(result);
 	}
 
-	@RequestMapping("/api/emailExists")
+	@RequestMapping(value = "/api/emailExists", produces = "application/json;charset=UTF-8")
 	public String emailExists(@RequestParam String email){
 		boolean exists = joinService.emailExists(email);
 

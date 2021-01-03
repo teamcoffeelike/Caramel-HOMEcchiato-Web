@@ -62,7 +62,7 @@
 	        resultMap="postResultMap">
 		SELECT <include refid="postColumns"/>
 		  FROM posts JOIN users ON posts.author = users.id
-		 WHERE id = #{id}
+		 WHERE posts.id = #{id}
 		   AND isDeleted = 'N'
 	</select>
 
