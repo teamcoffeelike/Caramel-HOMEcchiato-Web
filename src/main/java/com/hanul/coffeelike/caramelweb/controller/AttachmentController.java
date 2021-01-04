@@ -28,7 +28,7 @@ public class AttachmentController{
 	public void profileImage(HttpServletResponse response,
 	                         @RequestParam int id){
 		File profileImage = fileService.getProfileImageFromUser(id);
-		if(profileImage==null){
+		if(profileImage==null||!profileImage.exists()){
 			respondWithBadRequest(response);
 			return;
 		}
@@ -45,7 +45,7 @@ public class AttachmentController{
 		}
 
 		File image = fileService.getPostImageFile(post.getImage());
-		if(image==null){
+		if(image==null||!image.exists()){
 			respondWithBadRequest(response);
 			return;
 		}

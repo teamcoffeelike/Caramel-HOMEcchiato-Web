@@ -1,12 +1,8 @@
 package com.hanul.coffeelike.caramelweb.service;
 
-import java.io.File;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.Random;
-
+import com.hanul.coffeelike.caramelweb.dao.FileDAO;
+import com.hanul.coffeelike.caramelweb.data.ProfileImageData;
+import com.hanul.coffeelike.caramelweb.util.FileExtensionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +10,12 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.hanul.coffeelike.caramelweb.dao.FileDAO;
-import com.hanul.coffeelike.caramelweb.data.ProfileImageData;
-import com.hanul.coffeelike.caramelweb.util.FileExtensionUtils;
+import java.io.File;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Random;
 
 @Service
 public class FileService{
@@ -85,6 +84,11 @@ public class FileService{
 		else return true;
 	}
 
+	/**
+	 * 전달받은 유저의 프로필 이미지를 가져옵니다.
+	 *
+	 * @return 부착된 파일이 존재하지 않을 시 {@code null}. null이 아닐 경우에도 실제 파일이 없을 수 있음.
+	 */
 	@Nullable public File getProfileImageFromUser(int userId){
 		ProfileImageData prevProfileImage = fileDAO.findProfileImage(userId);
 		if(prevProfileImage!=null){
@@ -126,13 +130,12 @@ public class FileService{
 	}
 
 	/**
-	 * 전달받은 파일명에 해당하는 파일을 가져옵니다.
+	 * 전달받은 파일명에 해당하는 포스트 이미지 파일을 가져옵니다.
 	 *
-	 * @return 파일이 존재하지 않을 시 {@code null}
+	 * @return 부착된 파일이 존재하지 않을 시 {@code null}. null이 아닐 경우에도 실제 파일이 없을 수 있음.
 	 */
-	@Nullable public File getPostImageFile(String filename){
-		File file = new File(getStorage(POST_IMAGE), filename);
-		return file.exists() ? file : null;
+	public File getPostImageFile(String filename){
+		return new File(getStorage(POST_IMAGE), filename);
 	}
 
 
@@ -164,8 +167,8 @@ public class FileService{
 
 	private static final DateTimeFormatter DATE_TIME_FORMATTER =
 			DateTimeFormatter.ofPattern("uuMMdd.HH.mm.ss.SSS")
-			.withLocale(Locale.US)
-			.withZone(ZoneId.of("UTC"));
+					.withLocale(Locale.US)
+					.withZone(ZoneId.of("UTC"));
 
 	/**
 	 * 타입과 데이터 키를 이용해 겹치지 않는(희망사항) 파일명을 생성합니다.
