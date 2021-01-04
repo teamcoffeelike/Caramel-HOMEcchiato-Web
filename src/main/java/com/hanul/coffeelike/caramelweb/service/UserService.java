@@ -1,7 +1,6 @@
 package com.hanul.coffeelike.caramelweb.service;
 
 import com.hanul.coffeelike.caramelweb.dao.UserDAO;
-import com.hanul.coffeelike.caramelweb.data.NotificationType;
 import com.hanul.coffeelike.caramelweb.data.UserProfileData;
 import com.hanul.coffeelike.caramelweb.data.UserSettingData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,6 @@ public class UserService{
 
 	public UserSettingData userSettings(int loginUser){
 		return dao.userSettings(loginUser);
-	}
-
-	public void setNotification(int user,
-	                            NotificationType type,
-	                            String value){
-		dao.setNotification(user, type, value);
 	}
 
 	public UserProfileData profile(@Nullable Integer loginUser, int userId){
@@ -47,13 +40,20 @@ public class UserService{
 		return new SetPasswordResult(null);
 	}
 
-	public List<UserProfileData> getFollower(int loginUser){
-		return dao.getFollower(loginUser);
+	public List<UserProfileData> getFollower(int user){
+		return dao.getFollower(user);
+	}
+	public List<UserProfileData> getFollowing(int user){
+		return dao.getFollowing(user);
 	}
 
 	public boolean setFollowing(int loginUser, int followingId, boolean following){
 		int result = following ? dao.follow(loginUser, followingId) : dao.unfollow(loginUser, followingId);
 		return result!=0;
+	}
+
+	public boolean checkIfUserExists(int author){
+		return dao.checkIfUserExists(author);
 	}
 
 

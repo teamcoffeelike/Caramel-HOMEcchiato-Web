@@ -21,36 +21,28 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @RestController
-public class KakaoIntegrationApiController{
+public class KakaoIntegrationApiController extends BaseExceptionHandlingController{
 	@Autowired
 	private LoginService loginService;
 	@Autowired
 	private JoinService joinService;
 
-	@ResponseBody
-	@ExceptionHandler(MissingServletRequestParameterException.class)
-	public String onException(MissingServletRequestParameterException ex){
-		return JsonHelper.failure("bad_parameter");
-	}
-
 	/**
 	 * 카카오 계정 연동을 사용한 로그인<br>
 	 * <br>
 	 * <b>성공 시:</b>
-	 *
-	 * <pre>
-	 * <code> {
+	 * <pre>{@code
+	 * {
 	 *   userId: Integer
 	 *   authToken: UUID
-	 * }</code>
-	 * </pre>
-	 *
+	 * }
+	 * }</pre>
 	 * <b>에러: </b><br>
 	 * bad_kakao_login_token     : 유효하지 않은 kakaoLoginToken 인자<br>
 	 * kakao_service_unavailable : 카카오 플랫폼 서비스의 일시적 문제 등으로 인해 서비스 제공이 불가<br>
 	 * needs_agreement           : 카카오 계정 정보를 전달받기 위해 동의가 필요
 	 */
-	@RequestMapping("/api/loginWithKakao")
+	@RequestMapping(value = "/api/loginWithKakao", produces = "application/json;charset=UTF-8")
 	public String loginWithKakao(HttpSession session,
 	                             @RequestParam String kakaoLoginToken) throws IOException{
 		HttpConnector.Response<JsonObject> response = HttpConnector.create("https://kapi.kakao.com/v1/user/access_token_info")
@@ -74,21 +66,19 @@ public class KakaoIntegrationApiController{
 	 * 카카오 계정 연동을 사용한 회원가입<br>
 	 * <br>
 	 * <b>성공 시:</b>
-	 *
-	 * <pre>
-	 * <code> {
+	 * <pre>{@code
+	 * {
 	 *   userId: Integer
 	 *   authToken: UUID
-	 * }</code>
-	 * </pre>
-	 *
+	 * }
+	 * }</pre>
 	 * <b>에러: </b><br>
 	 * bad_kakao_login_token     : 유효하지 않은 kakaoLoginToken 인자<br>
 	 * kakao_service_unavailable : 카카오 플랫폼 서비스의 일시적 문제 등으로 인해 서비스 제공이 불가<br>
 	 * user_exists               : 동일한 카카오 계정으로 회원가입한 유저가 이미 존재<br>
 	 * needs_agreement           : 카카오 계정 정보를 전달받기 위해 동의가 필요
 	 */
-	@RequestMapping("/api/joinWithKakao")
+	@RequestMapping(value = "/api/joinWithKakao", produces = "application/json;charset=UTF-8")
 	public String joinWithKakao(HttpSession session,
 	                            @RequestParam String kakaoLoginToken,
 	                            @RequestParam(required = false) @Nullable String name) throws IOException{

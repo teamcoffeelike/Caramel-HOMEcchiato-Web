@@ -16,11 +16,11 @@
     <select id="emailExists" resultType="integer">
     	SELECT COUNT(*)
     	  FROM users
-    	 WHERE email=#{email}
+    	 WHERE email = #{email}
     </select>
     <select id="phoneNumberExists" resultType="integer">
     	SELECT COUNT(*)
     	  FROM users
-    	 WHERE phoneNumber=#{phoneNumber}
+    	 WHERE phoneNumber = #{phoneNumber}
     </select>
 </mapper>

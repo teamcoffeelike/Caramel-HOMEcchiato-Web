@@ -14,15 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.net.URL;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
 public class JoinController{
 	private final Logger logger = LoggerFactory.getLogger(JoinController.class);
-	
+
 	@Autowired
 	private JoinService joinService;
 
@@ -35,15 +33,11 @@ public class JoinController{
 			@RequestParam String name,
 			@RequestParam String email,
 			@RequestParam String password){
-		if(!Validate.name(name)) return JsonHelper.failure("bad_name");
-		if(!Validate.email(email)) return JsonHelper.failure("bad_email");
-		if(!Validate.password(password)) return JsonHelper.failure("bad_password");
-
 		LoginResult result = joinService.joinWithEmail(name, email, password);
 		if(result.getError()==null){
 			SessionAttributes.setLoginUser(session, result.createAuthToken());
 		}
-		
+
 		StringBuilder stb = new StringBuilder();
 		stb.append("<script>");
 		if(result.getError()==null){
@@ -52,7 +46,7 @@ public class JoinController{
 		}else {
 			logger.error("error = "+result.getError());
 		}
-		
+
 		return stb.append("</script>").toString();
 	}
 
@@ -65,15 +59,11 @@ public class JoinController{
 			@RequestParam String name,
 			@RequestParam String phoneNumber,
 			@RequestParam String password){
-		if(!Validate.name(name)) return JsonHelper.failure("bad_name");
-		if(!Validate.phoneNumber(phoneNumber)) return JsonHelper.failure("bad_phoneNumber");
-		if(!Validate.password(password)) return JsonHelper.failure("bad_password");
-
 		LoginResult result = joinService.joinWithPhoneNumber(name, phoneNumber, password);
 		if(result.getError()==null){
 			SessionAttributes.setLoginUser(session, result.createAuthToken());
 		}
-		
+
 		StringBuilder stb = new StringBuilder();
 		stb.append("<script>");
 		if(result.getError()==null){
@@ -81,7 +71,7 @@ public class JoinController{
 		}else {
 			logger.error("error = "+result.getError());
 		}
-		
+
 		return stb.append("</script>").toString();
 	}
 }

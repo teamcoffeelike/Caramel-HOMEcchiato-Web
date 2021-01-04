@@ -1,6 +1,5 @@
 package com.hanul.coffeelike.caramelweb.dao;
 
-import com.hanul.coffeelike.caramelweb.data.NotificationType;
 import com.hanul.coffeelike.caramelweb.data.UserProfileData;
 import com.hanul.coffeelike.caramelweb.data.UserSettingData;
 import org.apache.ibatis.session.SqlSession;
@@ -45,8 +44,11 @@ public class UserDAO{
 		sql.update("user.setPassword", m);
 	}
 
-	public List<UserProfileData> getFollower(int loginUser){
-		return sql.selectList("user.getFollower", loginUser);
+	public List<UserProfileData> getFollower(int user){
+		return sql.selectList("user.getFollower", user);
+	}
+	public List<UserProfileData> getFollowing(int user){
+		return sql.selectList("user.getFollowing", user);
 	}
 
 	public int follow(int loginUser, int followingId){
@@ -63,23 +65,7 @@ public class UserDAO{
 		return sql.delete("user.unfollow", m);
 	}
 
-	public void setNotification(int user, NotificationType type, String value){
-		Map<String, Object> m = new HashMap<>();
-		m.put("user", user);
-		switch(type){
-		case REACTION:
-			m.put("type", "notifyReactions");
-			break;
-		case LIKE:
-			m.put("type", "notifyLikes");
-			break;
-		case FOLLOW:
-			m.put("type", "notifyFollows");
-			break;
-		default:
-			throw new RuntimeException("Missing branch");
-		}
-		m.put("value", value);
-		sql.update("user.setNotification", m);
+	public boolean checkIfUserExists(int author){
+		return sql.selectOne("user.checkIfUserExists", author)!=null;
 	}
 }

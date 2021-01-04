@@ -18,37 +18,30 @@ import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
 @Controller
-public class LoginApiController{
+public class LoginApiController extends BaseExceptionHandlingController{
 	@Autowired
 	private LoginService loginService;
 	@Autowired
 	private UserAuthService authService;
 
-	@ResponseBody
-	@ExceptionHandler(MissingServletRequestParameterException.class)
-	public String onException(MissingServletRequestParameterException ex){
-		return JsonHelper.failure("bad_parameter");
-	}
-
 	/**
 	 * 이메일을 사용한 로그인<br>
 	 * <br>
 	 * <b>성공 시:</b>
-	 *
-	 * <pre>
-	 * <code>{
+	 * <pre>{@code
+	 * {
 	 *   userId: Integer
 	 *   authToken: UUID
-	 * }</code>
-	 * </pre>
+	 * }
+	 * }</pre>
 	 *
 	 * <b>에러: </b><br>
 	 * bad_email : 유효하지 않은 email 인자<br>
 	 * bad_password : 유효하지 않은 password 인자<br>
-	 * login_failed : 로그인 실패
+	 * login_failed : 로그인 실패<br>
 	 */
 	@ResponseBody
-	@RequestMapping("/api/loginWithEmail")
+	@RequestMapping(value = "/api/loginWithEmail", produces = "application/json;charset=UTF-8")
 	public String loginWithEmail(HttpSession session,
 	                             @RequestParam String email,
 	                             @RequestParam String password){
@@ -62,22 +55,21 @@ public class LoginApiController{
 	/**
 	 * 폰 사용한 로그인<br>
 	 * <br>
-	 * <b>성공 시:</b>
-	 *
-	 * <pre>
-	 * <code>{
+	 * <b>성공 시:</b><br>
+	 * <pre>{@code
+	 * {
 	 *   userId: Integer
 	 *   authToken: UUID
-	 * }</code>
-	 * </pre>
+	 * }
+	 * }</pre>
 	 *
 	 * <b>에러: </b><br>
 	 * bad_phone_number : 유효하지 않은 phoneNumber 인자<br>
 	 * bad_password : 유효하지 않은 password 인자<br>
-	 * login_failed : 로그인 실패
+	 * login_failed : 로그인 실패<br>
 	 */
 	@ResponseBody
-	@RequestMapping("/api/loginWithPhoneNumber")
+	@RequestMapping(value = "/api/loginWithPhoneNumber", produces = "application/json;charset=UTF-8")
 	public String loginWithPhoneNumber(HttpSession session,
 	                                   @RequestParam String phoneNumber,
 	                                   @RequestParam String password){
@@ -91,16 +83,16 @@ public class LoginApiController{
 	/**
 	 * 로그아웃<br>
 	 * <br>
-	 * <b>성공 시:</b>
-	 *
-	 * <pre>추가 데이터 없음
-	 * </pre>
+	 * <b>성공 시:</b><br>
+	 * <pre>{@code
+	 * 추가 데이터 없음
+	 * }</pre>
 	 *
 	 * <b>에러: </b><br>
 	 * not_logged_in : 로그인 상태가 아님<br>
 	 */
 	@ResponseBody
-	@RequestMapping("/api/logout")
+	@RequestMapping(value = "/api/logout", produces = "application/json;charset=UTF-8")
 	public String logout(HttpSession session){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
@@ -114,20 +106,19 @@ public class LoginApiController{
 	 * 인증 토큰을 사용한 로그인<br>
 	 * <br>
 	 * <b>성공 시:</b>
-	 *
-	 * <pre>
-	 * <code>{
+	 * <pre>{@code
+	 * {
 	 *   userId: Integer
 	 *   authToken: UUID
-	 * }</code>
-	 * </pre>
+	 * }
+	 * }</pre>
 	 *
 	 * <b>에러: </b><br>
 	 * bad_auth_token : 유효하지 않은 authToken 인자<br>
-	 * login_failed : 로그인 실패
+	 * login_failed : 로그인 실패<br>
 	 */
 	@ResponseBody
-	@RequestMapping("/api/loginWithAuthToken")
+	@RequestMapping(value = "/api/loginWithAuthToken", produces = "application/json;charset=UTF-8")
 	public String loginWithAuthToken(HttpSession session,
 	                                 @RequestParam String authToken){
 		UUID uuid;

@@ -3,7 +3,7 @@
 <mapper namespace="auth">
 
     <sql id="compareAcquiredDate">
-        SYSDATE - acquiredDate ${operator} to_date(1, 'MM')
+        (SYSDATE - acquiredDate) ${operator} 30
     </sql>
 
     <select id="getAuthTokenInformation"
@@ -11,9 +11,11 @@
             resultType="AuthToken">
         SELECT authToken,
                userId,
-               (<include refid="compareAcquiredDate">
-                   <property name="operator" value="&lt;"/>
-               </include>) isValid
+               (CASE WHEN <include refid="compareAcquiredDate">
+                    <property name="operator" value="&lt;"/>
+                </include> THEN 1
+                   ELSE 0
+                END) isValid
           FROM userAuth
          WHERE authToken = #{authToken}
     </select>
