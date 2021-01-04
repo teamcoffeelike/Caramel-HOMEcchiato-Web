@@ -16,7 +16,7 @@ public class NoticeService {
 	@Autowired
 	private NoticeDAO dao;
 
-	public List<Object> getNotice(Page notice) {
+	public List<Notice> getNotice(Page notice) {
 		return dao.getNotice(notice);
 	}
 	
@@ -26,6 +26,19 @@ public class NoticeService {
 	
 	public int insertNotice(Notice notice) {
 		return dao.insertNotice(notice);
-		
 	}
+
+	public Notice detailNotice(int id) {
+		return dao.detailNotice(id);
+	}
+
+	public int updateNotice(Notice notice) {
+		return dao.updateNotice(notice);
+	}
+
+	public int deleteNotice(int id) {
+		return dao.deleteNotice(id);
+	}
+
+
 }

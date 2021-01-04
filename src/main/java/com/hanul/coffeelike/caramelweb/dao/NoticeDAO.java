@@ -15,7 +15,7 @@ public class NoticeDAO {
 	@Autowired
 	private SqlSession sql;
 
-	public List<Object> getNotice(Page notice) {
+	public List<Notice> getNotice(Page notice) {
 		return sql.selectList("notice.getNotices", notice);
 	}
 
@@ -26,4 +26,18 @@ public class NoticeDAO {
 	public int insertNotice(Notice notice) {
 		return sql.insert("notice.insert", notice);
 	}
+
+	public Notice detailNotice(int id) {
+		return sql.selectOne("notice.detail", id);
+	}
+
+	public int updateNotice(Notice notice) {
+		return sql.update("notice.update", notice);
+	}
+
+	public int deleteNotice(int id) {
+		return sql.delete("notice.delete", id);
+	}
+
+
 }

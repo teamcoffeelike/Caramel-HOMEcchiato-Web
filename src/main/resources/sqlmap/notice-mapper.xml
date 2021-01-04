@@ -9,7 +9,8 @@
  		  FROM (SELECT *
                 FROM notices
                 ORDER BY writeDate DESC)
- 		 WHERE rownum between #{currentPage}*10 and ((#{currentPage}+1)*10)-1
+ 		 WHERE ROWNUM BETWEEN (#{currentPage}-1)*10+1
+ 		   AND #{currentPage}*10
 	</select>
 	
 	<select id="getTotalCount"
@@ -19,8 +20,25 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO notices (id, title, content, writer)
-			   VALUES (notices_seq.nextval, #{title}, #{content}, #{writer})
+		INSERT INTO notices (id, title, content)
+			   VALUES (seq_notices.nextval, #{title}, #{content})
 	</insert>
+	
+	<select id="detail"
+			resultType="Notice">
+		SELECT *
+		  FROM notices
+		 WHERE id = #{id}
+	</select>
+	
+	<update id="update">
+		UPDATE notices SET title=#{title}, content=#{content}
+		 WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM notices
+		 WHERE id = #{id}
+	</delete>
 
 </mapper>

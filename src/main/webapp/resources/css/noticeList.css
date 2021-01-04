@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+table {
+	width: 60%;
+	margin: 0px auto;
+	border: 1px solid #bebebe;
+	border-collapse: collapse;
+}
+
+table th, table td {
+	border: 1px solid #bebebe;
+	padding: 5px 10px;
+}
+
+table td a:hover { font-weight:bold; }
+
+h3 { text-align: center; margin: 20px auto; }
+
+#list-top ul { margin:0; display:flex; padding:0; float:left; }
+#list-top ul:first-child { float:left; }
+#list-top ul:last-child { float:right; }
+#list-top ul li * { vertical-align:middle; } 
+
+select { height: 32px; }
+input { height:22px; padding:3px 5px; font-size:15px; }
+input[name=title] { width:calc(100% - 7px); }
+textarea[name=content] { width:calc(100% - 6px); height:150px; resize:none; }
+textarea { resize: none; }
+
+a.btnNew {
+	text-align: center;
+	padding: 5px 15px;
+	color: #e67461;
+	border: 1px solid #e67461;
+	border-radius: 5px;
+	width: 60%;
+}
+
+.btn {
+	margin: 20px auto;
+	width: 60%;
+	text-align: center;
+}
+
+.btnSubmit, .btnCancel {
+	padding: 5px 15px;
+	color: #e67461;
+	border: 1px solid #e67461;
+	border-radius: 5px;
+}
