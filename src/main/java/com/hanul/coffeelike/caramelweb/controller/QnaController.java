@@ -22,22 +22,27 @@ public class QnaController {
 	
 	//문의게시판 목록
 	@RequestMapping("/qna")
-	public String Qna(HttpSession session,
+	public String qna(HttpSession session,
 					  Model model,
-				      @Nullable @RequestParam(required = false) Integer index) {
-		if(index==null) index=0;
+					  @RequestParam(required = false) String search,
+					  @RequestParam(required = false) String keyword,
+					  @RequestParam(defaultValue = "1") int currentPage) {
+		//if(currentPage==null) currentPage = 0;
+		Page page = new Page();
+		page.setCurrentPage(currentPage);
+		page.setTotalCount(qnaService.totalCount());
+		page.setSearch(search);
+		page.setKeyword(keyword);
+
+		int maximumPage = page.getMaximumPage(10);
 			
-		Page qna = new Page();
-		qna.setTotalCount(qnaService.totalCount());
-		int maximumPage = qna.getMaximumPage(10);
-			
-		if(index>=maximumPage) {
+		if(currentPage>maximumPage) {
 			return "";
 		}
-			
-		qna.setCurrentPage(index);
-			
-		List<Object> qnas = qnaService.getQna(qna);
+		
+		List<Qna> qnas = qnaService.getQna(page);
+		
+		model.addAttribute("page", page);
 		model.addAttribute("qnas", qnas);
 		return "qna/list";
 	}
@@ -52,25 +57,25 @@ public class QnaController {
 	@RequestMapping("/insert.qna")
 	public String insertQna(HttpSession session,
 							Qna qna) {
-		qnaService.qna_insert(qna);
+		qnaService.insertQna(qna);
 		return "redirect:qna";
 	}
 		
 	//문의글 상세화면 요청
 	@RequestMapping("/detail.qna")
 	public String detailQna(int id, Model model) {
-		model.addAttribute("data", qnaService.qna_detail(id));
+		model.addAttribute("data", qnaService.detailQna(id));
 		model.addAttribute("crlf", "\r\n");
-			
+		Page page = new Page();
+		model.addAttribute("page", page);
 		return "qna/detail";
 	}
 		
 	//문의글 수정화면 요청
-	//제목 공백 글자 뒤에 제거되는 문제가 있답니다...
 	@RequestMapping("modify.qna")
 	public String deleteQna(Model model,
 							@RequestParam int id) {
-		model.addAttribute("data", qnaService.qna_detail(id));
+		model.addAttribute("data", qnaService.detailQna(id));
 		return "qna/modify";
 	}
 		
@@ -79,9 +84,23 @@ public class QnaController {
 	public String updateQna(HttpSession session,
 							Model model,
 							Qna qna) {
-		qnaService.qna_update(qna);
+		qnaService.updateQna(qna);
 		model.addAttribute("id", qna.getId());
 		model.addAttribute("url", "detail.qna");
 		return "redirect:detail.qna";
+	}
+	
+	//문의글 삭제처리
+	@RequestMapping("delete.qna")
+	public String deleteQna(HttpSession session,
+							Model model,
+							@RequestParam int id) {
+		if(session.getAttribute("loginUser")==null) return "redirect:qna";
+		
+		qnaService.deleteQna(id);
+		Page page = new Page();
+		model.addAttribute("page", page);
+		model.addAttribute("url", "qna");
+		return "qna/redirect";
 	}
 }

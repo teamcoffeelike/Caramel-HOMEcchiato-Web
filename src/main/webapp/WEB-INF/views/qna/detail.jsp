@@ -10,10 +10,10 @@
 <link rel="stylesheet" href="css/writeQna.css">
 </head>
 <body>
-<!-- 본인이 쓴 글인 경우 수정 -->
+<!-- 본인이 쓴 글인 경우 수정/삭제 가능 -->
 <c:if test="${loginUser.userId eq data.writer }">
 	<div class="btn">
-		<a class="delete">삭제</a>
+		<a class="delete" onclick="if(confirm('정말 삭제하시겠습니까?')){location='delete.qna?id=${data.id }'}">삭제</a>
 		<a class="modify" onclick="$('form').attr('action', 'modify.qna'); $('form').submit();">수정</a>
 	</div>
 </c:if>
@@ -33,13 +33,13 @@
  	</tr>
 </table>
 <div class="btn">
-	<a class="list">목록으로</a>
+	<a class="list" href="qna">목록으로</a>
 </div>
 
 
 
 
-<form method="post" action='list.bo'>
+<form method="post" action='qna'>
 <input type='hidden' name='id' value='${data.id}' />
 </form>
 </body>

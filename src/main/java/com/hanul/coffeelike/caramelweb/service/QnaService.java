@@ -19,19 +19,23 @@ public class QnaService {
 		return dao.getTotalCount();
 	}
 	
-	public List<Object> getQna(Page qna) {
-		return dao.getQna(qna);
+	public List<Qna> getQna(Page page) {
+		return dao.getQna(page);
 	}
 
-	public int qna_insert(Qna qna) {
-		return dao.qna_insert(qna);
+	public int insertQna(Qna qna) {
+		return dao.insertQna(qna);
 	}
 
-	public Qna qna_detail(int id) {
-		return dao.qna_detail(id);
+	public Qna detailQna(int id) {
+		return dao.detailQna(id);
 	}
 
-	public int qna_update(Qna qna) {
-		return dao.qna_update(qna);
+	public int updateQna(Qna qna) {
+		return dao.updateQna(qna);
+	}
+
+	public int deleteQna(int id) {
+		return dao.deleteQna(id);
 	}
 }

@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <link rel='stylesheet' type='text/css' 
 		href='css/common.css?v=<%=new java.util.Date().getTime()%>'>
 <meta charset="UTF-8">

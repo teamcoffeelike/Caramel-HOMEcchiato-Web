@@ -1,20 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="qna">
+<!-- 	<sql id="search_where"> -->
+<!-- 		<choose> -->
+<!-- 			<when test="search=='title' or search=='content'"> -->
+<!-- 			where ${search} like '%'|| #{keyword} || '%' -->
+<!-- 			</when> -->
+<!-- 			<when test="search=='writer'"> -->
+<!-- 			where writer in (select id from users  -->
+<!-- 						     where name like '%'|| #{keyword} || '%') -->
+<!-- 			</when> -->
+<!-- 			<when test="search=='all'"> -->
+<!-- 			where title  like '%'|| #{keyword} || '%' -->
+<!-- 			or content  like '%'|| #{keyword} || '%' -->
+<!-- 			or writer in (select id from users  -->
+<!-- 						  where name like '%'|| #{keyword} || '%') -->
+<!-- 			</when> -->
+<!-- 		</choose> -->
+<!-- 	</sql> -->
+
+<!-- 	<select id="getQnas" -->
+<!-- 			parameterType="Page" -->
+<!-- 			resultType="Qna"> -->
+<!-- 		SELECT q.*, (SELECT name FROM users u WHERE u.id=q.writer) name -->
+<!--  		  FROM (SELECT q.* -->
+<!--                 FROM (SELECT * FROM qna <include refid="search_where"/> order by id) q -->
+<!--                 ORDER BY writeDate DESC) q -->
+<!--  		 WHERE rownum between #{currentPage}*10 and ((#{currentPage}+1)*10)-1 -->
+<!-- 	</select> -->
+
+	<select id="getTotalCount"
+			resultType="Integer">
+		SELECT COUNT(*)
+		  FROM qna
+	</select>
+
 	<select id="getQnas"
 			parameterType="Page"
 			resultType="Qna">
-		SELECT q.*, (SELECT name FROM users u WHERE u.id=q.writer) name
- 		  FROM (SELECT *
-                FROM qna
-                ORDER BY writeDate DESC) q
- 		 WHERE rownum between #{currentPage}*10 and ((#{currentPage}+1)*10)-1
+		SELECT *
+          FROM (SELECT qna.ID,
+                       qna.TITLE,
+                       qna.CONTENT, 
+                       qna.WRITEDATE, 
+                       qna.WRITER,
+                       users.name,
+                       rownum r
+                  FROM qna JOIN users ON qna.writer = users.id
+                 ORDER BY id DESC)
+         WHERE r BETWEEN ((${currentPage}-1)*10)+1 AND ${currentPage}*10
 	</select>
 	
 	
 	<insert id="insert">
 		INSERT INTO qna (id, writer, title, content)
-			   VALUES (qna_seq.nextval, #{writer}, #{title}, #{content})
+			 VALUES (qna_seq.nextval, #{writer}, #{title}, #{content})
 	</insert>
 	
 	<select id="detail" 
@@ -29,4 +69,9 @@
 		   SET title=#{title}, content=#{content}
 		 WHERE id=#{id}
 	</update>
+	
+	<delete id="delete">
+		DELETE FROM qna
+			  WHERE id=#{id}
+	</delete>
 </mapper>
