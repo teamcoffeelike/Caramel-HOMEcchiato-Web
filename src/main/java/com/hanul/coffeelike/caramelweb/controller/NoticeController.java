@@ -44,85 +44,11 @@ public class NoticeController {
 		model.addAttribute("notices", notices);
 		return "notice/list";
 	}
-	
-<<<<<<< HEAD
-	//문의게시판 목록
-	@RequestMapping("/qna")
-	public String Qna(HttpSession session,
-					  Model model,
-					  @Nullable @RequestParam(required = false) Integer index) {
-		if(index==null) index=0;
-		
-		Page qna = new Page();
-		qna.setTotalCount(noticeService.totalCount());
-		int maximumPage = qna.getMaximumPage(10);
-		
-		if(index>=maximumPage) {
-			return "";
-		}
-		
-		qna.setCurrentPage(index);
-		
-		List<Object> qnas = noticeService.getQna(qna);
-		model.addAttribute("qnas", qnas);
-		return "qna/list";
-	}
-	
-	//문의글쓰기 화면 요청
-	@RequestMapping("/new.qna")
-	public String writeQna() {
-		return "qna/new";
-	}
-=======
+
 	//신규공지글 작성화면 요청
 	@RequestMapping("/new")
 	public String newNotice() {
 		return "notice/new";
 	}
-	
-	/*
-	 * //신규공지글 저장처리 요청
-	 * 
-	 * @RequestMapping("/insert") public String insert(HttpSession session) {
-	 * 
-	 * return "redirect:notice"; }
-	 */
->>>>>>> 178446c... notice 수정중..ㅠ
-	
-	//문의글쓰기 저장 처리 요청
-	@RequestMapping("/insert.qna")
-	public String insertQna(HttpSession session,
-							Qna qna) {
-		noticeService.qna_insert(qna);
-		return "redirect:qna";
-	}
-	
-	//문의글 상세화면 요청
-	@RequestMapping("/detail.qna")
-	public String detailQna(int id, Model model) {
-		model.addAttribute("data", noticeService.qna_detail(id));
-		model.addAttribute("crlf", "\r\n");
-		
-		return "qna/detail";
-	}
-	
-	//문의글 수정화면 요청
-	//제목 공백 글자 뒤에 제거되는 문제가 있답니다...
-	@RequestMapping("modify.qna")
-	public String deleteQna(Model model,
-							@RequestParam int id) {
-		model.addAttribute("data", noticeService.qna_detail(id));
-		return "qna/modify";
-	}
-	
-	//문의글 수정저장 처리
-	@RequestMapping("update.qna")
-	public String updateQna(HttpSession session,
-							Model model,
-							Qna qna) {
-		noticeService.qna_update(qna);
-		model.addAttribute("id", qna.getId());
-		model.addAttribute("url", "detail.qna");
-		return "redirect:detail.qna";
-	}
+
 }
