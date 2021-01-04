@@ -1,18 +1,22 @@
 package com.hanul.coffeelike.caramelweb.service;
 
-import com.hanul.coffeelike.caramelweb.dao.UserDAO;
-import com.hanul.coffeelike.caramelweb.data.UserProfileData;
-import com.hanul.coffeelike.caramelweb.data.UserSettingData;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import com.hanul.coffeelike.caramelweb.dao.UserDAO;
+import com.hanul.coffeelike.caramelweb.data.UserProfileData;
+import com.hanul.coffeelike.caramelweb.data.UserSettingData;
 
 @Service
 public class UserService{
 	@Autowired
 	private UserDAO dao;
+	@Autowired
+	private FileService fileService;
 
 	public UserSettingData userSettings(int loginUser){
 		return dao.userSettings(loginUser);
@@ -22,22 +26,38 @@ public class UserService{
 		return dao.profile(loginUser, userId);
 	}
 
-	public void setName(int id, String name){
-		dao.setName(id, name);
+	public void setName(int userId, String name){
+		dao.setName(userId, name);
+	}
+	
+	public void setMotd(int userId, String motd) {
+		dao.setMotd(userId, motd);
 	}
 
-	public SetPasswordResult setPassword(int userId, String password, String newPassword){
+	public SettingResult setProfileImage(int userId, MultipartFile profileImage) {
+		
+		if(profileImage.isEmpty()) {
+			return new SettingResult("bad_image");
+		}
+		if(!fileService.setProfileImage(userId, profileImage)) {
+			return new SettingResult("unexpected");
+		}
+		
+		return new SettingResult(null);
+	}
+	
+	public SettingResult setPassword(int userId, String password, String newPassword){
 		String initPw = dao.getUserPasswordById(userId);
 		if(initPw==null){
-			return new SetPasswordResult("no_password");
+			return new SettingResult("no_password");
 		}
 		if(!initPw.equals(password)){
-			return new SetPasswordResult("incorrect_password");
+			return new SettingResult("incorrect_password");
 		}
 
 		dao.setPassword(userId, newPassword);
 
-		return new SetPasswordResult(null);
+		return new SettingResult(null);
 	}
 
 	public List<UserProfileData> getFollower(int user){
@@ -55,12 +75,15 @@ public class UserService{
 	public boolean checkIfUserExists(int author){
 		return dao.checkIfUserExists(author);
 	}
-
-
-	public static class SetPasswordResult{
+	
+	public static class SettingResult{
 		@Nullable private String error;
+		
+		public SettingResult(){
+			this.error = null;
+		}
 
-		public SetPasswordResult(@Nullable String error){
+		public SettingResult(@Nullable String error){
 			this.error = error;
 		}
 

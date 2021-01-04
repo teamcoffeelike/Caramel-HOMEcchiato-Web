@@ -70,7 +70,14 @@
 	        parameterType="map">
 		UPDATE users
 		   SET name = #{name}
-		 WHERE id = #{id}
+		 WHERE id = #{userId}
+	</update>
+	
+	<update id="setMotd"
+			parameterType="map">
+		UPDATE users
+		   SET motd = #{motd}
+		 WHERE id = #{userId}
 	</update>
 
 	<select id="getUserPasswordById"

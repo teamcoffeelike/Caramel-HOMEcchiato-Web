@@ -5,7 +5,8 @@
     <select id="findProfileImage"
             parameterType="Integer"
             resultType="ProfileImageData">
-        SELECT profileImage
+        SELECT id,
+               profileImage
           FROM users
          WHERE id = #{id}
            AND isDeleted = 'N'

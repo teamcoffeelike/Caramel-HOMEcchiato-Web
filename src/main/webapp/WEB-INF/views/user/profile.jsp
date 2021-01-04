@@ -13,7 +13,7 @@
 	<div id="profile">
 		<div class="imgBox">
 			<label>
-				<img class="profileImg" src="imgs/profile.png" />
+				<img class="profileImg" src="${profileImage}" />
 			</label>
 		</div>
 		<section>

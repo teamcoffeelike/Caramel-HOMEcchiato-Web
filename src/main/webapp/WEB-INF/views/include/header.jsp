@@ -20,8 +20,8 @@
 			<li class="subMenu"><a href="#">마이페이지</a>
 				<ul class="hide">
 					<li><a href="profile?userId=${loginUser.userId}">내 프로필</a></li>
-					<li><a href="myfollows">팔로워/팔로잉</a></li>
-					<li><a href="mylike">좋아요</a></li>
+					<li><a href="follows">팔로워/팔로잉</a></li>
+					<li><a href="likePost">좋아요</a></li>
 					<li><a href="myrecipe">내 레시피</a></li>
 					<li><a href="search">친구찾기</a></li>
 					<li><a href="settings">설정</a></li>

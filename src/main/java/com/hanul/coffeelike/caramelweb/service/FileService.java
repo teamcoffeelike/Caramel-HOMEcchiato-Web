@@ -1,8 +1,12 @@
 package com.hanul.coffeelike.caramelweb.service;
 
-import com.hanul.coffeelike.caramelweb.dao.FileDAO;
-import com.hanul.coffeelike.caramelweb.data.ProfileImageData;
-import com.hanul.coffeelike.caramelweb.util.FileExtensionUtils;
+import java.io.File;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Random;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +14,9 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.Random;
+import com.hanul.coffeelike.caramelweb.dao.FileDAO;
+import com.hanul.coffeelike.caramelweb.data.ProfileImageData;
+import com.hanul.coffeelike.caramelweb.util.FileExtensionUtils;
 
 @Service
 public class FileService{
@@ -51,14 +50,14 @@ public class FileService{
 		String name = generateUniqueFilename("ProfileImage", userId, FileExtensionUtils.extension(multipartFile));
 		File file = new File(getStorage(PROFILE_IMAGE), name);
 		String filePath = file.getPath();
-		logger.debug("profileImage = {} ({})", filePath, file.getAbsolutePath());
+		System.out.printf("profileImage = %s (%s)\n", filePath, file.getAbsolutePath());
 
 
 		// 멀티파트 내용물을 스토리지로 이동
 		if(!trySaveFile(multipartFile, file)) return false;
 
 		// DB에 삽입
-		if(!fileDAO.setUserProfileImage(userId, filePath)){
+		if(!fileDAO.setUserProfileImage(userId, name)){
 			// DB에 삽입 실패, 파일 삭제
 			tryRemoveFile(file);
 			return false;
@@ -146,7 +145,7 @@ public class FileService{
 			multipartFile.transferTo(destination);
 			return true;
 		}catch(Exception ex){
-			logger.error("파일 '{}' 생성 중 오류 발생.", destination.getPath(), ex);
+			System.out.printf("파일 '%s' 생성 중 오류 발생.\n", destination.getPath(), ex);
 			return false;
 		}
 	}
@@ -154,11 +153,11 @@ public class FileService{
 	private boolean tryRemoveFile(File file){
 		try{
 			if(!file.delete()){
-				logger.warn("파일 '{}'이 존재하지 않아 삭제할 수 없습니다.", file);
+				System.out.printf("파일 '%s'이 존재하지 않아 삭제할 수 없습니다.\n", file);
 			}
 			return true;
 		}catch(SecurityException ex){
-			logger.error("파일 '{}' 삭제가 허용되지 않았습니다.", file, ex);
+			System.out.printf("파일 '%s' 삭제가 허용되지 않았습니다.\n", file, ex);
 			return false;
 		}
 	}

@@ -20,19 +20,19 @@
 				<div class="setProfile">
 					<div class="imgBox">
 						<label>
-							<input type="file" name="file" id="img-attach" />
+							<input type="file" name="profileImage" id="img-attach" />
 							<img id="post-img" class="post-img" src="imgs/profile.png" />
 							<!-- src > db에 유저프로필 사진없으면 기본프로필 있으면 유저정보 -->
 						</label>
 					</div>
 					<div class="profile">
 						<label for="name">닉네임</label>
-						<input type="text" name="name" id="name" value="${data.name}"/><a id='delete-name'>X</a>
+						<input type="text" name="name" id="name" value="${data.user.name}"/><a id='delete-name'>X</a>
 						<div class="msg" id="name_msg"></div>
 					</div>
 					<div class="profile">
 						<label for="motd">상태메시지</label>
-						<input type="text" name="motd" id="motd" value="${!empty data.motd ? data.motd : '' }"/><a id='delete-motd'>X</a>
+						<input type="text" name="motd" id="motd" value="${!empty data.user.motd ? data.user.motd : '' }"/><a id='delete-motd'>X</a>
 					</div>
 					<div class="btnSet">
 						<a class="btn-fill" onclick="$('[name=setProfile]').submit()" id="btnSubmit">저장</a>

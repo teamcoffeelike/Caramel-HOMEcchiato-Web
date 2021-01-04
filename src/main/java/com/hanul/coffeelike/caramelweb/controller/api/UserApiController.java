@@ -1,23 +1,26 @@
 package com.hanul.coffeelike.caramelweb.controller.api;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.UserProfileData;
 import com.hanul.coffeelike.caramelweb.data.UserSettingData;
 import com.hanul.coffeelike.caramelweb.service.UserService;
-import com.hanul.coffeelike.caramelweb.service.UserService.SetPasswordResult;
+import com.hanul.coffeelike.caramelweb.service.UserService.SettingResult;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 import com.hanul.coffeelike.caramelweb.util.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @RestController
 public class UserApiController extends BaseExceptionHandlingController{
@@ -105,6 +108,52 @@ public class UserApiController extends BaseExceptionHandlingController{
 
 		return "{}";
 	}
+	
+	/**
+	 * 상태메세지 설정<br>
+	 * <br>
+	 * <b>성공 시:</b>
+	 * <pre>{@code
+	 * 추가 데이터 없음
+	 * }</pre>
+	 * <b>에러: </b><br>
+	 * bad_motd : 유효하지 않은 motd 인자<br>
+	 * not_logged_in : 로그인 상태가 아님<br>
+	 */
+	@RequestMapping(value = "/api/setMotd", produces = "application/json;charset=UTF-8")
+	public String setMotd(HttpSession session,
+						  @RequestParam String motd){
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		if(loginUser==null) return JsonHelper.failure("not_logged_in");
+		
+		motd = motd.trim();
+		if(!Validate.motd(motd)) return JsonHelper.failure("bad_motd");
+		
+		service.setMotd(loginUser.getUserId(), motd);
+		
+		return "{}";
+	}
+	
+	/**
+	 * 프로필사진 설정<br>
+	 * <br>
+	 * <b>성공 시:</b>
+	 * <pre>{@code
+	 * 추가 데이터 없음
+	 * }</pre>
+	 * <b>에러: </b><br>
+	 * not_logged_in : 로그인 상태가 아님<br>
+	 */
+	@RequestMapping(value = "/api/setProfileImage", produces = "application/json;charset=UTF-8")
+	public String setProfileImage(HttpSession session,
+								  @RequestParam MultipartFile profileImage){
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		if(loginUser==null) return JsonHelper.failure("not_logged_in");
+		
+		SettingResult result = service.setProfileImage(loginUser.getUserId(), profileImage);
+		
+		return JsonHelper.GSON.toJson(result);
+	}
 
 	/**
 	 * 패스워드 변경<br>
@@ -129,7 +178,7 @@ public class UserApiController extends BaseExceptionHandlingController{
 		if(newPassword.isEmpty()||password.equals(newPassword))
 			return JsonHelper.failure("bad_new_password");
 
-		SetPasswordResult result = service.setPassword(loginUser.getUserId(), password, newPassword);
+		SettingResult result = service.setPassword(loginUser.getUserId(), password, newPassword);
 
 		return JsonHelper.GSON.toJson(result);
 	}

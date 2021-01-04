@@ -4,6 +4,7 @@ import com.hanul.coffeelike.caramelweb.data.UserProfileData;
 import com.hanul.coffeelike.caramelweb.data.UserSettingData;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -26,13 +27,20 @@ public class UserDAO{
 		return sql.selectOne("user.selectProfile", m);
 	}
 
-	public void setName(int id, String name){
+	public void setName(int userId, String name){
 		Map<String, Object> m = new HashMap<>();
-		m.put("id", id);
+		m.put("userId", userId);
 		m.put("name", name);
 		sql.update("user.setName", m);
 	}
-
+	
+	public void setMotd(int userId, @Nullable String motd) {
+		Map<String, Object> m = new HashMap<>();
+		m.put("userId", userId);
+		m.put("motd", motd);
+		sql.update("user.setMotd", m);
+	}
+	
 	public String getUserPasswordById(int userId){
 		return sql.selectOne("user.getUserPasswordById", userId);
 	}
