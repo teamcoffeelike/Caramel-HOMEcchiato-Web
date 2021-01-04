@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.hanul.coffeelike.caramelweb.data.Notice;
 import com.hanul.coffeelike.caramelweb.data.Page;
 import com.hanul.coffeelike.caramelweb.data.Qna;
 
@@ -22,4 +23,7 @@ public class NoticeDAO {
 		return sql.selectOne("notice.getTotalCount");
 	}
 
+	public int insertNotice(Notice notice) {
+		return sql.insert("notice.insert", notice);
+	}
 }

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.hanul.coffeelike.caramelweb.data.Notice;
 import com.hanul.coffeelike.caramelweb.data.Page;
 import com.hanul.coffeelike.caramelweb.service.NoticeService;
 import com.hanul.coffeelike.caramelweb.data.Qna;
@@ -50,5 +51,11 @@ public class NoticeController {
 	public String newNotice() {
 		return "notice/new";
 	}
-
+	
+	 //신규공지글 저장처리 요청
+	 @RequestMapping("/insert.no")
+	 public String insertNotice(HttpSession session, Notice notice) {
+		noticeService.insertNotice(notice);
+		return "redirect:notice";
+	 }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.hanul.coffeelike.caramelweb.dao.NoticeDAO;
+import com.hanul.coffeelike.caramelweb.data.Notice;
 import com.hanul.coffeelike.caramelweb.data.Page;
 import com.hanul.coffeelike.caramelweb.data.Qna;
 
@@ -21,5 +22,10 @@ public class NoticeService {
 	
 	public int totalCount() {
 		return dao.getTotalCount();
+	}
+	
+	public int insertNotice(Notice notice) {
+		return dao.insertNotice(notice);
+		
 	}
 }

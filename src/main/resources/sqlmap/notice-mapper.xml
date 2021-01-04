@@ -17,5 +17,10 @@
 		SELECT count(*)
 		FROM notices
 	</select>
+	
+	<insert id="insert">
+		INSERT INTO notices (id, title, content, writer)
+			   VALUES (notices_seq.nextval, #{title}, #{content}, #{writer})
+	</insert>
 
 </mapper>
