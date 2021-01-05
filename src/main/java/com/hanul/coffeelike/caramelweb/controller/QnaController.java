@@ -96,7 +96,6 @@ public class QnaController {
 		
 		qnaService.deleteQna(id);
 		
-		model.addAttribute("url", "list.qna");
-		return "qna/redirect";
+		return "redirect:list.qna";
 	}
 }

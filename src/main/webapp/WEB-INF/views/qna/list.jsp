@@ -21,7 +21,7 @@
     <div class="qna">
     <form method="POST" action="list.qna">
         <ul>
-            <li><a class="searchBtn">검색</a></li>
+            <li><a class="searchBtn" onclick="$('form').submit()">검색</a></li>
             <li><input type="text" name="keyword" value="${page.keyword }" class="keyword" /></li>
             <li>
                 <select name="search" class="option">
