@@ -2,7 +2,6 @@ package com.hanul.coffeelike.caramelweb.service;
 
 import com.hanul.coffeelike.caramelweb.dao.PostDAO;
 import com.hanul.coffeelike.caramelweb.data.Post;
-import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -36,11 +35,9 @@ public class PostService{
 	 */
 	public PostWriteResult writePost(int loginUser, String text, MultipartFile image){
 		text = text.trim();
-		if(!Validate.postText(text))
-			return new PostWriteResult("bad_text");
+		if(!Validate.postText(text)) return new PostWriteResult("bad_text");
 
-		if(image.isEmpty())
-			return new PostWriteResult("bad_image");
+		if(image.isEmpty()) return new PostWriteResult("bad_image");
 
 		int postId = postDAO.generatePostId();
 
@@ -65,7 +62,7 @@ public class PostService{
 	 */
 	public PostModifyResult editPost(int loginUser, int post, String text){
 		text = text.trim();
-		if(Validate.postText(text)) return new PostModifyResult("bad_text");
+		if(!Validate.postText(text)) return new PostModifyResult("bad_text");
 
 		Post postData = postDAO.findPost(post, null);
 

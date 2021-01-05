@@ -5,7 +5,6 @@ import com.hanul.coffeelike.caramelweb.data.LoginResult;
 import com.hanul.coffeelike.caramelweb.service.JoinService;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
-import com.hanul.coffeelike.caramelweb.util.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,12 +39,6 @@ public class JoinApiController extends BaseExceptionHandlingController{
 	                            @RequestParam String name,
 	                            @RequestParam String email,
 	                            @RequestParam String password){
-		name = name.trim();
-
-		if(!Validate.name(name)) return JsonHelper.failure("bad_name");
-		if(!Validate.email(email)) return JsonHelper.failure("bad_email");
-		if(!Validate.password(password)) return JsonHelper.failure("bad_password");
-
 		LoginResult result = joinService.joinWithEmail(name, email, password);
 		if(result.getError()==null){
 			SessionAttributes.setLoginUser(session, result.createAuthToken());
@@ -75,12 +68,6 @@ public class JoinApiController extends BaseExceptionHandlingController{
 	                                  @RequestParam String name,
 	                                  @RequestParam String phoneNumber,
 	                                  @RequestParam String password){
-		name = name.trim();
-
-		if(!Validate.name(name)) return JsonHelper.failure("bad_name");
-		if(!Validate.phoneNumber(phoneNumber)) return JsonHelper.failure("bad_phone_number");
-		if(!Validate.password(password)) return JsonHelper.failure("bad_password");
-
 		LoginResult result = joinService.joinWithPhoneNumber(name, phoneNumber, password);
 		if(result.getError()==null){
 			SessionAttributes.setLoginUser(session, result.createAuthToken());

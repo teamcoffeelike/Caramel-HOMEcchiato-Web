@@ -1,15 +1,15 @@
 package com.hanul.coffeelike.caramelweb.service;
 
-import java.util.List;
-
+import com.hanul.coffeelike.caramelweb.dao.UserDAO;
+import com.hanul.coffeelike.caramelweb.data.UserProfileData;
+import com.hanul.coffeelike.caramelweb.data.UserSettingData;
+import com.hanul.coffeelike.caramelweb.util.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.hanul.coffeelike.caramelweb.dao.UserDAO;
-import com.hanul.coffeelike.caramelweb.data.UserProfileData;
-import com.hanul.coffeelike.caramelweb.data.UserSettingData;
+import java.util.List;
 
 @Service
 public class UserService{
@@ -26,38 +26,59 @@ public class UserService{
 		return dao.profile(loginUser, userId);
 	}
 
-	public void setName(int userId, String name){
+	/**
+	 * 이름 설정<br>
+	 * <br>
+	 * <b>에러: </b><br>
+	 * bad_name : 유효하지 않은 이름<br>
+	 */
+	public SettingResult setName(int userId, String name){
+		name = name.trim();
+		if(!Validate.name(name)) return new SettingResult("bad_name");
+
 		dao.setName(userId, name);
-	}
-	
-	public void setMotd(int userId, String motd) {
-		dao.setMotd(userId, motd);
+
+		return new SettingResult();
 	}
 
-	public SettingResult setProfileImage(int userId, MultipartFile profileImage) {
-		
-		if(profileImage.isEmpty()) {
+	/**
+	 * 소개글 설정<br>
+	 * <br>
+	 * <b>에러: </b><br>
+	 * bad_motd : 유효하지 않은 소개글<br>
+	 */
+	public SettingResult setMotd(int userId, String motd){
+		motd = motd.trim();
+		if(!Validate.motd(motd)) return new SettingResult("bad_motd");
+
+		dao.setMotd(userId, motd);
+
+		return new SettingResult();
+	}
+
+	public SettingResult setProfileImage(int userId, MultipartFile profileImage){
+		if(profileImage.isEmpty()){
 			return new SettingResult("bad_image");
 		}
-		if(!fileService.setProfileImage(userId, profileImage)) {
+		if(!fileService.setProfileImage(userId, profileImage)){
 			return new SettingResult("unexpected");
 		}
-		
-		return new SettingResult(null);
+
+		return new SettingResult();
 	}
-	
+
 	public SettingResult setPassword(int userId, String password, String newPassword){
+		if(!Validate.password(newPassword)) return new SettingResult("bad_new_password");
+		if(password.equals(newPassword)) return new SettingResult("bad_new_password");
+
 		String initPw = dao.getUserPasswordById(userId);
-		if(initPw==null){
-			return new SettingResult("no_password");
-		}
-		if(!initPw.equals(password)){
+		if(initPw==null) return new SettingResult("no_password");
+		if(!initPw.equals(password))
 			return new SettingResult("incorrect_password");
-		}
 
 		dao.setPassword(userId, newPassword);
 
-		return new SettingResult(null);
+		return new SettingResult();
 	}
 
 	public List<UserProfileData> getFollower(int user){
@@ -75,10 +96,11 @@ public class UserService{
 	public boolean checkIfUserExists(int author){
 		return dao.checkIfUserExists(author);
 	}
-	
+
+
 	public static class SettingResult{
-		@Nullable private String error;
-		
+		@Nullable private final String error;
+
 		public SettingResult(){
 			this.error = null;
 		}
@@ -89,10 +111,6 @@ public class UserService{
 
 		public String getError(){
 			return error;
-		}
-
-		public void setError(String error){
-			this.error = error;
 		}
 	}
 }

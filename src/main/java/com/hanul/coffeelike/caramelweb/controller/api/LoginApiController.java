@@ -8,8 +8,6 @@ import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,7 +35,6 @@ public class LoginApiController extends BaseExceptionHandlingController{
 	 *
 	 * <b>에러: </b><br>
 	 * bad_email : 유효하지 않은 email 인자<br>
-	 * bad_password : 유효하지 않은 password 인자<br>
 	 * login_failed : 로그인 실패<br>
 	 */
 	@ResponseBody
@@ -65,7 +62,6 @@ public class LoginApiController extends BaseExceptionHandlingController{
 	 *
 	 * <b>에러: </b><br>
 	 * bad_phone_number : 유효하지 않은 phoneNumber 인자<br>
-	 * bad_password : 유효하지 않은 password 인자<br>
 	 * login_failed : 로그인 실패<br>
 	 */
 	@ResponseBody

@@ -10,11 +10,8 @@ import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -73,10 +70,11 @@ public class KakaoIntegrationApiController extends BaseExceptionHandlingControll
 	 * }
 	 * }</pre>
 	 * <b>에러: </b><br>
-	 * bad_kakao_login_token     : 유효하지 않은 kakaoLoginToken 인자<br>
+	 * bad_kakao_login_token : 유효하지 않은 kakaoLoginToken 인자<br>
 	 * kakao_service_unavailable : 카카오 플랫폼 서비스의 일시적 문제 등으로 인해 서비스 제공이 불가<br>
-	 * user_exists               : 동일한 카카오 계정으로 회원가입한 유저가 이미 존재<br>
-	 * needs_agreement           : 카카오 계정 정보를 전달받기 위해 동의가 필요
+	 * user_exists : 동일한 카카오 계정으로 회원가입한 유저가 이미 존재<br>
+	 * bad_name : 인자로 전달받거나 카카오 계정에서 제공된 닉네임이 적합하지 않음<br>
+	 * needs_agreement : 카카오 계정 정보를 전달받기 위해 동의가 필요<br>
 	 */
 	@RequestMapping(value = "/api/joinWithKakao", produces = "application/json;charset=UTF-8")
 	public String joinWithKakao(HttpSession session,

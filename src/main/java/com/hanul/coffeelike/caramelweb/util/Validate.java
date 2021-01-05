@@ -1,5 +1,8 @@
 package com.hanul.coffeelike.caramelweb.util;
 
+import org.springframework.lang.Nullable;
+
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class Validate{
@@ -7,7 +10,7 @@ public final class Validate{
 
 	private static final Pattern NAME_REGEX = Pattern.compile("[^\t\n]{1,40}");
 	private static final Pattern EMAIL_REGEX = Pattern.compile("[^@]+@[^@]+");
-	private static final Pattern PHONE_NUMBER_REGEX = Pattern.compile("\\d{3}[ -]?\\d{4}[ -]?\\d{4}");
+	private static final Pattern PHONE_NUMBER_REGEX = Pattern.compile("(\\d{3})[ -]?(\\d{4})[ -]?(\\d{4})");
 	private static final Pattern PASSWORD_REGEX = Pattern.compile("\\S{3,63}");
 	private static final Pattern POST_TEXT_REGEX = Pattern.compile(".{0,1000}");
 	private static final Pattern MOTD_REGEX = Pattern.compile(".{0,100}");
@@ -27,7 +30,18 @@ public final class Validate{
 	public static boolean postText(String text){
 		return POST_TEXT_REGEX.matcher(text).matches();
 	}
-	public static boolean motd(String motd) {
+	public static boolean motd(String motd){
 		return MOTD_REGEX.matcher(motd).matches();
+	}
+
+	/**
+	 * 전화번호를 유효 검사 후 데이터베이스 포맷으로 변환시킵니다.
+	 *
+	 * @return 데이터베이스에 저장되는 포맷의 전화번호. 유효하지 않은 전화번호의 경우 {@code null}.
+	 */
+	@Nullable public static String verifyAndTrimPhoneNumber(String phoneNumber){
+		Matcher matcher = PHONE_NUMBER_REGEX.matcher(phoneNumber);
+		if(!matcher.matches()) return null;
+		return matcher.group(1)+"-"+matcher.group(2)+"-"+matcher.group(3);
 	}
 }

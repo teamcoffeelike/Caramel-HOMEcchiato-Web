@@ -29,10 +29,11 @@ public class JoinService{
 	 */
 	public LoginResult joinWithEmail(String name, String email, String password){
 		name = name.trim();
-		email = email.trim();
-
 		if(!Validate.name(name)) return new LoginResult("bad_name");
-		if(!Validate.email(email)) return new LoginResult("bad_email");
+
+		email = email.trim();
+		if(!Validate.email(email)) return new LoginResult("bad_name");
+
 		if(!Validate.password(password)) return new LoginResult("bad_password");
 
 		if(joinDAO.createUserWithEmail(name, email, password)==0) return new LoginResult("user_exists");
@@ -53,10 +54,11 @@ public class JoinService{
 	 */
 	public LoginResult joinWithPhoneNumber(String name, String phoneNumber, String password){
 		name = name.trim();
-		phoneNumber = phoneNumber.trim();
-
 		if(!Validate.name(name)) return new LoginResult("bad_name");
-		if(!Validate.phoneNumber(phoneNumber)) return new LoginResult("bad_phone_number");
+
+		phoneNumber = Validate.verifyAndTrimPhoneNumber(phoneNumber);
+		if(phoneNumber==null) return new LoginResult("bad_phone_number");
+
 		if(!Validate.password(password)) return new LoginResult("bad_password");
 
 		if(joinDAO.createUserWithPhoneNumber(name, phoneNumber, password)==0) return new LoginResult("user_exists");
