@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +20,7 @@ public class QnaController {
 	private QnaService qnaService;
 	
 	//문의게시판 목록
-	@RequestMapping("/qna")
+	@RequestMapping("/list.qna")
 	public String qna(HttpSession session,
 					  Model model,
 					  @RequestParam(required = false) String search,
@@ -33,7 +32,7 @@ public class QnaController {
 		page.setTotalCount(qnaService.totalCount());
 		page.setSearch(search);
 		page.setKeyword(keyword);
-
+		
 		int maximumPage = page.getMaximumPage(10);
 			
 		if(currentPage>maximumPage) {
@@ -58,7 +57,7 @@ public class QnaController {
 	public String insertQna(HttpSession session,
 							Qna qna) {
 		qnaService.insertQna(qna);
-		return "redirect:qna";
+		return "redirect:list.qna";
 	}
 		
 	//문의글 상세화면 요청
@@ -66,21 +65,19 @@ public class QnaController {
 	public String detailQna(int id, Model model) {
 		model.addAttribute("data", qnaService.detailQna(id));
 		model.addAttribute("crlf", "\r\n");
-		Page page = new Page();
-		model.addAttribute("page", page);
 		return "qna/detail";
 	}
 		
 	//문의글 수정화면 요청
-	@RequestMapping("modify.qna")
-	public String deleteQna(Model model,
+	@RequestMapping("/modify.qna")
+	public String modifyQna(Model model,
 							@RequestParam int id) {
 		model.addAttribute("data", qnaService.detailQna(id));
 		return "qna/modify";
 	}
 		
 	//문의글 수정저장 처리
-	@RequestMapping("update.qna")
+	@RequestMapping("/update.qna")
 	public String updateQna(HttpSession session,
 							Model model,
 							Qna qna) {
@@ -91,16 +88,15 @@ public class QnaController {
 	}
 	
 	//문의글 삭제처리
-	@RequestMapping("delete.qna")
+	@RequestMapping("/delete.qna")
 	public String deleteQna(HttpSession session,
 							Model model,
 							@RequestParam int id) {
 		if(session.getAttribute("loginUser")==null) return "redirect:qna";
 		
 		qnaService.deleteQna(id);
-		Page page = new Page();
-		model.addAttribute("page", page);
-		model.addAttribute("url", "qna");
+		
+		model.addAttribute("url", "list.qna");
 		return "qna/redirect";
 	}
 }

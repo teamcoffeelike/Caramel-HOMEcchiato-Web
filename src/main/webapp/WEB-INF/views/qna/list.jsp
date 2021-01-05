@@ -19,7 +19,7 @@
     </div>
     <!-- 검색 -->
     <div class="qna">
-    <form method="POST" action="qna">
+    <form method="POST" action="list.qna">
         <ul>
             <li><a class="searchBtn">검색</a></li>
             <li><input type="text" name="keyword" value="${page.keyword }" class="keyword" /></li>
@@ -56,7 +56,7 @@
 	    </ul>
     </c:if>
 </div>
-<div style="margin: 20px auto; text-align: center;">
+<div style="margin-bottom:30px; text-align: center;">
 	<jsp:include page="/WEB-INF/views/include/page.jsp" />
 </div>
 <script>

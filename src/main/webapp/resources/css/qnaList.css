@@ -29,6 +29,7 @@
 .writeBtn {
     display: inline-block;
     margin-top: 10px;
+    margin-bottom: 0px;
     background-color: #FCD092;
     border: none;
     padding: 5px 10px;

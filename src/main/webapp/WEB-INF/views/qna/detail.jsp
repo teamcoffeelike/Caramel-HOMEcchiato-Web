@@ -33,7 +33,7 @@
  	</tr>
 </table>
 <div class="btn">
-	<a class="list" href="qna">목록으로</a>
+	<a class="list" onclick="history.back()">목록으로</a>
 </div>
 
 
@@ -41,6 +41,10 @@
 
 <form method="post" action='qna'>
 <input type='hidden' name='id' value='${data.id}' />
+<input type='hidden' name='currentPage' value='${page.currentPage}' />
+<%-- <input type='hidden' name='totalCount' value='${page.currentPage}' /> --%>
+<input type='hidden' name='search' value='${page.search}' />
+<input type='hidden' name='keyword' value='${page.keyword}' />
 </form>
 </body>
 </html>

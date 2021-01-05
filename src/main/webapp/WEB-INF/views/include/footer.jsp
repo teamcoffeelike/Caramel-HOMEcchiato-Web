@@ -19,7 +19,7 @@ footer {
 <footer>
 <div>
 	<li><a href="notice">공지사항</a></li>
-	<li><a href="qna">문의</a></li>
+	<li><a href="list.qna">문의</a></li>
 </div>
 <!-- 
 	<div>공지사항</div>	

@@ -1,3 +1,4 @@
+<%@page import="org.apache.ibatis.reflection.SystemMetaObject"%>
 <%@page import="com.hanul.coffeelike.caramelweb.data.Page"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -22,23 +23,26 @@
 		endPage = _page.getMaximumPage(10);
 	}
 	
-	pageContext.getAttribute("startingPage", startingPage);
-	pageContext.getAttribute("endPage", endPage);
+	pageContext.getAttribute("startingPage", startingPage);	//시작페이지
+	pageContext.getAttribute("endPage", endPage);	//끝 페이지
+	
+	
 	%>
 	
 	<c:forEach var="no" begin="<%=startingPage%>" end="<%=endPage%>">
-		<c:if test="${no eq page.currepntPage }">
+		<c:if test="${no == page.currentPage }">
 			<span class="page_on">${no }</span>
 		</c:if>
-		<%-- <a href="qna?currentPage=${e}" class="page_on">${e}</a> --%>
-		
+		<c:if test="${no != page.currentPage }">
+			<span onclick="go_page(${no})" class="page_off">${no }</span>
+		</c:if>		
 	</c:forEach> 
 	
 	
 
 	<!-- 다음/마지막 -->
-	<a class="page_next">다음</a>
-	<a class="page_last">마지막</a>
+		<a class="page_next">다음</a>
+		<a class="page_last">마지막</a>
 </div>
 
 <script type="text/javascript">
@@ -50,13 +54,13 @@ function go_page(no) {
 
 <style>
 .page_on, .page_off, .page_next, .page_last, .page_first, .page_prev { 
-	display:inline-block; line-height:30px;  margin:0;  
+	display:inline-block; line-height:30px;  margin:0;  cursor: pointer;
 }
 .page_on {
-	border:1px solid gray;	color:#fff;	 font-weight:bold; background-color:gray;   
+	color:#865449;	 font-weight:bold; background-color:#FCD092;   
 }
 .page_on, .page_off {
-	min-width:22px;	padding: 0 5px 2px;
+	min-width:22px;	padding: 1px 11px 1px;
 }
 .page_next, .page_last, .page_first, .page_prev {
 	width:30px; border:1px solid #d0d0d0; text-indent:-9999999px 
