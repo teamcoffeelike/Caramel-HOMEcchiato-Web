@@ -1,8 +1,9 @@
 
 table {
 	width: 50%;
-	margin: 20px auto;
+	margin: 20px auto 0px;
 	border: 1px solid #bebebe;
+	border-collapse: collapse;
 }
 
 table th, table td {
@@ -44,4 +45,32 @@ textarea {
 
 .modify, .delete {
 	float: right;
+}
+
+.content {
+	height: 300px;
+}
+
+.commentDiv {
+	margin: 0px auto;
+	width: 50%;
+	border: 1px solid #bebebe;
+	border-top: none;
+	padding-top: 10px;
+	overflow:hidden;
+}
+
+.right {
+	text-align: right;
+}
+
+#comment {
+	width: 99%;
+	height: 70px;
+	resize: none;
+}
+
+.commentBtn{
+	float: right;
+	margin: 0px 10px 10px 0px;
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hanul.coffeelike.caramelweb.data.Page;
 import com.hanul.coffeelike.caramelweb.data.Qna;
+import com.hanul.coffeelike.caramelweb.data.QnaComment;
 
 @Repository
 public class QnaDAO {
@@ -37,4 +38,18 @@ public class QnaDAO {
 	public int deleteQna(int id) {
 		return sql.delete("qna.delete", id);
 	}
+
+	public int inserQnaComment(QnaComment qnaComment) {
+		return sql.insert("qna.insertQnaComment", qnaComment);
+	}
+
+	public List<QnaComment> qnaCommentList(int qnaId) {
+		return sql.selectList("qna.commentList", qnaId);
+	}
+
+	public int updateQnaComment(QnaComment qnaComment) {
+		return sql.update("qna.updateComment", qnaComment);
+	}
+
+	
 }

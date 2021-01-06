@@ -29,22 +29,80 @@
  	</tr>
  	<tr>
  		<th>내용</th>
- 		<td>${fn:replace(data.content, crlf, '<br>')}</td>
+ 		<td class="content">${fn:replace(data.content, crlf, '<br>')}</td>
  	</tr>
 </table>
+<!-- 댓글 입력창 -->
+<div class="commentDiv">
+	<div id="commentList" class="left">
+		<jsp:include page="/WEB-INF/views/qna/comment/commentList.jsp" />
+	</div>
+	<div id="comment_regist">
+		<textarea id="comment"></textarea>
+		<span class="commentBtn"><a onclick="comment_regist()">댓글등록</a></span>
+	</div>
+	<div id="comment_list" class="left">
+		
+	</div>
+</div>
+
 <div class="btn">
-	<a class="list" onclick="history.back()">목록으로</a>
+	<a class="list" onclick="history.go(-1)">목록으로</a>
 </div>
 
 
 
 
-<form method="post" action='qna'>
+<form method="post" action='list.qna'>
 <input type='hidden' name='id' value='${data.id}' />
-<input type='hidden' name='currentPage' value='${page.currentPage}' />
-<%-- <input type='hidden' name='totalCount' value='${page.currentPage}' /> --%>
-<input type='hidden' name='search' value='${page.search}' />
-<input type='hidden' name='keyword' value='${page.keyword}' />
+<input type='hidden' name='id' value='${data.writeDate}' />
+
 </form>
+<script type="text/javascript">
+function comment_regist() {
+	if(${empty loginUser}) {
+		alert("로그인 후 댓글 등록이 가능합니다!");
+		return;
+	}else if($("#comment").val().trim() == "") {
+		alert("댓글 내용을 입력하세요!");
+		$("#comment").val("");
+		$("#comment").focus();
+		return;
+	}
+
+	$.ajax({
+		type: "post",
+		url: "qna/comment/insert",
+		data: { qnaId:${data.id}, content:$("#comment").val() },
+		success: function(response) {
+			console.log(response);
+			if(response == 1) {
+				alert("댓글이 등록되었습니다!");
+				$("#comment").val("");
+				commentList();
+			}else if(reponse == 0) {
+				alert("댓글 등록 실패!");
+			}else {
+				location = "list.qna";
+			}
+		}, error: function(req, text) {
+			alert(text + " : " + req.status);
+		}
+	});
+}
+
+function commentList() {
+	$.ajax({
+		url: "qna/comment/${data.id}",
+		success: function(response) {
+			$("#commentList").html(response);
+		}, error: function(req, text) {
+			alert(text + " : " + req.status);
+		}
+
+	});
+}
+commentList();
+</script>
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.hanul.coffeelike.caramelweb.dao.QnaDAO;
 import com.hanul.coffeelike.caramelweb.data.Page;
 import com.hanul.coffeelike.caramelweb.data.Qna;
+import com.hanul.coffeelike.caramelweb.data.QnaComment;
 
 @Service
 public class QnaService {
@@ -38,4 +39,18 @@ public class QnaService {
 	public int deleteQna(int id) {
 		return dao.deleteQna(id);
 	}
+
+	public int insertQnaComment(QnaComment qnaComment) {
+		return dao.inserQnaComment(qnaComment);
+	}
+
+	public List<QnaComment> qnaCommentList(int qnaId) {
+		return dao.qnaCommentList(qnaId);
+	}
+
+	public int updateQnaComment(QnaComment qnaComment) {
+		return dao.updateQnaComment(qnaComment);
+	}
+
+	
 }

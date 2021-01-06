@@ -56,7 +56,7 @@
 	    </ul>
     </c:if>
 </div>
-<div style="margin-bottom:30px; text-align: center;">
+<div style="margin: 30px auto; text-align: center;">
 	<jsp:include page="/WEB-INF/views/include/page.jsp" />
 </div>
 <script>

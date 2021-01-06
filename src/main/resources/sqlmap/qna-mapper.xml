@@ -74,4 +74,23 @@
 		DELETE FROM qna
 			  WHERE id=#{id}
 	</delete>
+	
+	<!-- 댓글 처리 -->
+	<insert id="insertQnaComment">
+		INSERT INTO qnaComments (id, qnaId, writer, content)
+		VALUES (qna_comment_seq.nextval, #{qnaId}, #{writer}, #{content})
+	</insert>
+	
+	<select id="commentList" resultType="QnaComment">
+		SELECT c.*, (SELECT name FROM users u WHERE u.id=writer) name
+		FROM qnaComments c 
+		WHERE qnaId = #{qnaId}
+		ORDER BY id desc
+	</select>
+	
+	<update id="updateComment">
+		UPDATE qnaComments
+		   SET content=#{content}
+		 WHERE id=#{id}
+	</update>
 </mapper>

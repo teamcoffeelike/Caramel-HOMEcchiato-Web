@@ -8,12 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.Page;
 import com.hanul.coffeelike.caramelweb.data.Qna;
+import com.hanul.coffeelike.caramelweb.data.QnaComment;
+import com.hanul.coffeelike.caramelweb.data.UserLoginData;
 import com.hanul.coffeelike.caramelweb.service.QnaService;
+import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 
 @Controller
 public class QnaController {
@@ -66,7 +73,8 @@ public class QnaController {
 		model.addAttribute("crlf", "\r\n");
 		return "qna/detail";
 	}
-		
+	
+	
 	//문의글 수정화면 요청
 	@RequestMapping("/modify.qna")
 	public String modifyQna(Model model,
@@ -96,5 +104,36 @@ public class QnaController {
 		qnaService.deleteQna(id);
 		
 		return "redirect:list.qna";
+	}
+	
+	//문의글 댓글 저장처리
+	@ResponseBody
+	@RequestMapping("/qna/comment/insert")
+	public int insertQnaComment(HttpSession session,
+								QnaComment qnaComment) {
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		
+		if(loginUser == null) return -1;
+		qnaComment.setWriter(loginUser.getUserId());
+
+		return qnaService.insertQnaComment(qnaComment);
+	}
+	
+	//문의글 댓글 목록조회 요청
+	@RequestMapping("/qna/comment/{qnaId}")
+	public String qnaCommentList(Model model,
+								 @PathVariable int qnaId) {
+		model.addAttribute("list", qnaService.qnaCommentList(qnaId));
+		model.addAttribute("crlf", "\r\n");
+		model.addAttribute("lf", "\n");
+		
+		return "qna/comment/commentList";
+	}
+	
+	//문의글 댓글 수정저장 처리
+	@ResponseBody @RequestMapping(value="qna/comment/update",
+								  produces="application/text; charset=utf-8")
+	public String qnaCommentUpdate(@RequestBody QnaComment qnaComment) {
+		return qnaService.updateQnaComment(qnaComment) == 1 ? "성공!" : "실패!";
 	}
 }
