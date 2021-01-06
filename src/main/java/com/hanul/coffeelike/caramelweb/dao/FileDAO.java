@@ -24,4 +24,8 @@ public class FileDAO{
 		m.put("profileImage", profileImage);
 		return sql.update("file.setUserProfileImage", m)>0;
 	}
+	
+	public void removeProfileImage(int userId) {
+		sql.update("file.removeProfileImage", userId);
+	}
 }

@@ -5,6 +5,27 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="css/settings.css">
+<script type="text/javascript" src="js/setting_profile.js"></script>
+<script type="text/javascript" src="js/setting_password.js"></script>
+<script type="text/javascript">
+/*탭변경*/
+$(document).on('click', '#tabs li', function(){
+	$('#tabs li').removeClass();
+	$(this).addClass('active');
+
+	var idx = $('#tabs li.active').index();
+	$('#tabContent > div').removeClass();
+	$('#tabContent > div:eq('+ idx +')').addClass('active');
+	
+	if( idx==0 ) {
+		$('.setProfile').css('display', 'block');
+		$('.setPassword').css('display', 'none');
+	}else {
+		$('.setProfile').css('display', 'none');
+		$('.setPassword').css('display', 'block');
+	}
+});
+</script>
 </head>
 <body>
 <div id="modifyProfile">
@@ -19,20 +40,25 @@
 			<div class='active'>
 				<div class="setProfile">
 					<div class="imgBox">
+						<input type="hidden" name="profileImageChanged" id="profileImageChanged" value="false">
+						<input type="file" name="profileImage" id="img-attach" accept=".png,.jpg,.jpeg,.gif"/>
 						<label>
-							<input type="file" name="profileImage" id="img-attach" />
-							<img id="post-img" class="post-img" src="imgs/profile.png" />
+							<img id="profile-img" class="profile-img" src="${profileImage}" />
 							<!-- src > db에 유저프로필 사진없으면 기본프로필 있으면 유저정보 -->
 						</label>
 					</div>
 					<div class="profile">
+						<input type="hidden" name="nameChanged" id="nameChanged" value="false">
 						<label for="name">닉네임</label>
-						<input type="text" name="name" id="name" value="${data.user.name}"/><a id='delete-name'>X</a>
+						<input type="text" name="name" id="name" value="${data.user.name}"/>
+						<a id='delete-name' style="display: inline;">X</a>
 						<div class="msg" id="name_msg"></div>
 					</div>
 					<div class="profile">
+						<input type="hidden" name="motdChanged" id="motdChanged" value="false">
 						<label for="motd">상태메시지</label>
-						<input type="text" name="motd" id="motd" value="${!empty data.user.motd ? data.user.motd : '' }"/><a id='delete-motd'>X</a>
+						<input type="text" name="motd" id="motd" value="${data.user.motd}"/>
+						<a id='delete-motd' style="display: ${empty data.user.motd ? 'none' : 'inline'};">X</a>
 					</div>
 					<div class="btnSet">
 						<a class="btn-fill" onclick="$('[name=setProfile]').submit()" id="btnSubmit">저장</a>
@@ -46,19 +72,18 @@
 			<div>
 				<div class="setPassword" style="display:none">
 					<div class="password">
-						<label for="originaPw">현재 비밀번호</label>
-						<input type="password" name="originaPw" id="originaPw" />
-						<div class="msg" id="originaPw_msg"></div>
+						<label for="originalPw">현재 비밀번호</label>
+						<input type="password" name="originalPw" id="originalPw" />
 					</div>
 					<div class="password">
-						<label for="newPw">새 비밀번호</label>
-						<input type="password" name="newPw" id="newPw" />
-						<div class="msg" id="newPw_msg"></div>
+						<label for="newPassword">새 비밀번호</label>
+						<input type="password" name="newPassword" id="newPassword" />
+						<div class="msg" id="newPassword_msg"></div>
 					</div>
 					<div class="password">
-						<label for="newPwConfirm">새 비밀번호 확인</label>
-						<input type="password" name="newPwConfirm" id="newPwConfirm" />
-						<div class="msg" id="newPwConfirm_msg"></div>
+						<label for="newPasswordConfirm">새 비밀번호 확인</label>
+						<input type="password" name="newPasswordConfirm" id="newPasswordConfirm" />
+						<div class="msg" id="newPasswordConfirm_msg"></div>
 					</div>
 					<div class="btnSet">
 						<a class="btn-fill" onclick="$('[name=setPassword]').submit()" id="btnSubmit">저장</a>
@@ -70,7 +95,7 @@
 	</div>
 </div>
 
-<div id="popup-background" onclick="$('#popup, #popup-background').css('display', 'none'); $('#img-attach').removeAttr('disabled');"></div>
+<div id="popup-background" onclick=" $('#img-attach').removeAttr('disabled');"></div>
 <div id="popup">
 	<div class="popup-title">
 		<h3>프로필 사진 바꾸기</h3>
@@ -81,9 +106,5 @@
 		<a class="cancle">취소</a>
 	</div>
 </div>
-
-<script type="text/javascript" src="js/settings.js"></script>
-<script type="text/javascript" src="js/fileAttach.js"></script>
-
 </body>
 </html>

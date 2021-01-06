@@ -2,6 +2,6 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <script>
-alert("로그인이 필요한 페이지입니다!");
-location.href="login";
+alert("${msg}");
+location.href="settings";
 </script>

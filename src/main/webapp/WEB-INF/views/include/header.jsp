@@ -3,7 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <header style="border-bottom: 1px solid #ccc; padding: 25px 0;">
 	<div class="category" style="margin-left: 50px;">
-		<a href="<c:url value='/'/>"><img src="" alt="홈으로"/></a>
+		<a href="<c:url value='/allPostList'/>"><img src="" alt="홈으로"/></a>
 	</div>
 	<div style="position: absolute; right: 0; top: 25px; margin-right: 100px;">
 		<ul id="mainMenu">

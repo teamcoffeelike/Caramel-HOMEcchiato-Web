@@ -20,4 +20,11 @@
            AND isDeleted = 'N'
     </update>
 
+	<update id="removeProfileImage"
+			parameterType="Integer">
+		UPDATE users
+		   SET profileImage = null
+		 WHERE id = #{userId}
+	</update>
+	
 </mapper>

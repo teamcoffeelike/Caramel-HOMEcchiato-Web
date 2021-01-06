@@ -81,7 +81,8 @@
 	</update>
 
 	<select id="getUserPasswordById"
-	        parameterType="Integer">
+	        parameterType="Integer"
+	        resultType="String">
 		SELECT password
 		  FROM users
 		 WHERE id = #{userId}

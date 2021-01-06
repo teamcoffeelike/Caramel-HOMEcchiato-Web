@@ -133,8 +133,9 @@ public class UserApiController extends BaseExceptionHandlingController{
 	 * 추가 데이터 없음
 	 * }</pre>
 	 * <b>에러: </b><br>
-	 * bad_image : 유효하지 않은 이미지 파일<br>
+	 * bad_image : 유효하지 않은 image 인자<br>
 	 * not_logged_in : 로그인 상태가 아님<br>
+	 * unexpected : 프로필이미지 등록 불가<br>
 	 */
 	@RequestMapping(value = "/api/setProfileImage", produces = "application/json;charset=UTF-8")
 	public String setProfileImage(HttpSession session,

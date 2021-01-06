@@ -55,8 +55,13 @@ public class UserService{
 
 		return new SettingResult();
 	}
-
-	public SettingResult setProfileImage(int userId, MultipartFile profileImage){
+	
+	/*프로필사진 설정*/
+	public void removeProfileImage(int userId) {
+		fileService.removeProfileImageFromUser(userId);
+	}
+	
+	public SettingResult setProfileImage(int userId, MultipartFile profileImage) {
 		if(profileImage.isEmpty()){
 			return new SettingResult("bad_image");
 		}
@@ -67,13 +72,14 @@ public class UserService{
 		return new SettingResult();
 	}
 
-	public SettingResult setPassword(int userId, String password, String newPassword){
+	/*비밀번호 설정*/
+	public SettingResult setPassword(int userId, String originalPw, String newPassword){
 		if(!Validate.password(newPassword)) return new SettingResult("bad_new_password");
-		if(password.equals(newPassword)) return new SettingResult("bad_new_password");
+		if(originalPw.equals(newPassword)) return new SettingResult("bad_new_password");
 
 		String initPw = dao.getUserPasswordById(userId);
 		if(initPw==null) return new SettingResult("no_password");
-		if(!initPw.equals(password))
+		if(!initPw.equals(originalPw))
 			return new SettingResult("incorrect_password");
 
 		dao.setPassword(userId, newPassword);
@@ -96,7 +102,6 @@ public class UserService{
 	public boolean checkIfUserExists(int author){
 		return dao.checkIfUserExists(author);
 	}
-
 
 	public static class SettingResult{
 		@Nullable private final String error;

@@ -27,12 +27,15 @@
 
 .imgBox {
     width: 150px;	height: 150px; 
+    overflow: hidden;
     border-radius: 70%;	margin: 15px auto;
+    
 }
 
-.post-img {
-    width: 150px; height: 150px; 
-    border-radius: 70%;	object-fit: cover;
+.profile-img {
+    width: 100%; height: 100%; 
+    object-fit: cover;
+    size: inherit;
 }
 
 #img-attach{ display: none;}
@@ -68,7 +71,7 @@
 .profile:not(:first-child),
  .password:not(:first-child) {margin-top: 50px;}
  
-.password:first-child {margin-top: 95px}
+.password:first-child {margin-top: 105px}
 
 .profile input, .password input{
 	width: 93%;	padding: 5px 0px 2px 10px;
@@ -79,7 +82,7 @@
 	display: inline-block;
 }
 
-#delete-name, #delete-motd {color: #ccc; display: none;}
+#delete-name, #delete-motd {color: #9e9aa0; display: none;}
 
 .msg {
 	color: #67432a;

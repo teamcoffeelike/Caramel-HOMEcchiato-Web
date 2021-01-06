@@ -78,6 +78,7 @@ public class FileService{
 		if(prevProfileImage==null){ // User doesn't exists
 			return false;
 		}
+		fileDAO.removeProfileImage(userId);
 		String profileImage = prevProfileImage.getProfileImage();
 		if(profileImage!=null)
 			return tryRemoveFile(new File(getStorage(PROFILE_IMAGE), profileImage));
