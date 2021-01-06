@@ -27,17 +27,21 @@ public class NoticeController {
 	@RequestMapping("/notice")
 	public String notice(HttpSession session,
 			Model model,
-			@RequestParam(defaultValue = "1") Integer index) {
+			@RequestParam(required = false) String search,
+			@RequestParam(required = false) String keyword,
+			@RequestParam(defaultValue = "1") int currentPage) {
 		Page page = new Page();
 		page.setTotalCount(noticeService.totalCount());
+		page.setSearch(search);
+		page.setKeyword(keyword);
 		int maximumPage = page.getMaximumPage(10);
 		
-		if(index>maximumPage) {
+		if(currentPage>maximumPage) {
 			// 인덱스 초과, 특수 처리
 			return "123";
 		}
 		
-		page.setCurrentPage(index);
+		page.setCurrentPage(currentPage);
 		
 		// service로 넘김
 		List<Notice> notices = noticeService.getNotice(page);
@@ -62,8 +66,9 @@ public class NoticeController {
 	//공지글 상세화면 요청
 	@RequestMapping("/detail.no")
 	public String detailNotice(Model model, int id) {
-		noticeService.detailNotice(id);
-		model.addAttribute("data", noticeService.detailNotice(id));
+		Notice notice = noticeService.detailNotice(id);
+		model.addAttribute("data", notice);
+		model.addAttribute("crlf", "\r\n");
 		return "notice/detail";
 	}
 	 
@@ -79,8 +84,6 @@ public class NoticeController {
 	public String updateNotice(HttpSession session,
 							   Model model,
 							   Notice notice) {
-		System.out.println("id "+notice.getId()+" "+notice.getTitle()+" "+notice.getContent());
-		
 		noticeService.updateNotice(notice);
 		return "redirect:detail.no?id=" + notice.getId();
 	}

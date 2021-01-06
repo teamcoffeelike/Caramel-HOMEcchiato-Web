@@ -11,7 +11,10 @@
 table { margin: 20px auto; }
 </style>
 <body>
-<h3>공지글 수정</h3>
+<div class="title">
+	<h3>공지사항</h3>
+	<span>Caramel HOMEcchiato 서비스의 오류, 장애, 기타 공지사항을 안내드립니다.</span>
+</div>
 <form method="post" action="update.no">
 	<input type="hidden" name="id" value="${data.id}"/>
 	<table>
@@ -25,7 +28,7 @@ table { margin: 20px auto; }
 	</tr>
 	</table>
 </form>
-<div class="btn">
+<div class="btnSet">
 	<a class="btnSubmit" onclick="if( necessary() ) $('form').submit()">저장</a>
 	<a class="btnCancel" href="javascript:history.go(-1)">취소</a>
 </div>

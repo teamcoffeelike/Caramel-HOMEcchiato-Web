@@ -5,27 +5,33 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>공지사항</title>
 <link rel="stylesheet" href="css/noticeList.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
-<h3>공지사항</h3>
-<div id="list-top">
-<div>
-<%-- 	<form method="post" action="notice">
-		<input type="hidden" name="page" value="${page.currentPage}" />
-		<ul>
-			<li>
-				<select name="search" class="w-px80">
-					<option value="all" ${page.search eq 'all' ? 'selected' : '' }>전체</option>
-					<option value="title" ${page.search eq 'title' ? 'selected' : '' }>제목</option>
-					<option value="content" ${page.search eq 'content' ? 'selected' : '' }>내용</option>
-				</select>
-			</li>
-			<li><input type="text" name="keyword" class="w-px300" value="${page.keyword }"></li>
-			<li><a onclick="$('form').submit()" class="btn">검색</a></li>
-		</ul>
-	</form> --%>
+<div class="notice">
+	<div class="title">
+		<h3>공지사항</h3>
+		<span>Caramel HOMEcchiato 서비스의 오류, 장애, 기타 공지사항을 안내드립니다.</span>
+	</div>
+	<div class="notice">
+		<form method="post" action="notice">
+			<input type="hidden" name="id"/>
+			<input type="hidden" name="currentPage" value="1">
+			<ul class="noticeSearch">
+				<li><a onclick="$('form').submit()" class="btnSearch">검색</a></li>
+				<li><input type="text" name="keyword" class="keyword" value="${page.keyword }"></li>
+				<li>
+					<select name="search" class="option">
+						<option value="all" ${page.search eq 'all' ? 'selected' : '' }>전체</option>
+						<option value="title" ${page.search eq 'title' ? 'selected' : '' }>제목</option>
+						<option value="content" ${page.search eq 'content' ? 'selected' : '' }>내용</option>
+					</select>
+				</li>
+			</ul>
+		</form>
+	</div>
 	<table>
 		<tr>
 			<th class="w-px200">제목</th>
@@ -34,14 +40,40 @@
 		<c:forEach items="${notices }" var="page">
 		<tr>
 			<td><a href="detail.no?id=${page.id }">${page.title }</a></td>
-			<td>${page.writeDate }</td>
+			<td style="text-align: center;">${page.writeDate }</td>
 		</tr>
 		</c:forEach>
 	</table>
-<div>
-	<a href="new" class="btnNew">글쓰기</a>	
+	<c:if test="${!empty loginUser }">
+	<ul class="notice">
+		<li><a href="new" class="btnNew">글쓰기</a></li>
+	</ul>
+	</c:if>
 </div>
+<div style="margin:50px auto; text-align: center;">
+	<jsp:include page="/WEB-INF/views/include/page.jsp"/>
 </div>
-</div>
+<script>
+function go_detail(id) {
+	$("[name=id]").val(id);
+	$("form").attr("action", "detail.no");
+	$("form").submit();
+}
+
+$(".keyword").on({
+    focus: function() {
+        $(".keyword").css("border", "1px solid #FCD092");
+        $(".btnSearch").css("border", "1px solid #FCD092");
+        $(".btnSearch").css("border-left", "none");
+        $(".btnSearch").css("background-color", "#FCD092");
+    },
+    blur: function() {
+        $(this).css("border", "1px solid #bebebe");
+        $(".btnSearch").css("border", "1px solid #bebebe");
+        $(".btnSearch").css("border-left", "none");
+        $(".btnSearch").css("background-color", "transparent");
+    }
+});
+</script>
 </body>
 </html>
