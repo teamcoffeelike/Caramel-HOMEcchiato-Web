@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,19 +24,17 @@ public class QnaController {
 	@RequestMapping("/list.qna")
 	public String qna(HttpSession session,
 					  Model model,
-					  @RequestParam(required = false) String search,
-					  @RequestParam(required = false) String keyword,
+					  @RequestParam(required = false) @Nullable String search,
+					  @RequestParam(required = false) @Nullable String keyword,
 					  @RequestParam(defaultValue = "1") int currentPage) {
 		//if(currentPage==null) currentPage = 0;
-		Page page = new Page();
-		page.setCurrentPage(currentPage);
-		page.setTotalCount(qnaService.totalCount());
-		page.setSearch(search);
-		page.setKeyword(keyword);
+		Page page = new Page(qnaService.totalCount(),
+				currentPage,
+				search,
+				keyword,
+				10);
 		
-		int maximumPage = page.getMaximumPage(10);
-			
-		if(currentPage>maximumPage) {
+		if(page.getCurrentPage()>page.getMaximumPage()) {
 			return "";
 		}
 		

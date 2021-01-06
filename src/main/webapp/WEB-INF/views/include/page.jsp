@@ -5,44 +5,30 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div class="pageList">
 	<!-- 처음/이전 -->
-	<a class="page_first" onclick="go_page(1)">처음</a>
-	<a class="page_prev">이전</a>
-	
-	<!-- 페이지블럭 -->
-	<%
-	Page _page = (Page)request.getAttribute("page");
-	int startingPage = _page.getCurrentPage()-2;
-	int endPage = _page.getCurrentPage()+2;
-	
-	if(startingPage<1){
-		startingPage = 1;
-		endPage = 5;
-	}
-	
-	if(endPage>_page.getMaximumPage(10)){
-		endPage = _page.getMaximumPage(10);
-	}
-	
-	pageContext.getAttribute("startingPage", startingPage);	//시작페이지
-	pageContext.getAttribute("endPage", endPage);	//끝 페이지
-	
-	
-	%>
-	
-	<c:forEach var="no" begin="<%=startingPage%>" end="<%=endPage%>">
-		<c:if test="${no == page.currentPage }">
-			<span class="page_on">${no }</span>
+	<c:if test="${page.maximumPage>1}">
+		<c:if test="${page.currentPage>1}">
+			<a class="page_first" onclick="go_page(1)">처음</a>
+			<a class="page_prev" onclick="go_page(${page.currentPage-1})">이전</a>
 		</c:if>
-		<c:if test="${no != page.currentPage }">
-			<span onclick="go_page(${no})" class="page_off">${no }</span>
-		</c:if>		
-	</c:forEach> 
-	
-	
-
-	<!-- 다음/마지막 -->
-		<a class="page_next">다음</a>
-		<a class="page_last">마지막</a>
+		
+		<c:forEach var="no" begin="${page.startingPage}" end="${page.endPage}">
+			<c:if test="${no == page.currentPage}">
+				<span class="page_on">${no}</span>
+			</c:if>
+			<c:if test="${no != page.currentPage}">
+				<span onclick="go_page(${no})" class="page_off">${no}</span>
+			</c:if>
+			<%-- <span ${no == page.currentPage ?
+							'class="page_on"' :
+							 'onclick="go_page('+no+')" class="page_off"'}>${no}</span> --%>
+		</c:forEach> 
+		
+		<!-- 다음/마지막 -->
+		<c:if test="${page.currentPage<page.maximumPage}">
+			<a class="page_next" onclick="go_page(${page.currentPage+1})">다음</a>
+			<a class="page_last" onclick="go_page(${page.maximumPage})">마지막</a>
+		</c:if>
+	</c:if>
 </div>
 
 <script type="text/javascript">

@@ -1,7 +1,6 @@
 package com.hanul.coffeelike.caramelweb.controller;
 
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hanul.coffeelike.caramelweb.data.Notice;
 import com.hanul.coffeelike.caramelweb.data.Page;
 import com.hanul.coffeelike.caramelweb.service.NoticeService;
-import com.hanul.coffeelike.caramelweb.data.Qna;
-import com.hanul.coffeelike.caramelweb.data.UserProfileData;
 
 @Controller
 public class NoticeController {
@@ -27,16 +24,16 @@ public class NoticeController {
 	@RequestMapping("/notice")
 	public String notice(HttpSession session,
 			Model model,
-			@RequestParam(required = false) String search,
-			@RequestParam(required = false) String keyword,
+			@RequestParam(required = false) @Nullable String search,
+			@RequestParam(required = false) @Nullable String keyword,
 			@RequestParam(defaultValue = "1") int currentPage) {
-		Page page = new Page();
-		page.setTotalCount(noticeService.totalCount());
-		page.setSearch(search);
-		page.setKeyword(keyword);
-		int maximumPage = page.getMaximumPage(10);
+		Page page = new Page(noticeService.totalCount(),
+				currentPage,
+				search,
+				keyword,
+				10);
 		
-		if(currentPage>maximumPage) {
+		if(page.getCurrentPage()>page.getMaximumPage()) {
 			// 인덱스 초과, 특수 처리
 			return "123";
 		}

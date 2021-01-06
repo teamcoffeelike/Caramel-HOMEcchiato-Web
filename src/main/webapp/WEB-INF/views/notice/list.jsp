@@ -16,8 +16,7 @@
 		<span>Caramel HOMEcchiato 서비스의 오류, 장애, 기타 공지사항을 안내드립니다.</span>
 	</div>
 	<div class="notice">
-		<form method="post" action="notice">
-			<input type="hidden" name="id"/>
+		<form method="get" action="notice">
 			<input type="hidden" name="currentPage" value="1">
 			<ul class="noticeSearch">
 				<li><a onclick="$('form').submit()" class="btnSearch">검색</a></li>
