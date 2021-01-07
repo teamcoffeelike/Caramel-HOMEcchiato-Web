@@ -18,7 +18,6 @@ import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.Page;
 import com.hanul.coffeelike.caramelweb.data.Qna;
 import com.hanul.coffeelike.caramelweb.data.QnaComment;
-import com.hanul.coffeelike.caramelweb.data.UserLoginData;
 import com.hanul.coffeelike.caramelweb.service.QnaService;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 
@@ -29,8 +28,7 @@ public class QnaController {
 	
 	//문의게시판 목록
 	@RequestMapping("/list.qna")
-	public String qna(HttpSession session,
-					  Model model,
+	public String qna(Model model,
 					  @RequestParam(required = false) @Nullable String search,
 					  @RequestParam(required = false) @Nullable String keyword,
 					  @RequestParam(defaultValue = "1") int currentPage) {
@@ -99,7 +97,7 @@ public class QnaController {
 	public String deleteQna(HttpSession session,
 							Model model,
 							@RequestParam int id) {
-		if(session.getAttribute("loginUser")==null) return "redirect:qna";
+		if(session.getAttribute("loginUser")==null) return "redirect:list.qna";
 		
 		qnaService.deleteQna(id);
 		
@@ -131,9 +129,18 @@ public class QnaController {
 	}
 	
 	//문의글 댓글 수정저장 처리
-	@ResponseBody @RequestMapping(value="qna/comment/update",
-								  produces="application/text; charset=utf-8")
-	public String qnaCommentUpdate(@RequestBody QnaComment qnaComment) {
+	@ResponseBody 
+	@RequestMapping(value="qna/comment/update",
+					produces="application/text; charset=utf-8")
+	public String updateQnaComment(@RequestBody QnaComment qnaComment) {
 		return qnaService.updateQnaComment(qnaComment) == 1 ? "성공!" : "실패!";
 	}
+	
+	//문의글 댓글 삭제처리
+	@ResponseBody
+	@RequestMapping("/qna/comment/delete/{id}")
+	public void deleteQnaComment(@PathVariable int id) {
+		qnaService.deleteQnaComment(id);
+	}
+	
 }

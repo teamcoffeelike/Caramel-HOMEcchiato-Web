@@ -12,10 +12,8 @@
 <body>
 <div class="qna">
     <div class="text">
-        <h3>Q&A 게시판</h3><br/>
-        <span>게시판에 글을 남겨주시면 자세히 답변해 드리겠습니다.</span>
-        <br/>
-        <span>문의 내용에 개인정보가 노출되지 않도록 유의해주세요!</span>
+        <h3>Q&A 게시판</h3>
+        <span>게시판에 글을 남겨주시면 자세히 답변해 드리겠습니다. 문의 내용에 개인정보가 노출되지 않도록 유의해주세요!</span>
     </div>
     <!-- 검색 -->
     <div class="qna">
@@ -41,12 +39,25 @@
 
     <!-- 글 목록 보기-->  
     <table>
-    	<c:forEach items="${qnas }" var="page">
+    	<tr>
+    		<th>제목</th>
+    		<th class="w-px150">작성자</th>
+    		<th class="w-px120">작성일</th>
+    		<th class="w-px150">답변상태</th>
+    	</tr>
+    	<c:forEach items="${qnas }" var="q">
         <tr>
-            <td><a onclick="go_detail(${page.id})" class="title">${page.title }</a></td>
-            <td class="w-px150">${page.name }</td>
-            <td class="w-px120">${page.writeDate }</td>
-            <td class="w-px150"><a class="answer" style="cursor: default;">답변대기</a></td>
+            <td><a onclick="go_detail(${q.id})" class="title">${q.title }</a></td>
+            <td class="w-px150">${q.name }</td>
+            <td class="w-px120">${q.writeDate }</td>
+            <td class="w-px150">
+            	<c:if test="${q.response > 0 }">
+            		<span class="answer">답변완료</span>            	
+            	</c:if>
+            	<c:if test="${q.response == 0 }">
+            		<span class="answer">답변대기</span>            	
+            	</c:if>
+            </td>
         </tr>
         </c:forEach>
     </table>

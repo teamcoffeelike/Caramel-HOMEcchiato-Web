@@ -23,7 +23,7 @@ public class QnaService {
 	public List<Qna> getQna(Page page) {
 		return dao.getQna(page);
 	}
-
+	
 	public int insertQna(Qna qna) {
 		return dao.insertQna(qna);
 	}
@@ -50,6 +50,10 @@ public class QnaService {
 
 	public int updateQnaComment(QnaComment qnaComment) {
 		return dao.updateQnaComment(qnaComment);
+	}
+
+	public int deleteQnaComment(int id) {
+		return dao.deleteQnaComment(id);
 	}
 
 	

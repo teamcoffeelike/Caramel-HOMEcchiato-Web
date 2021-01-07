@@ -23,16 +23,17 @@
 			parameterType="Page"
 			resultType="Qna">
 		SELECT q.*, (SELECT name FROM users u WHERE u.id=q.writer) name
- 		  FROM (SELECT q.*, rownum r
+ 		  FROM (SELECT q.*, rownum r, (SELECT COUNT(*) FROM qnacomments c WHERE q.id = c.qnaid) response
                 FROM (SELECT * FROM qna <include refid="search_where"/> order by writedate desc) q
                 ORDER BY r) q
  		 WHERE r BETWEEN ((${currentPage}-1)*10)+1 AND ${currentPage}*10
+ 		   AND q.isDeleted = 'N'
 	</select>
 
 	<select id="getTotalCount"
 			resultType="Integer">
 		SELECT COUNT(*)
-		  FROM qna
+		  FROM qna <include refid="search_where"/>
 	</select>
 
 <!-- 	<select id="getQnas" -->
@@ -70,10 +71,11 @@
 		 WHERE id=#{id}
 	</update>
 	
-	<delete id="delete">
-		DELETE FROM qna
-			  WHERE id=#{id}
-	</delete>
+	<update id="delete">
+		UPDATE qna
+		   SET isDeleted = 'Y'
+	 	 WHERE id=#{id}
+	</update>
 	
 	<!-- 댓글 처리 -->
 	<insert id="insertQnaComment">
@@ -83,9 +85,9 @@
 	
 	<select id="commentList" resultType="QnaComment">
 		SELECT c.*, (SELECT name FROM users u WHERE u.id=writer) name
-		FROM qnaComments c 
-		WHERE qnaId = #{qnaId}
-		ORDER BY id desc
+		  FROM qnaComments c 
+		 WHERE qnaId = #{qnaId}
+		 ORDER BY id desc
 	</select>
 	
 	<update id="updateComment">
@@ -93,4 +95,10 @@
 		   SET content=#{content}
 		 WHERE id=#{id}
 	</update>
+	
+	<delete id="deleteComment">
+		DELETE FROM qnaComments
+		 WHERE id=#{id}
+		
+	</delete>
 </mapper>

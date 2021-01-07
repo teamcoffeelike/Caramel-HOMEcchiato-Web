@@ -58,16 +58,28 @@
     padding-left: 10px;
 }
 
-table, .text {
+.text {
 	width: 80%;
 	margin: 0px auto;
-    border: 1px solid #bebebe;
-    text-align: center;
-    border-collapse: collapse;
+	text-align: center;
+} 
+
+h3 {
+	margin-bottom: 10px;
 }
 
-table td {
-    padding: 15px 10px;
+table{
+	width: 80%;
+	margin: 0px auto;
+    text-align: center;
+    border-collapse: collapse;
+    border-top: 2px solid #865449;
+    border-bottom: 2px solid #865449;
+}
+
+
+table td, table th {
+    padding: 10px 10px;
     border-bottom: 1px solid #bebebe;
 }
 
@@ -76,14 +88,19 @@ table td:first-child {
     text-align: left;
 }
 
+table tr:first-child {
+	background-color: #fee9cd;
+	
+}
+
 .title {
     display: inline-block;
-    font-weight: bold;
     padding-left: 0px;
 }
 
 .title:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
+    font-weight: bold;
     cursor: pointer;
 }
 
@@ -95,8 +112,7 @@ table td:first-child {
 
 .answer {
 	width: 100px;
-	border: 1px solid #FCD092;
 	font-size: 15px;
-    padding: 10px 20px;
+    padding: 5px 20px;
 }
 

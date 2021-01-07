@@ -8,7 +8,9 @@
 <link rel="stylesheet" href="css/writeQna.css">
 </head>
 <body>
-<h3>문의글 쓰기</h3>
+<div class="text">
+	<h3>문의글 쓰기</h3>
+</div>
 	<form method="post" action="insert.qna">
 	<input type="hidden" name="writer" value="${loginUser.userId }" />
 		<table>
@@ -24,7 +26,7 @@
 
 	<div class="btn">
             <a class="save" onclick="if( necessary() ){ $('form').submit() }">저장</a>
-            <a href="qna">취소</a>
+            <a href="list.qna">취소</a>
     </div>
 <script type="text/javascript" src='js/mandatory_check.js'></script>
 	</form>

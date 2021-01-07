@@ -8,15 +8,17 @@ public class Qna{
 	private String content;
 	private String writer;
 	private String name;
+	private String response;
 	private Date writeDate;
 
 	public Qna(){}
-	public Qna(int id, String title, String content, String writer, String name, Date writeDate){
+	public Qna(int id, String title, String content, String writer, String name, String response, Date writeDate) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.writer = writer;
 		this.name = name;
+		this.response = response;
 		this.writeDate = writeDate;
 	}
 
@@ -49,6 +51,12 @@ public class Qna{
 	}
 	public void setName(String name){
 		this.name = name;
+	}
+	public String getResponse() {
+		return response;
+	}
+	public void setResponse(String response) {
+		this.response = response;
 	}
 	public Date getWriteDate(){
 		return writeDate;

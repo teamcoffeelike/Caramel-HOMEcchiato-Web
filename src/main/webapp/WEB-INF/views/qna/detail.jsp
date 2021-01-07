@@ -11,6 +11,10 @@
 </head>
 <body>
 <!-- 본인이 쓴 글인 경우 수정/삭제 가능 -->
+<div class="text">
+	<h3>Q&A 게시판</h3>
+	<span>게시판에 글을 남겨주시면 자세히 답변해 드리겠습니다. 문의 내용에 개인정보가 노출되지 않도록 유의해주세요!</span>
+</div>
 <c:if test="${loginUser.userId eq data.writer }">
 	<div class="btn">
 		<a class="delete" onclick="if(confirm('정말 삭제하시겠습니까?')){location='delete.qna?id=${data.id }'}">삭제</a>
@@ -47,16 +51,15 @@
 </div>
 
 <div class="btn">
-	<a class="list" onclick="history.go(-1)">목록으로</a>
+	<a class="list" onclick="$('form').submit()">목록으로</a>
 </div>
 
 
 
 
 <form method="post" action='list.qna'>
-<input type='hidden' name='id' value='${data.id}' />
-<input type='hidden' name='id' value='${data.writeDate}' />
-
+	<input type='hidden' name='id' value='${data.id}' />
+	<input type='hidden' name='writeDate' value='${data.writeDate}' />
 </form>
 <script type="text/javascript">
 function comment_regist() {

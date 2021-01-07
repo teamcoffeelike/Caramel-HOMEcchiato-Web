@@ -1,19 +1,30 @@
 
 table {
-	width: 50%;
+	width: 80%;
 	margin: 20px auto 0px;
-	border: 1px solid #bebebe;
 	border-collapse: collapse;
+	border-top: 2px solid #865449;
+    border-bottom: 2px solid #865449;
 }
 
 table th, table td {
-	border: 1px solid #bebebe;
-	padding: 5px 10px;
+	border-bottom: 1px solid #bebebe;
+	padding: 10px;
 }
 
-h3 {
-	margin: 30px auto;
+table th {
+	border-right: 1px solid #bebebe;
+}
+
+.text {
+	width: 80%;
+	margin: 20px auto;
 	text-align: center;
+	padding: 20px 0px;
+} 
+
+h3 {
+	margin-bottom: 10px;
 }
 
 input[type=text] {
@@ -33,18 +44,25 @@ textarea {
 }
 
 .btn {
-	width: 50%;
+	width: 80%;
 	margin: 20px auto;
 	text-align: center;
 }
 
-.btn a {
+.modify, .delete {
+	float: right;
+	padding: 5px 10px;
+	background-color: #FCD092;
+	border-radius: 10px;
+}
+
+.list {
 	background-color: #FCD092;
 	padding: 5px 10px;
 }
 
-.modify, .delete {
-	float: right;
+.modify {
+	margin-right: 5px;
 }
 
 .content {
@@ -53,9 +71,9 @@ textarea {
 
 .commentDiv {
 	margin: 0px auto;
-	width: 50%;
-	border: 1px solid #bebebe;
-	border-top: none;
+	width: 80%;
+	border-bottom: 2px solid #865449;
+	
 	padding-top: 10px;
 	overflow:hidden;
 }

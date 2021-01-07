@@ -51,5 +51,7 @@ public class QnaDAO {
 		return sql.update("qna.updateComment", qnaComment);
 	}
 
-	
+	public int deleteQnaComment(int id) {
+		return sql.update("qna.deleteComment", id);
+	}
 }
