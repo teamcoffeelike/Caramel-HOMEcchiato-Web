@@ -1,5 +1,7 @@
 package com.hanul.coffeelike.caramelweb.util;
 
+import java.sql.Date;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -16,6 +18,7 @@ public final class JsonHelper{
 			.registerTypeAdapter(Post.class, Post.Json.INSTANCE)
 			.registerTypeAdapter(RecipeStep.class, RecipeStep.Json.INSTANCE)
 			.registerTypeAdapter(RecipeCover.class, RecipeCover.Json.INSTANCE)
+			.registerTypeAdapter(Date.class, DateSerializer.INSTANCE)
 			.create();
 
 	/**

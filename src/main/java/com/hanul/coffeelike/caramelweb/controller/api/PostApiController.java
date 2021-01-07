@@ -1,21 +1,25 @@
 package com.hanul.coffeelike.caramelweb.controller.api;
 
-import com.google.gson.JsonObject;
-import com.hanul.coffeelike.caramelweb.data.AuthToken;
-import com.hanul.coffeelike.caramelweb.data.Post;
-import com.hanul.coffeelike.caramelweb.service.PostService;
-import com.hanul.coffeelike.caramelweb.service.PostService.PostModifyResult;
-import com.hanul.coffeelike.caramelweb.service.PostService.PostWriteResult;
-import com.hanul.coffeelike.caramelweb.util.JsonHelper;
-import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
+import java.sql.Date;
+import java.sql.Timestamp;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
-import java.util.List;
+import com.hanul.coffeelike.caramelweb.data.AuthToken;
+import com.hanul.coffeelike.caramelweb.data.Post;
+import com.hanul.coffeelike.caramelweb.service.PostService;
+import com.hanul.coffeelike.caramelweb.service.PostService.PostListResult;
+import com.hanul.coffeelike.caramelweb.service.PostService.PostModifyResult;
+import com.hanul.coffeelike.caramelweb.service.PostService.PostWriteResult;
+import com.hanul.coffeelike.caramelweb.util.JsonHelper;
+import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 
 @RestController
 public class PostApiController extends BaseExceptionHandlingController{
@@ -51,13 +55,17 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * }</pre>
 	 */
 	@RequestMapping(value = "/api/recentPosts", produces = "application/json;charset=UTF-8")
-	public String recentPosts(HttpSession session){
+	public String recentPosts(HttpSession session,
+	                          @RequestParam(required = false) @Nullable Long since,
+	                          @RequestParam(defaultValue = "10") int pages){
+		if(since!=null) System.out.println(since+" ("+new Timestamp(since)+")");
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
-		List<Post> posts = postService.recentPosts(loginUser==null ? null : loginUser.getUserId());
+		PostListResult result = postService.recentPosts(
+				loginUser==null ? null : loginUser.getUserId(),
+				since==null ? null : new Date(since),
+				pages);
 
-		JsonObject jsonObject = new JsonObject();
-		jsonObject.add("posts", JsonHelper.GSON.toJsonTree(posts));
-		return JsonHelper.GSON.toJson(jsonObject);
+		return JsonHelper.GSON.toJson(result);
 	}
 
 	/**

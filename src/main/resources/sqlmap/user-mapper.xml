@@ -31,7 +31,7 @@
 				(SELECT COUNT(*)
 		           FROM follows
 				  WHERE userId = #{loginUser}
-		            AND following = #{userId})
+		            AND following = #{userId, jdbcType=INTEGER})
 			</otherwise>
 		</choose>
 	</sql>
@@ -43,7 +43,7 @@
 			<otherwise>
 				(SELECT COUNT(*)
 		           FROM follows
-				  WHERE userId = #{userId}
+				  WHERE userId = #{userId, jdbcType=INTEGER}
 		            AND following = #{loginUser})
 			</otherwise>
 		</choose>
