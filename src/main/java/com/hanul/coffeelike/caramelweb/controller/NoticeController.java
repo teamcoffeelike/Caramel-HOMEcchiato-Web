@@ -17,25 +17,27 @@ import com.hanul.coffeelike.caramelweb.service.NoticeService;
 
 @Controller
 public class NoticeController {
+	public static final int NOTICE_PAGE_LIST_SIZE = 10;
+	
 	@Autowired
 	private NoticeService noticeService;
 	
 	//공지글목록 화면 요청
 	@RequestMapping("/notice")
 	public String notice(HttpSession session,
-			Model model,
-			@RequestParam(required = false) @Nullable String search,
-			@RequestParam(required = false) @Nullable String keyword,
-			@RequestParam(defaultValue = "1") int currentPage) {
-		Page page = new Page(noticeService.totalCount(),
+	                     Model model,
+	                     @RequestParam(required = false) @Nullable String search,
+	                     @RequestParam(required = false) @Nullable String keyword,
+	                     @RequestParam(defaultValue = "1") int currentPage){
+		Page page = new Page(noticeService.totalCount(search, keyword),
 				currentPage,
 				search,
 				keyword,
-				10);
+				NOTICE_PAGE_LIST_SIZE);
 		
 		if(page.getCurrentPage()>page.getMaximumPage()) {
 			// 인덱스 초과, 특수 처리
-			return "123";
+			return "noticeRequired"; 
 		}
 		
 		page.setCurrentPage(currentPage);
@@ -46,7 +48,33 @@ public class NoticeController {
 		model.addAttribute("notices", notices);
 		return "notice/list";
 	}
-
+	
+	// 상세화면에서 목록으로 누를시 조회한 페이지 인덱스 유지
+	@RequestMapping("/noticeBack")
+	public String noticeBack(Model model,
+	                         @RequestParam(required = false) @Nullable String search,
+	                         @RequestParam(required = false) @Nullable String keyword,
+	                         @RequestParam int from){
+		Page page = new Page(noticeService.totalCount(search, keyword),
+				1,
+				search,
+				keyword,
+				NOTICE_PAGE_LIST_SIZE);
+		
+		int index = noticeService.getIndex(from, search, keyword);
+		
+		StringBuilder stb = new StringBuilder("redirect:notice?currentPage=")
+				.append(page.getPageOf(index));
+		
+		if(search!=null)
+			stb.append("&search=").append(search);
+		
+		if(keyword!=null)
+			stb.append("&keyword=").append(keyword);
+		
+		return stb.toString();
+	}
+	
 	//신규공지글 작성화면 요청
 	@RequestMapping("/new")
 	public String newNotice() {
@@ -62,8 +90,13 @@ public class NoticeController {
 	
 	//공지글 상세화면 요청
 	@RequestMapping("/detail.no")
-	public String detailNotice(Model model, int id) {
+	public String detailNotice(Model model,
+	                           @RequestParam(required = false) @Nullable String search,
+	                           @RequestParam(required = false) @Nullable String keyword,
+	                           int id){
 		Notice notice = noticeService.detailNotice(id);
+		model.addAttribute("search", search);
+		model.addAttribute("keyword", keyword);
 		model.addAttribute("data", notice);
 		model.addAttribute("crlf", "\r\n");
 		return "notice/detail";

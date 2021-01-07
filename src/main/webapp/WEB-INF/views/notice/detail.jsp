@@ -19,13 +19,16 @@
 	<td class="w-px200" style="font-weight: bold;">${data.title }</td>
 </tr>
 <tr>
-	<td class="w-px200">${fn:replace(data.content, crlf, '<br>')}</td>
+	<td class="w-px200" style="padding: 50px 0;">${fn:replace(data.content, crlf, '<br>')}</td>
 </tr>
 </table>
 <div class="btnSet">
-	<a class="btnCancel" href="notice">목록으로</a>
+	<a class="btnCancel" href="noticeBack?from=${data.id}
+			<c:if test="${!empty search}">&search=${search}</c:if>
+			<c:if test="${!empty keyword}">&keyword=${keyword}</c:if>"
+	>목록으로</a>
 	<!-- 본인이 쓴 글인 경우 수정/삭제 가능 -->
-	<a class="btnSubmit" href="modify.no?id=${data.id }">수정</a>
+	<a class="btnSubmit" href="modify.no?id=${data.id}">수정</a>
 	<a class="btnCancel" onclick="if( confirm('정말 삭제하시겠습니까?') ){href='delete.no?id=${data.id }'}">삭제</a>
 </div>
 </body>

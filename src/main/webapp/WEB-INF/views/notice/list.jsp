@@ -36,10 +36,16 @@
 			<th class="w-px200">제목</th>
 			<th class="w-px80">작성일</th>
 		</tr>
-		<c:forEach items="${notices }" var="page">
+		<c:forEach items="${notices}" var="n">
 		<tr>
-			<td><a href="detail.no?id=${page.id }">${page.title }</a></td>
-			<td style="text-align: center;">${page.writeDate }</td>
+			<td>
+				<a href="detail.no?id=${n.id}
+						<c:if test="${!empty page.search}">&search=${page.search}</c:if>
+						<c:if test="${!empty page.keyword}">&keyword=${page.keyword}</c:if>">
+					${n.title}
+				</a>
+			</td>
+			<td style="text-align: center;">${n.writeDate}</td>
 		</tr>
 		</c:forEach>
 	</table>

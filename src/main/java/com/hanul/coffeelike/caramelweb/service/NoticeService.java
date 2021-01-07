@@ -3,13 +3,12 @@ package com.hanul.coffeelike.caramelweb.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.hanul.coffeelike.caramelweb.dao.NoticeDAO;
 import com.hanul.coffeelike.caramelweb.data.Notice;
 import com.hanul.coffeelike.caramelweb.data.Page;
-import com.hanul.coffeelike.caramelweb.data.Qna;
 
 @Service
 public class NoticeService {
@@ -20,8 +19,8 @@ public class NoticeService {
 		return dao.getNotice(notice);
 	}
 	
-	public int totalCount() {
-		return dao.getTotalCount();
+	public int totalCount(@Nullable String search, @Nullable String keyword) {
+		return dao.getTotalCount(search, keyword);
 	}
 	
 	public int insertNotice(Notice notice) {
@@ -40,5 +39,7 @@ public class NoticeService {
 		return dao.deleteNotice(id);
 	}
 
-
+	public int getIndex(int noticeId, @Nullable String search, @Nullable String keyword) {
+		return dao.getIndex(noticeId, search, keyword);
+	}
 }

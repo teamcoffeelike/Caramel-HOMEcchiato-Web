@@ -1,14 +1,16 @@
 package com.hanul.coffeelike.caramelweb.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import com.hanul.coffeelike.caramelweb.data.Notice;
 import com.hanul.coffeelike.caramelweb.data.Page;
-import com.hanul.coffeelike.caramelweb.data.Qna;
 
 @Repository
 public class NoticeDAO {
@@ -19,8 +21,11 @@ public class NoticeDAO {
 		return sql.selectList("notice.getNotices", notice);
 	}
 
-	public int getTotalCount() {
-		return sql.selectOne("notice.getTotalCount");
+	public int getTotalCount(@Nullable String search, @Nullable String keyword) {
+		Map<String, Object> m = new HashMap<>();
+		m.put("search", search);
+		m.put("keyword", keyword);
+		return sql.selectOne("notice.getTotalCount", m);
 	}
 
 	public int insertNotice(Notice notice) {
@@ -39,5 +44,11 @@ public class NoticeDAO {
 		return sql.delete("notice.delete", id);
 	}
 
-
+	public int getIndex(int noticeId, @Nullable String search, @Nullable String keyword) {
+		Map<String, Object> m = new HashMap<>();
+		m.put("id", noticeId);
+		m.put("search", search);
+		m.put("keyword", keyword);
+		return sql.selectOne("notice.getIndex", m);
+	}
 }

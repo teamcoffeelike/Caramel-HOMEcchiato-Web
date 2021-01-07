@@ -66,11 +66,15 @@ public class Page {
 	}
 
 	public int getMaximumPage(){
-		int pages = getTotalCount()/elementsInPages;
-		if(getTotalCount()%elementsInPages>0){
-			pages++;
+		return getPageOf(getTotalCount());
+	}
+	
+	public int getPageOf(int index) {
+		int page = index/elementsInPages;
+		if(index%elementsInPages>0){
+			page++;
 		}
-		return pages;
+		return page;
 	}
 	
 	public int getStartingPage(){

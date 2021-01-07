@@ -14,10 +14,13 @@
 	<select id="getNotices"
 			parameterType="Page"
 			resultType="Notice">
-		SELECT n.*
+		SELECT *
 		  FROM (SELECT n.*, rownum r
-                FROM (SELECT * FROM notices <include refid="search_where"/> ORDER BY writeDate DESC) n
-                ORDER BY r) n
+                  FROM (SELECT *
+                          FROM notices
+                        <include refid="search_where"/>
+                         ORDER BY writeDate DESC) n
+                 ORDER BY r)
          WHERE r BETWEEN ((${currentPage}-1)*10)+1 AND ${currentPage}*10
 	</select>
 	
@@ -35,7 +38,8 @@
 	<select id="getTotalCount"
 			resultType="integer">
 		SELECT count(*)
-		FROM notices <include refid="search_where"/>
+		  FROM notices
+		<include refid="search_where"/>
 	</select>
 	
 	<insert id="insert">
@@ -59,5 +63,17 @@
 		DELETE FROM notices
 		 WHERE id = #{id}
 	</delete>
+	
+	<select id="getIndex"
+	        resultType="Integer">
+		SELECT r
+		  FROM (SELECT n.*, rownum r
+                  FROM (SELECT *
+                          FROM notices
+                        <include refid="search_where"/>
+                         ORDER BY writeDate DESC) n
+                 ORDER BY r)
+         WHERE id = #{id}
+	</select>
 	
 </mapper>
