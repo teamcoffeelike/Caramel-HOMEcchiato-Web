@@ -181,13 +181,11 @@ $(function(){
 			url: "api/emailExists",
 			data: { email:$("#joinUserEmail").val() },
 			success:function(response) {
-				data = JSON.parse(response);
-				//console.log(result.exists);
-				if(data.exists == true) {
+				if(response.exists) {
+					$("#joinEmailCheck_msg").html("이미 사용중인 이메일입니다!");
+				}else {
 					$("#joinEmailCheck_msg").html("사용가능한 이메일입니다!");
 					$("#joinUserEmail").addClass("checked");
-				}else {
-					$("#joinEmailCheck_msg").html("이미 사용중인 이메일입니다!");
 				}
 			}, error:function(req, text) {
 				alert(req + " : " + text);
@@ -215,13 +213,11 @@ $(function(){
 			url: "api/phoneNumberExists",
 			data: { phoneNumber:$("#joinUserPhone").val() },
 			success:function(response) {
-				data = JSON.parse(response);
-				//console.log(result.exists);
-				if(data.exists == true) {
+				if(response.exists) {
+					$("#joinPhoneCheck_msg").html("이미 사용중인 번호입니다!");
+				}else {
 					$("#joinPhoneCheck_msg").html("사용가능한 번호입니다!");
 					$("#joinUserPhone").addClass("checked");
-				}else {
-					$("#joinPhoneCheck_msg").html("이미 사용중인 번호입니다!");
 				}
 
 			}, error:function(req, text) {

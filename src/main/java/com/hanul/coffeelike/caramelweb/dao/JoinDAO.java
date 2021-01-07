@@ -19,6 +19,7 @@ public class JoinDAO{
 						password,
 						null));
 	}
+
 	public int createUserWithPhoneNumber(String name, String phoneNumber, String password){
 		return sql.insert("join.createUserWithPhoneNumber",
 				new JoinData(name,
@@ -27,6 +28,7 @@ public class JoinDAO{
 						password,
 						null));
 	}
+
 	public int createUserWithKakaoAccount(@Nullable String name, long kakaoAccountId){
 		return sql.insert("join.createUserWithKakaoAccount",
 				new JoinData(name,
@@ -35,11 +37,16 @@ public class JoinDAO{
 						null,
 						kakaoAccountId));
 	}
-	public boolean emailExists(String email) {
-		return sql.<Integer>selectOne("join.emailExists", email)==0;
+
+	public boolean emailExists(String email){
+		return sql.<Integer>selectOne("join.emailExists", email)>0;
 	}
-	
-	public boolean phoneNumberExists(String phoneNumber) {
-		return sql.<Integer>selectOne("join.phoneNumberExists", phoneNumber)==0;
+
+	public boolean phoneNumberExists(String phoneNumber){
+		return sql.<Integer>selectOne("join.phoneNumberExists", phoneNumber)>0;
+	}
+
+	public boolean kakaoAccountExists(long kakaoAccountId){
+		return sql.<Integer>selectOne("join.kakaoAccountExists", kakaoAccountId)>0;
 	}
 }
