@@ -3,6 +3,7 @@ package com.hanul.coffeelike.caramelweb.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import com.hanul.coffeelike.caramelweb.dao.QnaDAO;
@@ -16,8 +17,8 @@ public class QnaService {
 	private QnaDAO dao;
 	
 	
-	public int totalCount() {
-		return dao.getTotalCount();
+	public int totalCount(@Nullable String search, @Nullable String keyword) {
+		return dao.getTotalCount(search, keyword);
 	}
 	
 	public List<Qna> getQna(Page page) {

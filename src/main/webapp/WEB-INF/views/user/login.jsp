@@ -19,11 +19,11 @@
 <div class="content">
 	<div class="login">
 		<label for="id">이메일 / 핸드폰번호</label>
-		<input type="text" name="user_id" id="user_id" />
+		<input type="text" name="user_id" id="user_id" onkeypress="if(event.keyCode==13){go_login()}"/>
 	</div>
 	<div class="login">
 		<label for="pw">비밀번호</label>
-		<input type="password" name="user_pw" id="user_pw" />
+		<input type="password" name="user_pw" id="user_pw" onkeypress="if(event.keyCode==13){go_login()}"/>
 	</div>
 	<div class="login-btn">
 		<a onclick="go_login()" id="btnLogin">로그인</a>

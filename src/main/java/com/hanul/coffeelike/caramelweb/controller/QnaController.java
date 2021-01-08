@@ -23,6 +23,8 @@ import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 
 @Controller
 public class QnaController {
+	public static final int QNA_PAGE_LIST_SIZE = 10;
+	
 	@Autowired
 	private QnaService qnaService;
 	
@@ -32,24 +34,26 @@ public class QnaController {
 					  @RequestParam(required = false) @Nullable String search,
 					  @RequestParam(required = false) @Nullable String keyword,
 					  @RequestParam(defaultValue = "1") int currentPage) {
-		//if(currentPage==null) currentPage = 0;
-		Page page = new Page(qnaService.totalCount(),
+		Page page = new Page(qnaService.totalCount(search, keyword),
 				currentPage,
 				search,
 				keyword,
-				10);
+				QNA_PAGE_LIST_SIZE);
 		
 		if(page.getCurrentPage()>page.getMaximumPage()) {
 			return "";
 		}
 		
-		List<Qna> qnas = qnaService.getQna(page);
+		page.setCurrentPage(currentPage);
 		
+		List<Qna> qnas = qnaService.getQna(page);
 		model.addAttribute("page", page);
 		model.addAttribute("qnas", qnas);
 		return "qna/list";
 	}
-		
+	
+	
+	
 	//문의글쓰기 화면 요청
 	@RequestMapping("/new.qna")
 	public String writeQna() {

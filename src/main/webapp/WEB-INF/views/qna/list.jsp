@@ -20,7 +20,7 @@
     <form method="POST" action="list.qna">
         <ul>
             <li><a class="searchBtn" onclick="$('form').submit()">검색</a></li>
-            <li><input type="text" name="keyword" value="${page.keyword }" class="keyword" /></li>
+            <li><input type="text" name="keyword" value="${page.keyword }" class="keyword"  onkeypress="if(event.keyCode==13){$('form').submit()}"/></li>
             <li>
                 <select name="search" class="option">
                     <option value="all" ${page.search eq 'all' ? 'selected' : ''}>전체</option>

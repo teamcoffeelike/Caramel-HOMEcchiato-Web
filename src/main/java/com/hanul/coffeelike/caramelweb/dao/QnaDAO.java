@@ -1,9 +1,12 @@
 package com.hanul.coffeelike.caramelweb.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import com.hanul.coffeelike.caramelweb.data.Page;
@@ -15,8 +18,11 @@ public class QnaDAO {
 	@Autowired
 	private SqlSession sql;
 	
-	public int getTotalCount() {
-		return sql.selectOne("qna.getTotalCount");
+	public int getTotalCount(@Nullable String search, @Nullable String keyword) {
+		Map<String, Object> m = new HashMap<>();
+		m.put("search", search);
+		m.put("keyword", keyword);
+		return sql.selectOne("qna.getTotalCount", m);
 	}
 	
 	public List<Qna> getQna(Page page) {
