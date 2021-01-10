@@ -1,8 +1,6 @@
 package com.hanul.coffeelike.caramelweb.controller;
 
-import com.hanul.coffeelike.caramelweb.data.Post;
 import com.hanul.coffeelike.caramelweb.service.FileService;
-import com.hanul.coffeelike.caramelweb.service.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +24,6 @@ public class AttachmentController{
 
 	@Autowired
 	private FileService fileService;
-	@Autowired
-	private PostService postService;
 
 	@RequestMapping(value = "/images/profileImage")
 	public void profileImage(HttpServletResponse response,
@@ -43,13 +39,7 @@ public class AttachmentController{
 	@RequestMapping(value = "/images/postImage")
 	public void postImage(HttpServletResponse response,
 	                      @RequestParam int id){
-		Post post = postService.post(id, null);
-		if(post==null||post.getImage()==null){
-			respondWithBadRequest(response);
-			return;
-		}
-
-		File image = fileService.getPostImageFile(post.getImage());
+		File image = fileService.getPostImageFromPost(id);
 		if(image==null||!image.exists()){
 			respondWithBadRequest(response);
 			return;

@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.hanul.coffeelike.caramelweb.util.AttachmentFileResolver;
 import com.hanul.coffeelike.caramelweb.util.AttachmentURLConverter;
 import org.springframework.lang.Nullable;
 
@@ -87,7 +88,7 @@ public class RecipeCover{
 			jsonObject.addProperty("id", src.getId());
 			jsonObject.add("recipeCategory", context.serialize(src.getCategory()));
 			jsonObject.addProperty("title", src.getTitle());
-			if(src.getCoverImage()!=null)
+			if(AttachmentFileResolver.doesRecipeCoverImageExists(src.getCoverImage()))
 				jsonObject.addProperty("coverImage", AttachmentURLConverter.recipeCoverImageFromId(src.getId()));
 			jsonObject.addProperty("author", src.getAuthor());
 			jsonObject.addProperty("ratings", src.getRatings());

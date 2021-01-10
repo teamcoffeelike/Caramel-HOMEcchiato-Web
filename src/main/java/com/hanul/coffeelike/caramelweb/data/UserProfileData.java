@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.hanul.coffeelike.caramelweb.util.AttachmentFileResolver;
 import com.hanul.coffeelike.caramelweb.util.AttachmentURLConverter;
 import org.springframework.lang.Nullable;
 
@@ -82,7 +83,7 @@ public class UserProfileData{
 			jsonObject.addProperty("name", src.getName());
 			if(src.getMotd()!=null)
 				jsonObject.addProperty("motd", src.getMotd());
-			if(src.getProfileImage()!=null)
+			if(AttachmentFileResolver.doesProfileImageExists(src.getProfileImage()))
 				jsonObject.addProperty("profileImage",
 						AttachmentURLConverter.profileImageFromId(src.getId()));
 			if(src.getFollowingYou()!=null)

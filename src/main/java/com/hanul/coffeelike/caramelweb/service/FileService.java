@@ -1,7 +1,10 @@
 package com.hanul.coffeelike.caramelweb.service;
 
 import com.hanul.coffeelike.caramelweb.dao.FileDAO;
+import com.hanul.coffeelike.caramelweb.data.PostImageData;
 import com.hanul.coffeelike.caramelweb.data.ProfileImageData;
+import com.hanul.coffeelike.caramelweb.util.AttachmentFileResolver;
+import com.hanul.coffeelike.caramelweb.util.AttachmentType;
 import com.hanul.coffeelike.caramelweb.util.FileExtensionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,16 +23,10 @@ import java.util.Random;
 
 @Service
 public class FileService{
-	private static final String PROFILE_IMAGE = "profileImage";
-	private static final String POST_IMAGE = "postImage";
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileService.class);
 
 	@Autowired
 	private FileDAO fileDAO;
-
-	private final File storageRoot = new File("/images");
-	private static final Random rng = new Random();
 
 	///////////////////////////////////////////////////////////////////////
 	//
@@ -41,13 +38,14 @@ public class FileService{
 	 * @return 유저가 존재하지 않거나 작업 실패 시 {@code false}, 성공 시 {@code true}
 	 */
 	public boolean setProfileImage(int userId, MultipartFile multipartFile){
-		// TODO https://stackoverflow.com/q/3334313 ?
 		ProfileImageData prevProfileImage = fileDAO.findProfileImage(userId);
 		if(prevProfileImage==null){ // User doesn't exists
 			return false;
 		}
 
-		String name = trySaveFile(multipartFile, getStorage(PROFILE_IMAGE), generateUniqueFilename("ProfileImage", userId));
+		String name = trySaveFile(multipartFile,
+				AttachmentType.PROFILE_IMAGE,
+				generateUniqueFilename(AttachmentType.PROFILE_IMAGE, userId));
 
 		// 멀티파트 내용물을 스토리지로 이동
 		if(name==null) return false;
@@ -55,16 +53,15 @@ public class FileService{
 		// DB에 삽입
 		if(!fileDAO.setUserProfileImage(userId, name)){
 			// DB에 삽입 실패, 파일 삭제
-			tryRemoveFile(getStorage(PROFILE_IMAGE), name);
+			tryRemoveFile(AttachmentFileResolver.getProfileImageFile(name));
 			return false;
 		}
 		// 기존 파일 삭제
 		String prevFile = prevProfileImage.getProfileImage();
 		if(prevFile!=null){
-			tryRemoveFile(getStorage(PROFILE_IMAGE), prevFile);
+			tryRemoveFile(AttachmentFileResolver.getProfileImageFile(prevFile));
 		}
 		return true;
-
 	}
 
 	/**
@@ -78,7 +75,7 @@ public class FileService{
 		fileDAO.removeProfileImage(userId);
 		String profileImage = prevProfileImage.getProfileImage();
 		if(profileImage!=null)
-			return tryRemoveFile(getStorage(PROFILE_IMAGE), profileImage);
+			return tryRemoveFile(AttachmentFileResolver.getProfileImageFile(profileImage));
 		else return true;
 	}
 
@@ -89,12 +86,8 @@ public class FileService{
 	 */
 	@Nullable public File getProfileImageFromUser(int userId){
 		ProfileImageData prevProfileImage = fileDAO.findProfileImage(userId);
-		if(prevProfileImage!=null){
-			String profileImage = prevProfileImage.getProfileImage();
-			if(profileImage!=null)
-				return new File(getStorage(PROFILE_IMAGE), profileImage);
-		}
-		return null;
+		if(prevProfileImage==null||prevProfileImage.getProfileImage()==null) return null;
+		return AttachmentFileResolver.getProfileImageFile(prevProfileImage.getProfileImage());
 	}
 
 	///////////////////////////////////////////////////////////////////////
@@ -109,7 +102,7 @@ public class FileService{
 	 * @return 파일 식별자, 이미지 저장 실패 시 {@code null}
 	 */
 	@Nullable public String savePostImage(int postId, MultipartFile image){
-		return trySaveFile(image, getStorage(POST_IMAGE), generateUniqueFilename("PostImage", postId));
+		return trySaveFile(image, AttachmentType.POST_IMAGE, generateUniqueFilename(AttachmentType.POST_IMAGE, postId));
 	}
 
 	/**
@@ -118,7 +111,7 @@ public class FileService{
 	 * @return 작업 실패 시 {@code false}. 삭제할 이미지가 없거나 작업 성공 시 {@code true}
 	 */
 	public boolean removePostImage(String filename){
-		return tryRemoveFile(getStorage(POST_IMAGE), filename);
+		return tryRemoveFile(AttachmentFileResolver.getPostImageFile(filename));
 	}
 
 	/**
@@ -126,16 +119,14 @@ public class FileService{
 	 *
 	 * @return 부착된 파일이 존재하지 않을 시 {@code null}. null이 아닐 경우에도 실제 파일이 없을 수 있음.
 	 */
-	public File getPostImageFile(String filename){
-		return new File(getStorage(POST_IMAGE), filename);
+	public File getPostImageFromPost(int postId){
+		PostImageData postImage = fileDAO.findPostImage(postId);
+		if(postImage==null||postImage.getImage()==null) return null;
+		return AttachmentFileResolver.getPostImageFile(postImage.getImage());
 	}
 
-
-	private File getStorage(String type){
-		return new File(storageRoot, type);
-	}
-
-	@Nullable private String trySaveFile(MultipartFile multipartFile, File storage, String generatedName){
+	@Nullable private String trySaveFile(MultipartFile multipartFile, AttachmentType type, String generatedName){
+		File storage = AttachmentFileResolver.getStorage(type);
 		File dest = new File(storage, generatedName);
 		try{
 			//noinspection ResultOfMethodCallIgnored
@@ -159,28 +150,21 @@ public class FileService{
 			Files.move(dest.toPath(), dest2.toPath());
 		}catch(Exception e){
 			LOGGER.error("파일 '{} ({})' 생성 중 오류 발생.", dest2.getPath(), dest2.getAbsolutePath(), e);
-			try{
-				if(!dest.delete()){
-					LOGGER.error("임시 파일 '{} ({})' 삭제 중 오류 발생: 삭제 불가.", dest.getPath(), dest.getAbsolutePath());
-				}
-			}catch(Exception e2){
-				LOGGER.error("임시 파일 '{} ({})' 삭제 중 오류 발생.", dest.getPath(), dest.getAbsolutePath(), e2);
-			}
+			tryRemoveFile(dest);
 			return null;
 		}
 		LOGGER.debug("이미지 파일 저장: {} ({})", dest2, dest2.getAbsolutePath());
 		return generatedName+"."+ext;
 	}
 
-	private boolean tryRemoveFile(File storage, String filename){
-		File file = new File(storage, filename);
+	private boolean tryRemoveFile(File file){
 		try{
 			if(!file.delete()){
-				LOGGER.error("파일 '{}'이 존재하지 않아 삭제할 수 없습니다.", file);
+				LOGGER.error("파일 '{} ({})'이 존재하지 않아 삭제할 수 없습니다.", file.getPath(), file.getAbsolutePath());
 			}
 			return true;
-		}catch(SecurityException ex){
-			LOGGER.error("파일 '{}' 삭제가 허용되지 않았습니다.", file, ex);
+		}catch(Exception ex){
+			LOGGER.error("파일 '{} ({})' 삭제가 허용되지 않았습니다.", file.getPath(), file.getAbsolutePath(), ex);
 			return false;
 		}
 	}
@@ -190,14 +174,16 @@ public class FileService{
 					.withLocale(Locale.US)
 					.withZone(ZoneId.of("UTC"));
 
+	private static final Random RNG = new Random();
+
 	/**
 	 * 타입과 데이터 키를 이용해 겹치지 않는(희망사항) 파일명을 생성합니다.
 	 */
-	private static String generateUniqueFilename(String type,
+	private static String generateUniqueFilename(AttachmentType type,
 	                                             Object primaryIdentifier){
-		return type+'-'+
+		return type.baseFileName+'-'+
 				primaryIdentifier+'-'+
 				DATE_TIME_FORMATTER.format(LocalDateTime.now())+'-'+
-				rng.nextInt(1024);
+				RNG.nextInt(1024);
 	}
 }

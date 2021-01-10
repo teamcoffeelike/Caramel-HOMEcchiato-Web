@@ -1,5 +1,6 @@
 package com.hanul.coffeelike.caramelweb.dao;
 
+import com.hanul.coffeelike.caramelweb.data.PostImageData;
 import com.hanul.coffeelike.caramelweb.data.ProfileImageData;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,12 @@ public class FileDAO{
 		m.put("profileImage", profileImage);
 		return sql.update("file.setUserProfileImage", m)>0;
 	}
-	
-	public void removeProfileImage(int userId) {
+
+	public void removeProfileImage(int userId){
 		sql.update("file.removeProfileImage", userId);
+	}
+
+	@Nullable public PostImageData findPostImage(int postId){
+		return sql.selectOne("file.findPostImage", postId);
 	}
 }

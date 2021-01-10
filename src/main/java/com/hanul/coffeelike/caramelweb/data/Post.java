@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.hanul.coffeelike.caramelweb.util.AttachmentFileResolver;
 import com.hanul.coffeelike.caramelweb.util.AttachmentURLConverter;
 import org.springframework.lang.Nullable;
 
@@ -101,6 +102,20 @@ public class Post{
 		this.likedByYou = likedByYou;
 	}
 
+	@Override public String toString(){
+		return "Post{"+
+				"id="+id+
+				", image='"+image+'\''+
+				", text='"+text+'\''+
+				", author="+author+
+				", postDate="+postDate+
+				", lastEditDate="+lastEditDate+
+				", likes="+likes+
+				", reactions="+reactions+
+				", likedByYou="+likedByYou+
+				'}';
+	}
+
 
 	public enum Json implements JsonSerializer<Post>{
 		INSTANCE;
@@ -110,7 +125,7 @@ public class Post{
 		                                       JsonSerializationContext context){
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("id", src.getId());
-			if(src.getImage()!=null)
+			if(AttachmentFileResolver.doesPostImageExists(src.getImage()))
 				jsonObject.addProperty("image", AttachmentURLConverter.postImageFromId(src.getId()));
 			jsonObject.addProperty("text", src.getText());
 			jsonObject.add("author", context.serialize(src.getAuthor()));
