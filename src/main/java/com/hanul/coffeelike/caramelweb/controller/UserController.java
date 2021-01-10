@@ -5,18 +5,22 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.JsonObject;
 import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.UserProfileData;
 import com.hanul.coffeelike.caramelweb.data.UserSettingData;
 import com.hanul.coffeelike.caramelweb.service.UserService;
 import com.hanul.coffeelike.caramelweb.service.UserService.SettingResult;
 import com.hanul.coffeelike.caramelweb.util.AttachmentURLConverter;
+import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 
 @Controller
@@ -34,6 +38,23 @@ public class UserController {
 		List<UserProfileData> users = userService.getFollower(loginUser.getUserId());
 		model.addAttribute("followers", users);
 		return "mypage/follows";
+	}
+	
+	// 친구찾기 화면
+	@RequestMapping("/search")
+	public String searchFriend() {
+		return "mypage/friend";
+	}
+	
+	//친구찾기 결과
+	@ResponseBody
+	@RequestMapping("/searchName")
+	public String search(@RequestParam String name) {
+		boolean exists = userService.nameExists(name);
+		
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("exists", exists);
+		return JsonHelper.GSON.toJson(jsonObject);
 	}
 	
 	//프로필
