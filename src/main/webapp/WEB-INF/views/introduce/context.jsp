@@ -15,7 +15,27 @@
 <body>
 <!-- Header -->
 <section class="intro-section">
-	<h1>Caramel HOMEcchiato</h1>
+	<!-- <h1>Caramel HOMEcchiato</h1> -->
+	<h1>
+		<span>C</span>
+		<span>a</span>
+		<span>r</span>
+		<span>a</span>
+		<span>m</span>
+		<span>e</span>
+		<span>l</span>
+		<span>&nbsp;H</span>
+		<span>O</span>
+		<span>M</span>
+		<span>E</span>
+		<span>c</span>
+		<span>c</span>
+		<span>h</span>
+		<span>i</span>
+		<span>a</span>
+		<span>t</span>
+		<span>o</span>
+	</h1>
 	<p><span>집</span>에서도 여유롭게 <span>카페</span> 분위기를 즐겨보세요</p>
 </section>
  
