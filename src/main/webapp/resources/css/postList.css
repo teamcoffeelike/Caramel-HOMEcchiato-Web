@@ -2,14 +2,13 @@
 
 .postList{ width: 600px; margin: 0 auto; }
 
-
-
 .post-image { display: block; width: 600px; }
 
 .userBox { 
 	height: 70px; line-height: 70px;
 	vertical-align: middle; padding: 10px;
 	overflow: hidden;
+	border: 1px solid #ccc;
 }
 
 .profile-image{
@@ -21,4 +20,27 @@
 .profile-name{
 	width: 50px; height: 50px; 
 	line-height: 50px; float: left;
+}
+
+.contentBox{
+	border: 1px solid #ccc; 
+	margin-bottom: 20px; padding: 10px 0;
+	overflow: hidden; vertical-align: middle;
+}
+
+.content{
+	width:500px; white-space: nowrap; margin-left: 10px;
+	overflow: hidden; text-overflow: ellipsis; float: left;
+}
+
+.moreContent{display: none;}
+
+.moreContent, .reaction {
+	margin-left: 10px; color: #ccc; font-size: 0.8em;
+	cursor: pointer; 
+}
+
+.postDate{
+	margin-left: 10px; color: #ccc; font-size: 0.8em;
+	border-bottom: 1px solid #ccc;
 }

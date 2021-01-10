@@ -64,7 +64,11 @@ public class PostController {
 	
 	//포스트 상세화면 요청
 	@RequestMapping("/post")
-	public String post() {
-		return "";
+	public String post(HttpSession session, 
+					   Model model,
+					   int id) {
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		model.addAttribute("post", postService.post(id, loginUser==null ? null : loginUser.getUserId()));
+		return "post/detail";
 	}
 }
