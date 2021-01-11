@@ -96,24 +96,38 @@
 		 WHERE id = #{userId}
 	</update>
 
+	<!-- TODO 테스트 -->
 	<select id="getFollower"
 	        parameterType="Integer"
 	        resultType="UserProfileData">
 		SELECT f.userId id,
 		       u.name name,
-		       u.profileImage profileImage
+		       u.profileImage profileImage,
+		       <include refid="isFollowingYou">
+			       <property name="userId" value="${f.userId}"/>
+		       </include> isFollowingYou,
+		       <include refid="isFollowedByYou">
+			       <property name="userId" value="${f.userId}"/>
+		       </include> isFollowedByYou
 		  FROM follows f
 		       JOIN users u
 		         ON f.userId = u.id
 		 WHERE f.following = #{it}
 	</select>
 
+	<!-- TODO 테스트 -->
 	<select id="getFollowing"
 			parameterType="Integer"
 			resultType="UserProfileData">
 		SELECT f.userId id,
 		       u.name name,
-		       u.profileImage profileImage
+		       u.profileImage profileImage,
+		       <include refid="isFollowingYou">
+			       <property name="userId" value="${f.userId}"/>
+		       </include> isFollowingYou,
+		       <include refid="isFollowedByYou">
+			       <property name="userId" value="${f.userId}"/>
+		       </include> isFollowedByYou
 		  FROM follows f
 		       JOIN users u
 		         ON f.following = u.id
