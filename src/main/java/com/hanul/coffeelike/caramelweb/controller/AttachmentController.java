@@ -1,9 +1,6 @@
 package com.hanul.coffeelike.caramelweb.controller;
 
-import com.hanul.coffeelike.caramelweb.data.Post;
 import com.hanul.coffeelike.caramelweb.service.FileService;
-import com.hanul.coffeelike.caramelweb.service.PostService;
-import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +10,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 @RestController
 public class AttachmentController{
-	private final Logger logger = LoggerFactory.getLogger(AttachmentController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AttachmentController.class);
 
 	@Autowired
 	private FileService fileService;
-	@Autowired
-	private PostService postService;
 
 	@RequestMapping(value = "/images/profileImage")
 	public void profileImage(HttpServletResponse response,
@@ -38,13 +39,7 @@ public class AttachmentController{
 	@RequestMapping(value = "/images/postImage")
 	public void postImage(HttpServletResponse response,
 	                      @RequestParam int id){
-		Post post = postService.post(id, null);
-		if(post==null||post.getImage()==null){
-			respondWithBadRequest(response);
-			return;
-		}
-
-		File image = fileService.getPostImageFile(post.getImage());
+		File image = fileService.getPostImageFromPost(id);
 		if(image==null||!image.exists()){
 			respondWithBadRequest(response);
 			return;
@@ -68,10 +63,10 @@ public class AttachmentController{
 
 	private void respondWithBadRequest(HttpServletResponse response){
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		try(PrintWriter w = response.getWriter()){
-			w.print(JsonHelper.failure("bad_request"));
+		try{
+			response.sendError(404, "Not Found");
 		}catch(IOException e){
-			logger.error("응답 중 에러 발생", e);
+			LOGGER.error("응답 중 에러 발생", e);
 		}
 	}
 
@@ -88,7 +83,7 @@ public class AttachmentController{
 				bos.write(b);
 			}
 		}catch(IOException e){
-			logger.error("응답 중 에러 발생", e);
+			LOGGER.error("응답 중 에러 발생", e);
 		}
 	}
 }

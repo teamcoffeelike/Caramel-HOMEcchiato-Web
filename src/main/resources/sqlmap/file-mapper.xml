@@ -20,11 +20,21 @@
            AND isDeleted = 'N'
     </update>
 
-	<update id="removeProfileImage"
-			parameterType="Integer">
-		UPDATE users
-		   SET profileImage = null
-		 WHERE id = #{userId}
-	</update>
-	
+    <update id="removeProfileImage"
+            parameterType="Integer">
+        UPDATE users
+           SET profileImage = null
+         WHERE id = #{userId}
+    </update>
+
+    <select id="findPostImage"
+            parameterType="Integer"
+            resultType="PostImageData">
+        SELECT id,
+               image
+          FROM posts
+         WHERE id = #{id}
+           AND isDeleted = 'N'
+    </select>
+
 </mapper>

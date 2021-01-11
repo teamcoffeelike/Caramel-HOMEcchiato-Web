@@ -3,11 +3,11 @@
 <mapper namespace="notice">
 	<sql id="search_where">
 		<if test="search == 'title' or search == 'content'">
-		 WHERE ${search} LIKE '%' || #{keyword} || '%'
+		 WHERE ${search} LIKE '%' || #{keyword, jdbcType=VARCHAR} || '%'
 		</if>
 		<if test="search == 'all'">
-		 WHERE title LIKE '%' || #{keyword} || '%'
-		    OR content LIKE '%' || #{keyword} || '%'
+		 WHERE title LIKE '%' || #{keyword, jdbcType=VARCHAR} || '%'
+		    OR content LIKE '%' || #{keyword, jdbcType=VARCHAR} || '%'
 		</if>
 	</sql>
 	

@@ -5,151 +5,154 @@
 <head>
 <meta charset="UTF-8">
 <title>소개</title>
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script> AOS.init(); </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	$(".header-info").fadeIn(500);
-});
-
-$(".scrollTop").click(function(){
-	$("html, body").animate( { scrollTop : 0 }, 400);
-	return false;
-});
-</script>
-<style type="text/css">
-.title {
-	color: #E67461; font-size: 20px; position: relative;
-	transform: translate(50%, 20px);
-}
-
-.header-info {
-	display: none; margin: 20px;
-}
-
-.header-info span { font-size: 18px; font-weight: bold; }
-
-#contents {
-	margin-top: 100px;
-}
-
-.contents-title1, .contents-title2, .contents-title3 {
-	font-size: 50px; font-weight: bold;
-	margin-top: 50px;
-}
-
-.contents-title1 span {
-	box-shadow: inset 0 -15px 0 #f0dc51;
-}
-
-.contents-title2 span {
-	box-shadow: inset 0 -15px 0 #e67461;
-}
-
-.contents-title3 span {
-	box-shadow: inset 0 -15px 0 #8eba92;	
-}
-
-.img-latte {
-	width: 600px; height: 450px;
-	position: absolute;
-}
-
-.img-lemonade {
-	width: 550px; height: 700px;
-	position: relative;	top: 0px; left: 1000px;
-}
-
-.img-couple {
-	width: 500px; height: 350px;
-	position: relative; top: 100px;	right: 400px;
-}
-
-.section-recipe img {
-	width: 550px; height: 700px;
-}
-
-.section-post img, .section-myPage img {
-	width: 550px; height: 700px;
-}
-
-.scrollTop {
-	position: fixed;
-	width: 45px;
-	height: 40px;
-	right: 2%;
-	bottom: 20px;
-	font-size: 20px;
-	background-color: #e67461;
-	color: #ffffff;
-	text-align: center;
-	padding-top: 5px;
-}
-
-</style>
+<link rel="stylesheet" href="css/introduce.css">
+<link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css" />
+<link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting-cells.css" />
+<script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+<script src="https://unpkg.com/scroll-out/dist/scroll-out.min.js"></script>
+<script src="https://codepen.io/shshaw/pen/QmZYMG.js"></script>
 </head>
 <body>
-<div class="wrap">
-	<div id="header">
-		<div class="title">
-			<h3>Caramel<br/>HOMEcchiato</h3>
-		</div>
- 		<div class="header-info">
-			<p><span class="point1">집</span>에서도 여유롭게</p>
-			<p><span class="point2">휴식</span>을 취하며</p>
-			<p><span class="point3">카페</span> 분위기를 즐겨보세요</p>
-		</div>
-		<div data-aos="fade-up" data-aos-duration="1000">
-			<div class="header-imgs">
-				<img class="img-latte" src="imgs/coffee.jpg" alt="사진"/>
-				<img class="img-lemonade" src="imgs/ade2.jpg" alt="사진"/>
-				<img class="img-couple" src="imgs/couple.jpg" alt="사진"/>
+<!-- Header -->
+<section class="intro-section">
+	<!-- <h1>Caramel HOMEcchiato</h1> -->
+	<h1>
+		<span>C</span>
+		<span>a</span>
+		<span>r</span>
+		<span>a</span>
+		<span>m</span>
+		<span>e</span>
+		<span>l</span>
+		<span>&nbsp;H</span>
+		<span>O</span>
+		<span>M</span>
+		<span>E</span>
+		<span>c</span>
+		<span>c</span>
+		<span>h</span>
+		<span>i</span>
+		<span>a</span>
+		<span>t</span>
+		<span>o</span>
+	</h1>
+	<p><span>집</span>에서도 여유롭게 <span>카페</span> 분위기를 즐겨보세요</p>
+</section>
+ 
+<!-- Content  -->
+<!-- Recipe -->
+<!-- 이미지 -->
+<section class="content-section" data-scroll>
+	<figure class="figure">
+		<img src="imgs/coffee4.jpg">
+	</figure>
+	
+	<!-- 텍스트 -->
+	<div class="content">
+		<header class="header">
+			<div class="subheading"></div>
+			<div data-splitting>
+				<h2 class="heading">Recipe</h2>
 			</div>
-		</div>
+		</header>
+		<p class="paragraph">
+			기본으로 제공하는 레시피를 참고하여 레시피를 만들 수 있습니다.<br/> 
+			기존의 레시피를 커스텀하여 나만의 특별한 레시피도 만들어보세요!
+		</p>
 	</div>
-	<div id="contents">
-		<div class="section-recipe">
-			<div class="inner">
-				<div data-aos="fade-right" data-aos-duration="2000">
-					<h1 class="contents-title1" onclick="location='list.re'"><span>Recipe</span></h1>
-				</div>
-				<p class="contents-text1">기본 레시피를 보며<br/>레시피를 만들어보세요!</p>
-				<div data-aos="fade-up" data-aos-duration="3000">
-					<img src="imgs/smoothie.jpg" alt="사진"/>
-					<img src="imgs/coffee4.jpg" alt="사진"/>
-					<img src="" alt="사진"/>
-				</div>
-			</div>
-		</div>
-		<div class="section-post">
-			<div class="inner">
-				<div data-aos="fade-right" data-aos-duration="2000">
-					<p class="contents-title2"><span>Post</span></p>
-				</div>
-				<p class="contents-text2">친구들의 포스트를 보고<br/>이야기를 나누어보세요!</p>
-				<div data-aos="fade-up" data-aos-duration="3000">
-					<img src="imgs/coffee6.jpg" alt="사진"/>
-				</div>
-			</div>
-		</div>
-		<div class="section-myPage">
-			<div class="inner">
-				<div data-aos="fade-right" data-aos-duration="2000">
-					<p class="contents-title3"><span>My Page</span></p>
-				</div>
-				<p class="contents-text3">나만의 특별한 레시피와<br/>일상을 기록해보세요!</p>
-				<div data-aos="fade-up" data-aos-duration="3000">
-					<img src="imgs/ade.jpg" alt="사진"/>
-				</div>
-			</div>
-		</div>
+</section>
+
+<!-- Post -->
+<!-- 이미지 -->
+<section class="content-section" data-scroll>
+	<figure class="figure">
+		<img src="imgs/coffee.jpg">
+	</figure>
+	
+	<!-- 텍스트 -->
+	<div class="content">
+		<header class="header">
+			<div class="subheading"></div>
+			<h2 class="heading">Post</h2>
+		</header>
+		<p class="paragraph">
+			인기 포스트를 통해 다양한 레시피와 일상을 공유할 수 있습니다.<br/>
+			마음에 드는 포스트가 있다면 좋아요를 누르고 댓글을 달아보세요!
+		</p>
 	</div>
-	<div id="footer">
-		<a class="scrollTop" href="#">↑</a>
+</section>
+
+<!-- Follow -->
+<!-- 이미지 -->
+<section class="content-section" data-scroll>
+	<figure class="figure">
+		<img src="imgs/coffee.jpg">
+	</figure>
+	
+	<!-- 텍스트 -->
+	<div class="content">
+		<header class="header">
+			<div class="subheading"></div>
+			<h2 class="heading">Follow</h2>
+		</header>
+		<p class="paragraph">
+			친구를 검색하고 팔로우 할 수 있습니다.<br/>
+			팔로우한 친구와 이야기를 주고 받으며 소통해보세요!
+		</p>
 	</div>
-</div>
+</section>
+
+<!-- Like -->
+<!-- 이미지 -->
+<section class="content-section" data-scroll>
+	<figure class="figure">
+		<img src="imgs/coffee.jpg">
+	</figure>
+	
+	<!-- 텍스트 -->
+	<div class="content">
+		<header class="header">
+			<div class="subheading"></div>
+			<h2 class="heading">Like</h2>
+		</header>
+		<p class="paragraph">
+			게시물에 좋아요를 누르고 보관할 수 있습니다.<br/>
+			마음에 드는 게시물이 있다면 보관함에 담아보세요!
+		</p>
+	</div>
+</section>
+
+<!-- My Page -->
+<!-- 이미지 -->
+<section class="content-section" data-scroll>
+	<figure class="figure">
+		<img src="imgs/coffee.jpg">
+	</figure>
+	
+	<!-- 텍스트 -->
+	<div class="content">
+		<header class="header">
+			<div class="subheading"></div>
+			<h2 class="heading">My Page</h2>
+		</header>
+		<p class="paragraph">
+			내 프로필을 설정하고 자유롭게 글을 올릴 수 있습니다.<br/>
+			나만의 특별한 레시피와 일상을 기록해보세요!
+		</p>
+	</div>
+</section>
+<script> Splitting(); </script>
+<script>
+console.clear();
+
+ScrollOut({
+  cssProps: {
+    visibleY: true,
+    viewportY: true
+  }
+});
+
+Splitting({ target: '.heading' });
+</script>
 </body>
 </html>

@@ -2,7 +2,7 @@ package com.hanul.coffeelike.caramelweb.data;
 
 import org.springframework.lang.Nullable;
 
-public class Page {
+public class Page{
 	/**
 	 * 총 글 건수
 	 */
@@ -68,15 +68,15 @@ public class Page {
 	public int getMaximumPage(){
 		return getPageOf(getTotalCount());
 	}
-	
-	public int getPageOf(int index) {
+
+	public int getPageOf(int index){
 		int page = index/elementsInPages;
 		if(index%elementsInPages>0){
 			page++;
 		}
 		return page;
 	}
-	
+
 	public int getStartingPage(){
 		return Math.max(1, getCurrentPage()-2);
 	}

@@ -118,4 +118,8 @@ public class UserService{
 			return error;
 		}
 	}
+
+	public boolean nameExists(String name) {
+		return dao.nameExists(name);
+	}
 }

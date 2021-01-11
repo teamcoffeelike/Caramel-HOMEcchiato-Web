@@ -37,7 +37,7 @@ public class NoticeController {
 		
 		if(page.getCurrentPage()>page.getMaximumPage()) {
 			// 인덱스 초과, 특수 처리
-			return "noticeRequired"; 
+			return "pageRequired"; 
 		}
 		
 		page.setCurrentPage(currentPage);
@@ -122,6 +122,6 @@ public class NoticeController {
 	@RequestMapping("/delete.no")
 	public String deleteNotice(int id) {
 		noticeService.deleteNotice(id);
-		return "redirect:notice";
+		return "redirect:notice?currentPage=";
 	}
 }

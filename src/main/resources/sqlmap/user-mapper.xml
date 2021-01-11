@@ -139,4 +139,10 @@
 		 WHERE id = #{it}
 	</select>
 
+	<select id="nameExists"
+			resultType="integer">
+		SELECT count(*)
+		  FROM users
+		 WHERE name = #{name}
+	</select>
 </mapper>

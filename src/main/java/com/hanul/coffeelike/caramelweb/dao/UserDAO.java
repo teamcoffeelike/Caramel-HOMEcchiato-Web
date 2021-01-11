@@ -76,4 +76,8 @@ public class UserDAO{
 	public boolean checkIfUserExists(int author){
 		return sql.selectOne("user.checkIfUserExists", author)!=null;
 	}
+
+	public boolean nameExists(String name) {
+		return sql.<Integer>selectOne("user.nameExists", name) > 0;
+	}
 }

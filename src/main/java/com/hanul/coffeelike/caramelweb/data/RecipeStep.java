@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.hanul.coffeelike.caramelweb.util.AttachmentFileResolver;
 import com.hanul.coffeelike.caramelweb.util.AttachmentURLConverter;
 import org.springframework.lang.Nullable;
 
@@ -64,7 +65,7 @@ public class RecipeStep{
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("recipe", src.getRecipe());
 			jsonObject.addProperty("index", src.getIndex());
-			if(src.getImage()!=null)
+			if(AttachmentFileResolver.doesRecipeStepImageExists(src.getImage()))
 				jsonObject.addProperty("image",
 						AttachmentURLConverter.recipeStepImageFromId(src.getRecipe(), src.getIndex()));
 			jsonObject.addProperty("text", src.getText());

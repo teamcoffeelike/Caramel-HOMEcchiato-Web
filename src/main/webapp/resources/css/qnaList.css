@@ -99,7 +99,6 @@ table tr:first-child {
 }
 
 .title:hover {
-    transform: scale(1.1);
     font-weight: bold;
     cursor: pointer;
 }

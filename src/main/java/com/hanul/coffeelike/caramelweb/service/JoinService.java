@@ -36,7 +36,9 @@ public class JoinService{
 
 		if(!Validate.password(password)) return new LoginResult("bad_password");
 
-		if(joinDAO.createUserWithEmail(name, email, password)==0) return new LoginResult("user_exists");
+		if(joinDAO.emailExists(email)) return new LoginResult("user_exists");
+
+		joinDAO.createUserWithEmail(name, email, password);
 		UserLoginData user = loginDAO.findUserWithEmail(email);
 		if(user==null) return new LoginResult("join_failed");
 		return new LoginResult(user.getId(), authService.generateAuthToken(user.getId()));
@@ -61,7 +63,9 @@ public class JoinService{
 
 		if(!Validate.password(password)) return new LoginResult("bad_password");
 
-		if(joinDAO.createUserWithPhoneNumber(name, phoneNumber, password)==0) return new LoginResult("user_exists");
+		if(joinDAO.phoneNumberExists(phoneNumber)) return new LoginResult("user_exists");
+
+		joinDAO.createUserWithPhoneNumber(name, phoneNumber, password);
 		UserLoginData user = loginDAO.findUserWithPhoneNumber(phoneNumber);
 		if(user==null) return new LoginResult("join_failed");
 		return new LoginResult(user.getId(), authService.generateAuthToken(user.getId()));
@@ -80,7 +84,9 @@ public class JoinService{
 
 		if(!Validate.name(name)) return new LoginResult("bad_name");
 
-		if(joinDAO.createUserWithKakaoAccount(name, kakaoUserId)==0) return new LoginResult("user_exists");
+		if(joinDAO.kakaoAccountExists(kakaoUserId)) return new LoginResult("user_exists");
+
+		joinDAO.createUserWithKakaoAccount(name, kakaoUserId);
 		Integer user = loginDAO.findUserWithKakaoUserId(kakaoUserId);
 		if(user==null) return new LoginResult("join_failed");
 		return new LoginResult(user, authService.generateAuthToken(user));
