@@ -1,7 +1,9 @@
 package com.hanul.coffeelike.caramelweb.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,19 +44,8 @@ public class UserController {
 	
 	// 친구찾기 화면
 	@RequestMapping("/search")
-	public String searchFriend() {
+	public String searchFriend(Model model) {
 		return "mypage/friend";
-	}
-	
-	//친구찾기 결과
-	@ResponseBody
-	@RequestMapping("/searchName")
-	public String search(@RequestParam String name) {
-		boolean exists = userService.nameExists(name);
-		
-		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("exists", exists);
-		return JsonHelper.GSON.toJson(jsonObject);
 	}
 	
 	//프로필

@@ -119,7 +119,8 @@ public class UserService{
 		}
 	}
 
-	public boolean nameExists(String name) {
-		return dao.nameExists(name);
+	public List<UserProfileData> searchUserByName(String name) {
+		return dao.searchUserByName(name);
 	}
+
 }

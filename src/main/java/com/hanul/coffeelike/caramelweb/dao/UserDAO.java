@@ -77,7 +77,8 @@ public class UserDAO{
 		return sql.selectOne("user.checkIfUserExists", author)!=null;
 	}
 
-	public boolean nameExists(String name) {
-		return sql.<Integer>selectOne("user.nameExists", name) > 0;
+	public List<UserProfileData> searchUserByName(String name) {
+		return sql.selectList("user.searchUserByName", name);
 	}
+
 }

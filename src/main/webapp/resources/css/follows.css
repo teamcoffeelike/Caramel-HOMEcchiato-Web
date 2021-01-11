@@ -4,7 +4,7 @@
 	list-style: none;
 }
 
-.container {
+.container, .search {
 	width: 400px;
 	margin: 30px auto;
 }
@@ -61,4 +61,36 @@
 	color: #e67461;
 	border: 1px solid #e67461;
 	border-radius: 5px;
+}
+
+/* 친구검색창 */
+.search {
+	text-align: right;
+}
+
+#searchName {
+	width: 200px;
+	padding: 5px 10px;
+	outline: none;
+	border: 1px solid #bebebe;
+}
+
+#searchNameResult {
+	display: inline-block;
+	width: 200px;
+	font-size: 14px;
+}
+
+.searchNameRow {
+	background-color: #f4eae1;
+	text-align: left;
+	padding: 5px 10px;
+	border: 1px solid #bebebe;
+	border-top: none;
+}
+
+.searchNameRow:hover {
+	cursor: pointer;
+	background-color: #eed7be;
+	font-weight: bold;
 }

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -260,5 +262,17 @@ public class UserApiController extends BaseExceptionHandlingController{
 		}
 
 		return "{}";
+	}
+	
+	@RequestMapping(value = "/api/searchUserByName", produces="application/json;charset=UTF-8")
+	public String searchUserByName(@RequestParam String name){
+		List<UserProfileData> list = service.searchUserByName(name);
+		
+		JsonElement e = JsonHelper.GSON.toJsonTree(list);
+
+		JsonObject o = new JsonObject();
+		o.add("users", e);
+
+		return JsonHelper.GSON.toJson(o);
 	}
 }

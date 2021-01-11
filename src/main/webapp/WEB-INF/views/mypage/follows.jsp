@@ -9,8 +9,15 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="css/follows.css">
 <script type="text/javascript" src="js/follows.js"></script>
+<script src="js/search_friend.js"></script>
 </head>
 <body>
+<div class="searchContainer">
+	<ul class="search">
+		<li><input type="text" id="searchName" name="name" autocomplete="off" placeholder="닉네임을 입력하세요"></li>
+		<li><div id="searchNameResult"></div></li>
+	</ul>
+</div>
 <div class="container">
 	<ul class="tabs">
 		<li class="follow button on">팔로워</li>

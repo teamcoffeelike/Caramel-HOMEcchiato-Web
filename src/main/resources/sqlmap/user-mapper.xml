@@ -9,6 +9,7 @@
 		<association property="user" autoMapping="true"/>
 	</resultMap>
 
+
 	<select id="userSettings"
 	        parameterType="Integer"
 	        resultMap="userSettingResultMapping">
@@ -139,10 +140,11 @@
 		 WHERE id = #{it}
 	</select>
 
-	<select id="nameExists"
-			resultType="integer">
-		SELECT count(*)
+	
+	<select id="searchUserByName"
+			resultType="UserProfileData">
+		SELECT id, name
 		  FROM users
-		 WHERE name = #{name}
+		 WHERE name LIKE '%' || #{name} || '%'
 	</select>
 </mapper>
