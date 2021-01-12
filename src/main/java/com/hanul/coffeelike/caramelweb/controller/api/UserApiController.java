@@ -195,7 +195,9 @@ public class UserApiController extends BaseExceptionHandlingController{
 	@RequestMapping(value = "/api/getFollower", produces = "application/json;charset=UTF-8")
 	public String getFollower(HttpSession session,
 	                          @RequestParam int user){
-		List<UserProfileData> users = service.getFollower(user);
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+
+		List<UserProfileData> users = service.getFollower(user, loginUser==null ? null : loginUser.getUserId());
 		JsonElement e = JsonHelper.GSON.toJsonTree(users);
 
 		JsonObject o = new JsonObject();
@@ -223,7 +225,9 @@ public class UserApiController extends BaseExceptionHandlingController{
 	@RequestMapping(value = "/api/getFollowing", produces = "application/json;charset=UTF-8")
 	public String getFollowing(HttpSession session,
 	                           @RequestParam int user){
-		List<UserProfileData> users = service.getFollowing(user);
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+
+		List<UserProfileData> users = service.getFollowing(user, loginUser==null ? null : loginUser.getUserId());
 		JsonElement e = JsonHelper.GSON.toJsonTree(users);
 
 		JsonObject o = new JsonObject();

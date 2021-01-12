@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class YesNoHandler extends BaseTypeHandler<Boolean>{
+public class BoolHandler extends BaseTypeHandler<Boolean>{
 	@Override public void setNonNullParameter(PreparedStatement ps, int i, Boolean parameter, JdbcType jdbcType) throws SQLException{
 		ps.setString(i, convertToString(parameter));
 	}
@@ -27,6 +27,15 @@ public class YesNoHandler extends BaseTypeHandler<Boolean>{
 	}
 
 	private Boolean convertToBoolean(String s){
-		return s==null ? null : s.equalsIgnoreCase("Y");
+		if(s==null) return null;
+	
+		switch(s) {
+			case "N":
+			case "0":
+			case "":
+				return false;
+			default:
+				return true;
+		}
 	}
 }

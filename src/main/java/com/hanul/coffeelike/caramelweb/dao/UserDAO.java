@@ -52,18 +52,24 @@ public class UserDAO{
 		sql.update("user.setPassword", m);
 	}
 
-	public List<UserProfileData> getFollower(int user){
-		return sql.selectList("user.getFollower", user);
+	public List<UserProfileData> getFollower(int user, @Nullable Integer loginUser){
+		Map<String, Object> m = new HashMap<>();
+		m.put("user", user);
+		m.put("loginUser", loginUser);
+		return sql.selectList("user.getFollower", m);
 	}
-	public List<UserProfileData> getFollowing(int user){
-		return sql.selectList("user.getFollowing", user);
+	public List<UserProfileData> getFollowing(int user, @Nullable Integer loginUser){
+		Map<String, Object> m = new HashMap<>();
+		m.put("user", user);
+		m.put("loginUser", loginUser);
+		return sql.selectList("user.getFollowing", m);
 	}
 
-	public int follow(int loginUser, int followingId){
+	public void follow(int loginUser, int followingId){
 		Map<String, Object> m = new HashMap<>();
 		m.put("loginUser", loginUser);
 		m.put("followingId", followingId);
-		return sql.insert("user.follow", m);
+		sql.insert("user.follow", m);
 	}
 
 	public int unfollow(int loginUser, int followingId){
@@ -71,6 +77,13 @@ public class UserDAO{
 		m.put("loginUser", loginUser);
 		m.put("followingId", followingId);
 		return sql.delete("user.unfollow", m);
+	}
+	
+	public boolean checkIfUserFollows(int loginUser, int followingId) {
+		Map<String, Object> m = new HashMap<>();
+		m.put("loginUser", loginUser);
+		m.put("followingId", followingId);
+		return sql.selectOne("user.checkIfUserFollows", m);
 	}
 
 	public boolean checkIfUserExists(int author){

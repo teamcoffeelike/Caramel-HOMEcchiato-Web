@@ -87,16 +87,20 @@ public class UserService{
 		return new SettingResult();
 	}
 
-	public List<UserProfileData> getFollower(int user){
-		return dao.getFollower(user);
+	public List<UserProfileData> getFollower(int user, @Nullable Integer loginUser){
+		return dao.getFollower(user, loginUser);
 	}
-	public List<UserProfileData> getFollowing(int user){
-		return dao.getFollowing(user);
+	public List<UserProfileData> getFollowing(int user, @Nullable Integer loginUser){
+		return dao.getFollowing(user, loginUser);
 	}
 
 	public boolean setFollowing(int loginUser, int followingId, boolean following){
-		int result = following ? dao.follow(loginUser, followingId) : dao.unfollow(loginUser, followingId);
-		return result!=0;
+		if(following) {
+			if(dao.checkIfUserFollows(loginUser, followingId))
+				return false;
+			dao.follow(loginUser, followingId);
+			return true;
+		}else return dao.unfollow(loginUser, followingId)!=0;
 	}
 
 	public boolean checkIfUserExists(int author){

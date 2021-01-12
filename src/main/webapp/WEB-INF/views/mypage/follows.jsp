@@ -10,6 +10,16 @@
 <link rel="stylesheet" href="css/follows.css">
 <script type="text/javascript" src="js/follows.js"></script>
 <script src="js/search_friend.js"></script>
+<script src="js/follow_button.js"></script>
+<script type="text/javascript">
+$(function(){
+	<c:forEach var="e" items="${userMap}">
+	registerFollowButton($(".id${e.key}").toArray(),
+			             ${e.key},
+			             ${e.value.followedByYou ? 'true' : 'false'});
+	</c:forEach>
+});
+</script>
 </head>
 <body>
 <div class="searchContainer">
@@ -20,30 +30,30 @@
 </div>
 <div class="container">
 	<ul class="tabs">
-		<li class="follow button on">팔로워</li>
-		<li class="follow button">팔로잉</li>
+		<li class="follow-tab button on">팔로워</li>
+		<li class="follow-tab button">팔로우</li>
 	</ul>
 	<div class="tab-content">
 		<!-- 팔로우 리스트 -->
-		<div class="follow on">
+		<div class="follow-tab on">
 			<ul>
 				<c:forEach var="u" items="${followers}">
 					<li>
 						<img src="${empty u.profileImage ? "imgs/profile.png" : u.profileImage }">
 						<li class="followList-name">${u.name }</li>
-						<a class="btnFollow" onclick="if(confirm('정말 삭제하시겠습니까?') ){ href='delete.no?id=${page.id}' }">삭제</a>
+						<a class="btnFollow id${u.id}">팔로잉</a>
 					</li>
 				</c:forEach>
 			</ul>
 		</div>
 		<!-- 팔로잉 리스트 -->
-		<div class="follow">
+		<div class="follow-tab">
 			<ul>
-				<c:forEach var="u" items="${followers}">
+				<c:forEach var="u" items="${following}">
 					<li>
 						<img src="${empty u.profileImage ? "imgs/profile.png" : u.profileImage }">
 						<li class="followList-name">${u.name }</li>
-						<a class="btnFollow">팔로잉</a>
+						<a class="btnFollow id${u.id}" onload="registerFollowButton(this, ${u.id}, ${u.followedByYou ? 'true' : 'false'});">팔로잉</a>
 					</li>
 				</c:forEach>
 			</ul>

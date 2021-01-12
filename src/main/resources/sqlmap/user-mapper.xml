@@ -27,12 +27,17 @@
 	<sql id="isFollowedByYou">
 		<choose>
 			<when test="loginUser == null">NULL</when>
-			<when test="loginUser == userId">NULL</when>
 			<otherwise>
 				(SELECT COUNT(*)
 		           FROM follows
 				  WHERE userId = #{loginUser}
 		            AND following = #{userId, jdbcType=INTEGER})
+				CASE WHEN #{loginUser} = ${userId} THEN NULL
+				     ELSE (SELECT COUNT(*)
+		                     FROM follows
+				            WHERE following = ${userId}
+		                      AND userId = #{loginUser})
+		        END
 			</otherwise>
 		</choose>
 	</sql>
@@ -40,12 +45,17 @@
 	<sql id="isFollowingYou">
 		<choose>
 			<when test="loginUser == null">NULL</when>
-			<when test="loginUser == userId">NULL</when>
 			<otherwise>
 				(SELECT COUNT(*)
 		           FROM follows
 				  WHERE userId = #{userId, jdbcType=INTEGER}
 		            AND following = #{loginUser})
+				CASE WHEN #{loginUser} = ${userId} THEN NULL
+				     ELSE (SELECT COUNT(*)
+		                     FROM follows
+				            WHERE userId = ${userId}
+		                      AND following = #{loginUser})
+		        END
 			</otherwise>
 		</choose>
 	</sql>
@@ -58,10 +68,10 @@
 		       motd,
 		       profileImage,
 		       <include refid="isFollowingYou">
-			       <property name="userId" value="${userId}"/>
+			       <property name="userId" value="#{userId}"/>
 		       </include> isFollowingYou,
 		       <include refid="isFollowedByYou">
-			       <property name="userId" value="${userId}"/>
+			       <property name="userId" value="#{userId}"/>
 		       </include> isFollowedByYou
 		  FROM users
 		 WHERE id = #{userId}
@@ -98,40 +108,40 @@
 
 	<!-- TODO 테스트 -->
 	<select id="getFollower"
-	        parameterType="Integer"
+	        parameterType="map"
 	        resultType="UserProfileData">
 		SELECT f.userId id,
 		       u.name name,
 		       u.profileImage profileImage,
 		       <include refid="isFollowingYou">
-			       <property name="userId" value="${f.userId}"/>
+			       <property name="userId" value="f.userId"/>
 		       </include> isFollowingYou,
 		       <include refid="isFollowedByYou">
-			       <property name="userId" value="${f.userId}"/>
+			       <property name="userId" value="f.userId"/>
 		       </include> isFollowedByYou
 		  FROM follows f
 		       JOIN users u
 		         ON f.userId = u.id
-		 WHERE f.following = #{it}
+		 WHERE f.following = #{user}
 	</select>
 
 	<!-- TODO 테스트 -->
 	<select id="getFollowing"
-			parameterType="Integer"
+			parameterType="map"
 			resultType="UserProfileData">
-		SELECT f.userId id,
+		SELECT f.following id,
 		       u.name name,
 		       u.profileImage profileImage,
 		       <include refid="isFollowingYou">
-			       <property name="userId" value="${f.userId}"/>
+			       <property name="userId" value="f.following"/>
 		       </include> isFollowingYou,
 		       <include refid="isFollowedByYou">
-			       <property name="userId" value="${f.userId}"/>
+			       <property name="userId" value="f.following"/>
 		       </include> isFollowedByYou
 		  FROM follows f
 		       JOIN users u
 		         ON f.following = u.id
-		 WHERE f.userId = #{it}
+		 WHERE f.userId = #{user}
 	</select>
 
 	<insert id="follow"
@@ -147,18 +157,28 @@
 		   AND following = #{followingId}
 	</delete>
 
+	<select id="checkIfUserFollows"
+	        parameterType="Integer"
+			resultType="Boolean">
+		SELECT COUNT(*)
+		  FROM follows
+		 WHERE userId = #{loginUser}
+		   AND following = #{followingId}
+	</select>
+
 	<select id="checkIfUserExists"
-	        parameterType="Integer">
+	        parameterType="Integer"
+			resultType="Integer">
 		SELECT id
 		  FROM users
 		 WHERE id = #{it}
 	</select>
 
-	
 	<select id="searchUserByName"
 			resultType="UserProfileData">
 		SELECT id, name
 		  FROM users
 		 WHERE name LIKE '%' || #{name} || '%'
 	</select>
+
 </mapper>

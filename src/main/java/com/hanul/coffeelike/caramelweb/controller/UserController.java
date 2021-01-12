@@ -1,9 +1,12 @@
 package com.hanul.coffeelike.caramelweb.controller;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.JsonObject;
 import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.UserProfileData;
 import com.hanul.coffeelike.caramelweb.data.UserSettingData;
 import com.hanul.coffeelike.caramelweb.service.UserService;
 import com.hanul.coffeelike.caramelweb.service.UserService.SettingResult;
 import com.hanul.coffeelike.caramelweb.util.AttachmentURLConverter;
-import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 
 @Controller
@@ -36,8 +36,21 @@ public class UserController {
 		if (loginUser == null ) {
 			return "loginRequired";
 		}
-		List<UserProfileData> users = userService.getFollower(loginUser.getUserId());
-		model.addAttribute("followers", users);
+		List<UserProfileData> followers = userService.getFollower(loginUser.getUserId(), loginUser.getUserId());
+		List<UserProfileData> following = userService.getFollowing(loginUser.getUserId(), loginUser.getUserId());
+		
+		Map<Integer, UserProfileData> users = new HashMap<>();
+		
+		for(UserProfileData u : followers) {
+			users.put(u.getId(), u);
+		}
+		for(UserProfileData u : following) {
+			users.put(u.getId(), u);
+		}
+		
+		model.addAttribute("followers", followers);
+		model.addAttribute("following", following);
+		model.addAttribute("userMap", users);
 		return "mypage/follows";
 	}
 	
