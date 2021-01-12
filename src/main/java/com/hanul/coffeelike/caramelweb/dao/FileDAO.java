@@ -33,4 +33,6 @@ public class FileDAO{
 	@Nullable public PostImageData findPostImage(int postId){
 		return sql.selectOne("file.findPostImage", postId);
 	}
+	
+	
 }

@@ -8,6 +8,8 @@
 	list-style: none;
 }
 
+#content{ padding: 20px;}
+
 a:link, a:visited { text-decoration:none;}		
 a:hover { cursor:pointer; }
 

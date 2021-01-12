@@ -17,7 +17,7 @@
 			
 			<!-- 로그인한 상태 -->
 			<c:if test="${!empty loginUser}">
-			<li class="subMenu"><a href="#">마이페이지</a>
+			<li class="subMenu"><a>마이페이지</a>
 				<ul class="hide">
 					<li><a href="profile?userId=${loginUser.userId}">내 프로필</a></li>
 					<li><a href="follows">팔로워/팔로잉</a></li>
@@ -54,8 +54,8 @@ top: 32px; left: 330px;
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-    $(".subMenu>a").click(function(){
+$(function(){
+    $(".subMenu>a").on('click', function(){
         var submenu = $(this).next("ul");
 
         if( submenu.is(":visible") ){

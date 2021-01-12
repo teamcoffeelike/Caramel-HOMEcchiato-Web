@@ -1,22 +1,29 @@
 package com.hanul.coffeelike.caramelweb.dao;
 
-import com.hanul.coffeelike.caramelweb.data.Post;
+import java.sql.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.hanul.coffeelike.caramelweb.data.Post;
 
 @Repository
 public class PostDAO{
 	@Autowired
 	private SqlSession sql;
 
-	public List<Post> recentPosts(@Nullable Integer integer){
-		return sql.selectList("post.recentPosts", integer);
+	public List<Post> recentPosts(@Nullable Integer loginUser, Date since, int pages){
+		Map<String, Object> m = new HashMap<>();
+		m.put("loginUser", loginUser);
+		m.put("since", since);
+		m.put("pages", pages);
+		return sql.selectList("post.recentPosts", m);
 	}
 
 	@Nullable public Post findPost(int id,
@@ -48,6 +55,13 @@ public class PostDAO{
 		m.put("post", post);
 		m.put("text", text);
 		sql.update("post.editPost", m);
+	}
+
+	public boolean editPostImage(int post, String imageId) {
+		Map<String, Object> m = new HashMap<>();
+		m.put("post", post);
+		m.put("image", imageId);
+		return sql.update("post.editPostImage", m)>0;
 	}
 
 	public void deletePost(int post){

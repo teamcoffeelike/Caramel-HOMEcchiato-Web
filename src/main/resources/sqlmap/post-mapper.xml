@@ -53,8 +53,11 @@
 		  FROM (SELECT <include refid="postColumns"/>
 		          FROM posts JOIN users ON posts.author = users.id
 		         WHERE posts.isDeleted = 'N'
+		         <if test="since!=null">
+		           AND posts.postDate &lt; #{since}
+		         </if>
 		         ORDER BY postDate DESC)
-		 WHERE ROWNUM &lt;= 20
+		 WHERE ROWNUM &lt;= #{pages}
 	</select>
 
 	<select id="findPost"
@@ -82,6 +85,14 @@
 	        parameterType="map">
 		UPDATE posts
 		   SET text = #{text},
+		       lastEditDate = SYSDATE
+		 WHERE id = #{post}
+	</update>
+
+	<update id="editPostImage"
+	        parameterType="map">
+		UPDATE posts
+		   SET image = #{image},
 		       lastEditDate = SYSDATE
 		 WHERE id = #{post}
 	</update>

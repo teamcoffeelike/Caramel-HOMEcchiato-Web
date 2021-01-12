@@ -1,21 +1,24 @@
 package com.hanul.coffeelike.caramelweb.controller.api;
 
-import com.google.gson.JsonObject;
-import com.hanul.coffeelike.caramelweb.data.AuthToken;
-import com.hanul.coffeelike.caramelweb.data.Post;
-import com.hanul.coffeelike.caramelweb.service.PostService;
-import com.hanul.coffeelike.caramelweb.service.PostService.PostModifyResult;
-import com.hanul.coffeelike.caramelweb.service.PostService.PostWriteResult;
-import com.hanul.coffeelike.caramelweb.util.JsonHelper;
-import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
+import java.sql.Date;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
-import java.util.List;
+import com.hanul.coffeelike.caramelweb.data.AuthToken;
+import com.hanul.coffeelike.caramelweb.data.Post;
+import com.hanul.coffeelike.caramelweb.service.PostService;
+import com.hanul.coffeelike.caramelweb.service.PostService.PostListResult;
+import com.hanul.coffeelike.caramelweb.service.PostService.PostModifyResult;
+import com.hanul.coffeelike.caramelweb.service.PostService.PostWriteResult;
+import com.hanul.coffeelike.caramelweb.util.JsonHelper;
+import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 
 @RestController
 public class PostApiController extends BaseExceptionHandlingController{
@@ -51,13 +54,16 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * }</pre>
 	 */
 	@RequestMapping(value = "/api/recentPosts", produces = "application/json;charset=UTF-8")
-	public String recentPosts(HttpSession session){
+	public String recentPosts(HttpSession session,
+	                          @RequestParam(required = false) @Nullable Long since,
+	                          @RequestParam(defaultValue = "10") int pages){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
-		List<Post> posts = postService.recentPosts(loginUser==null ? null : loginUser.getUserId());
+		PostListResult result = postService.recentPosts(
+				loginUser==null ? null : loginUser.getUserId(),
+				since==null ? null : new Date(since),
+				pages);
 
-		JsonObject jsonObject = new JsonObject();
-		jsonObject.add("posts", JsonHelper.GSON.toJsonTree(posts));
-		return JsonHelper.GSON.toJson(jsonObject);
+		return JsonHelper.GSON.toJson(result);
 	}
 
 	/**
@@ -144,6 +150,31 @@ public class PostApiController extends BaseExceptionHandlingController{
 
 		PostModifyResult result = postService.editPost(loginUser.getUserId(), post, text);
 
+		return JsonHelper.GSON.toJson(result);
+	}
+	
+	/**
+	 * 포스트 사진 수정<br>
+	 * <br>
+	 * <b>성공 시:</b>
+	 * <pre>{@code
+	 * 추가 데이터 없음
+	 * }</pre>
+	 *
+	 * <b>에러: </b><br>
+	 * no_post       : 해당 ID의 포스트가 존재하지 않음<br>
+	 * cannot_edit   : 해당 글을 수정할 수 없음 (비 로그인 상태 포함)<br>
+	 * bad_image      : 유효하지 않은 image 인자<br>
+	 */
+	@RequestMapping(value = "/api/editPostImage", produces = "application/json;charset=UTF-8")
+	public String editPostImage(HttpSession session,
+								@RequestParam int post,
+								@RequestParam MultipartFile image){
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		if(loginUser==null) return JsonHelper.failure("cannot_edit");
+		
+		PostModifyResult result = postService.editPostImage(loginUser.getUserId(), post, image);
+		
 		return JsonHelper.GSON.toJson(result);
 	}
 
