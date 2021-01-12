@@ -1,7 +1,6 @@
 package com.hanul.coffeelike.caramelweb.controller.api;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 import javax.servlet.http.HttpSession;
 
@@ -58,7 +57,6 @@ public class PostApiController extends BaseExceptionHandlingController{
 	public String recentPosts(HttpSession session,
 	                          @RequestParam(required = false) @Nullable Long since,
 	                          @RequestParam(defaultValue = "10") int pages){
-		if(since!=null) System.out.println(since+" ("+new Timestamp(since)+")");
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		PostListResult result = postService.recentPosts(
 				loginUser==null ? null : loginUser.getUserId(),
@@ -152,6 +150,31 @@ public class PostApiController extends BaseExceptionHandlingController{
 
 		PostModifyResult result = postService.editPost(loginUser.getUserId(), post, text);
 
+		return JsonHelper.GSON.toJson(result);
+	}
+	
+	/**
+	 * 포스트 사진 수정<br>
+	 * <br>
+	 * <b>성공 시:</b>
+	 * <pre>{@code
+	 * 추가 데이터 없음
+	 * }</pre>
+	 *
+	 * <b>에러: </b><br>
+	 * no_post       : 해당 ID의 포스트가 존재하지 않음<br>
+	 * cannot_edit   : 해당 글을 수정할 수 없음 (비 로그인 상태 포함)<br>
+	 * bad_image      : 유효하지 않은 image 인자<br>
+	 */
+	@RequestMapping(value = "/api/editPostImage", produces = "application/json;charset=UTF-8")
+	public String editPostImage(HttpSession session,
+								@RequestParam int post,
+								@RequestParam MultipartFile image){
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		if(loginUser==null) return JsonHelper.failure("cannot_edit");
+		
+		PostModifyResult result = postService.editPostImage(loginUser.getUserId(), post, image);
+		
 		return JsonHelper.GSON.toJson(result);
 	}
 

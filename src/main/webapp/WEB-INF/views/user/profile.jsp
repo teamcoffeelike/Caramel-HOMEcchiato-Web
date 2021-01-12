@@ -25,6 +25,11 @@
 					<a id="btnProfile" class="btn-empty" href="settings">프로필 편집</a>
 				</div>
 			</c:if>
+			<c:if test="${loginUser.userId ne data.id }">
+				<div class="btnSet">
+					<a id="btnFollow" class="btn-follow">+ 팔로우</a>
+				</div>
+			</c:if>
 		</section>
 	</div>
 	<!-- 포스트 -->

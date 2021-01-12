@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="css/writePost.css">
+<script type="text/javascript" src="js/mandatory_check.js"></script>
 <script type="text/javascript">
 /*업로드 될 파일이 이미지 파일인지 체크 함수*/
 function isImage( filename ){
@@ -32,7 +33,7 @@ $(function(){
 </script>
 </head>
 <body>
-<div id="write-post">
+<div id="post">
 	<form action="writePost" method="post" enctype="multipart/form-data">
 		<div class="imgbox">
 			<label>
@@ -52,9 +53,6 @@ $(function(){
 	</div>
 </div>
 
-<script type="text/javascript" src="js/mandatory_check.js"></script>
-<script type="text/javascript" src="js/writePost.js"></script>
-<script type="text/javascript" src="js/fileAttach.js"></script>
 
 </body>
 </html>

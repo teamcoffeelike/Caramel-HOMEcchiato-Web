@@ -88,6 +88,14 @@
 		       lastEditDate = SYSDATE
 		 WHERE id = #{post}
 	</update>
+
+	<update id="editPostImage"
+	        parameterType="map">
+		UPDATE posts
+		   SET image = #{image},
+		       lastEditDate = SYSDATE
+		 WHERE id = #{post}
+	</update>
 	
 	<update id="deletePost"
 	        parameterType="Integer">

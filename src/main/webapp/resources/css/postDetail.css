@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
-.postList{ width: 600px; margin: 0 auto; }
+.postDetail{width: 600px; margin: 0 auto;}
 
-.post-image { display: block; width: 600px; }
+.post-image { display: block; width: 600px;}
 
 .userBox { 
 	height: 70px; line-height: 70px;
@@ -42,4 +42,30 @@
 .postDate{
 	margin-left: 10px; color: rgb(117, 117, 117); font-size: 0.8em;
 	border-bottom: 1px solid #ccc;
+}
+
+
+.btnSet1 { 
+	height: 50px; line-height: 50px;
+	margin-top:10px; text-align: center; float: right; 
+}
+.btnSet2 { margin-top:10px; text-align: center;}
+
+a.btn-fill, a.btn-empty {
+	text-align: center;
+	padding: 3px 10px;
+	border: 1px solid #606b43;
+	border-radius: 3px; 
+}
+
+a.btn-fill { 
+	background-color: #606b43; color:#fff; 
+}
+a.btn-empty { 
+	background-color: #fff; color:#606b43; 
+	font-size:13px;
+}
+a.btn-empty:hover { 
+	background-color: #97a776; color:#fff; 
+	font-size:13px;
 }

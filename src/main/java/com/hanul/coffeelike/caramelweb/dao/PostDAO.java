@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hanul.coffeelike.caramelweb.data.Post;
 
@@ -54,6 +55,13 @@ public class PostDAO{
 		m.put("post", post);
 		m.put("text", text);
 		sql.update("post.editPost", m);
+	}
+
+	public boolean editPostImage(int post, String imageId) {
+		Map<String, Object> m = new HashMap<>();
+		m.put("post", post);
+		m.put("image", imageId);
+		return sql.update("post.editPostImage", m)>0;
 	}
 
 	public void deletePost(int post){
