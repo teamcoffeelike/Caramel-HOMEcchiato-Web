@@ -17,7 +17,6 @@ function fetchPost(){
 			data: { "since": oldest },
 			dataType: "json",
 			success: function(data){
-				console.log("Received "+data);
 				ajaxSent = false;
 				if(data.error){
 					alert("Error: "+data.error);

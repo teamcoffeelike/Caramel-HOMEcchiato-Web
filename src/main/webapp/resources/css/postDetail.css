@@ -24,23 +24,23 @@
 
 .contentBox{
 	border: 1px solid #ccc; 
-	margin-bottom: 20px; padding: 10px 0;
+	margin-bottom: 20px; padding: 10px;
 	overflow: hidden; vertical-align: middle;
 }
 
 .content{
-	width:580px; margin-left: 10px;
+	width:580px;
 	overflow: hidden; float: left;
 }
 
 
 .moreContent, .reaction {
-	margin-left: 10px; color: #ccc; font-size: 0.8em;
+	color: #ccc; font-size: 0.8em;
 	cursor: pointer; 
 }
 
 .postDate{
-	margin-left: 10px; color: rgb(117, 117, 117); font-size: 0.8em;
+	color: rgb(117, 117, 117); font-size: 0.8em;
 	border-bottom: 1px solid #ccc;
 }
 

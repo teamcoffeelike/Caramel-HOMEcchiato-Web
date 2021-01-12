@@ -36,6 +36,19 @@ $(function(){
 	$('#text').on("input", function(){
 		textChanged = true;
 	});
+
+	$("form").on('submit', function(){
+		$("#postImageChanged").val(postImageChanged);
+		if(!postImageChanged){
+			$("#img-attach").val("");
+		}
+		
+		$("#textChanged").val(textChanged);
+		if(!textChanged){
+			$("#text").val("");
+		}
+	});
+	
 });
 </script>
 </head>
