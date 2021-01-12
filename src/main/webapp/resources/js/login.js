@@ -21,8 +21,7 @@ function go_login() {
 				if(response.error) {
 					alert("로그인 실패!");
 				}else {
-					alert("로그인 성공!");
-					location.href="follows";
+					location.href="allPostList";
 				}
 			}, error: function(req, text) {
 				alert(text + " : " + req.status);
@@ -38,8 +37,7 @@ function go_login() {
 				if(response.error) {
 					alert("로그인 실패!");
 				}else {
-					alert("로그인 성공!");
-					location.href="follows";
+					location.href="allPostList";
 				}
 			}, error: function(req, text) {
 				alert(text + " : " + req.status);
