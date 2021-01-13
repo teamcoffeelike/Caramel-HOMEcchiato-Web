@@ -6,19 +6,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="css/profile.css">
-<<<<<<< Updated upstream
 <script type="text/javascript" src="js/user_postlist.js"></script>
-<script type="text/javascript">
-userId = ${data.id};
-=======
 <script src="js/follow_button.js"></script>
 <script type="text/javascript">
+userId = ${data.id};
+
 $(function(){
 	registerFollowButton($(".btnFollow").toArray(),
             ${data.id},
-            ${data.followedByYou ? 'true' : 'false'});
+			${data.followedByYou ? 'true' : 'false'});
 });
->>>>>>> Stashed changes
 </script>
 </head>
 <body>
