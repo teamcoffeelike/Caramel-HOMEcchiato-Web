@@ -168,7 +168,7 @@
 
 	<select id="searchUserByName"
 			resultType="UserProfileData">
-		SELECT id, name
+		SELECT id, name, profileImage
 		  FROM users
 		 WHERE name LIKE '%' || #{name} || '%'
 	</select>
