@@ -11,33 +11,12 @@
 
 h1 {
 	height: 100px;
-}
-
-h1 span {
 	position: relative;
 	top: 20px;
 	display: inline-block;
 	animation: bounce .3s ease infinite alternate;
-	font-size: 24px;
+	font-size: 40px;
 }
-
-h1 span:nth-child(2) { animation-delay: .1s; }
-h1 span:nth-child(3) { animation-delay: .2s; }
-h1 span:nth-child(4) { animation-delay: .3s; }
-h1 span:nth-child(5) { animation-delay: .4s; }
-h1 span:nth-child(6) { animation-delay: .5s; }
-h1 span:nth-child(7) { animation-delay: .6s; }
-h1 span:nth-child(8) { animation-delay: .7s; }
-h1 span:nth-child(9) { animation-delay: .8s; }
-h1 span:nth-child(10) { animation-delay: .9s; }
-h1 span:nth-child(11) { animation-delay: .10s; }
-h1 span:nth-child(12) { animation-delay: .11s; }
-h1 span:nth-child(13) { animation-delay: .12s; }
-h1 span:nth-child(14) { animation-delay: .13s; }
-h1 span:nth-child(15) { animation-delay: .14s; }
-h1 span:nth-child(16) { animation-delay: .15s; }
-h1 span:nth-child(17) { animation-delay: .16s; }
-h1 span:nth-child(18) { animation-delay: .17s; }
 
 @keyframes bounce {
   100% {
@@ -53,6 +32,12 @@ h1 span:nth-child(18) { animation-delay: .17s; }
                  0 9px 0 #CCC,
                  0 50px 25px rgba(0, 0, 0, .2);
   }
+}
+
+p span {
+	color: #e67461;
+	font-weight: bold;
+	font-size: 1.2em;
 }
 
 .content-section {
@@ -116,8 +101,9 @@ h1 span:nth-child(18) { animation-delay: .17s; }
 }
 
 .heading {
-	font-size: 2.75em;
 	margin: 0;
+	font-size: 2.75em;
+	font-weight: 700;
 }
 
 .subheading {
@@ -180,11 +166,6 @@ img {
 	box-sizing: border-box;
 }
 
-.heading,
-.intro-heading {
-	font-weight: 700;
-}
-
 body, html {
 	height: 100%;
 	width: 100%;
@@ -193,4 +174,18 @@ body, html {
 	line-height: 1.05;
 	font-weight: 400;
 	letter-spacing: -.015em;
+}
+
+.scrollTop {
+	position: fixed;
+	width: 45px;
+	height: 45px;
+	right: 2%;
+	bottom: 20px;
+	font-size: 20px;
+	background-color: #e67461;
+	color: #ffffff;
+	text-align: center;
+	padding-top: 5px;
+	border-radius: 50px;
 }

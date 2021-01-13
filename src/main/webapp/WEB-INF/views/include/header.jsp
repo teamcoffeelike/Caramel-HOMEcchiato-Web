@@ -41,7 +41,9 @@ header div.category a:hover, header div.category a.active { font-weight: bold; }
 .hide {
 padding: 8px; display: none; width: 150px; 
 background: #f4eae1; list-style: none;
-border-radius: 10px;}
+border-radius: 10px;
+z-index: 2;
+}
 .hide:after {
 border-top: 0 solid transparent;
 border-left: 10px solid transparent;

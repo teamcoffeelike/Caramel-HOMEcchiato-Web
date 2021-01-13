@@ -15,28 +15,8 @@
 <body>
 <!-- Header -->
 <section class="intro-section">
-	<!-- <h1>Caramel HOMEcchiato</h1> -->
-	<h1>
-		<span>C</span>
-		<span>a</span>
-		<span>r</span>
-		<span>a</span>
-		<span>m</span>
-		<span>e</span>
-		<span>l</span>
-		<span>&nbsp;H</span>
-		<span>O</span>
-		<span>M</span>
-		<span>E</span>
-		<span>c</span>
-		<span>c</span>
-		<span>h</span>
-		<span>i</span>
-		<span>a</span>
-		<span>t</span>
-		<span>o</span>
-	</h1>
-	<p><span>집</span>에서도 여유롭게 <span>카페</span> 분위기를 즐겨보세요</p>
+	<h1>Caramel HOMEcchiato</h1>
+	<p><span class="intro-point">집</span>에서도 여유롭게 <span class="intro-point">카페</span> 분위기를 즐겨보세요</p>
 </section>
  
 <!-- Content  -->
@@ -44,7 +24,7 @@
 <!-- 이미지 -->
 <section class="content-section" data-scroll>
 	<figure class="figure">
-		<img src="imgs/coffee4.jpg">
+		<img src="imgs/coffee_01.jpg">
 	</figure>
 	
 	<!-- 텍스트 -->
@@ -66,7 +46,7 @@
 <!-- 이미지 -->
 <section class="content-section" data-scroll>
 	<figure class="figure">
-		<img src="imgs/coffee.jpg">
+		<img src="imgs/coffee_02.jpg">
 	</figure>
 	
 	<!-- 텍스트 -->
@@ -86,7 +66,7 @@
 <!-- 이미지 -->
 <section class="content-section" data-scroll>
 	<figure class="figure">
-		<img src="imgs/coffee.jpg">
+		<img src="imgs/coffee_03.jpg">
 	</figure>
 	
 	<!-- 텍스트 -->
@@ -106,7 +86,7 @@
 <!-- 이미지 -->
 <section class="content-section" data-scroll>
 	<figure class="figure">
-		<img src="imgs/coffee.jpg">
+		<img src="imgs/coffee_04.jpg">
 	</figure>
 	
 	<!-- 텍스트 -->
@@ -126,7 +106,7 @@
 <!-- 이미지 -->
 <section class="content-section" data-scroll>
 	<figure class="figure">
-		<img src="imgs/coffee.jpg">
+		<img src="imgs/coffee_05.jpg">
 	</figure>
 	
 	<!-- 텍스트 -->
@@ -139,6 +119,9 @@
 			내 프로필을 설정하고 자유롭게 글을 올릴 수 있습니다.<br/>
 			나만의 특별한 레시피와 일상을 기록해보세요!
 		</p>
+	</div>
+	<div class="footer">
+		<a class="scrollTop" href="#">↑</a>
 	</div>
 </section>
 <script> Splitting(); </script>
@@ -153,6 +136,15 @@ ScrollOut({
 });
 
 Splitting({ target: '.heading' });
+
+$(function(){
+	$(".intro-point").fadeIn(500);
+});
+
+$(".scrollTop").click(function(){
+	$("html, body").animate({scrollTop: 0}, 400);
+	return false;
+});
 </script>
 </body>
 </html>
