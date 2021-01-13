@@ -28,10 +28,6 @@
 		<choose>
 			<when test="loginUser == null">NULL</when>
 			<otherwise>
-				(SELECT COUNT(*)
-		           FROM follows
-				  WHERE userId = #{loginUser}
-		            AND following = #{userId, jdbcType=INTEGER})
 				CASE WHEN #{loginUser} = ${userId} THEN NULL
 				     ELSE (SELECT COUNT(*)
 		                     FROM follows
@@ -46,10 +42,6 @@
 		<choose>
 			<when test="loginUser == null">NULL</when>
 			<otherwise>
-				(SELECT COUNT(*)
-		           FROM follows
-				  WHERE userId = #{userId, jdbcType=INTEGER}
-		            AND following = #{loginUser})
 				CASE WHEN #{loginUser} = ${userId} THEN NULL
 				     ELSE (SELECT COUNT(*)
 		                     FROM follows
