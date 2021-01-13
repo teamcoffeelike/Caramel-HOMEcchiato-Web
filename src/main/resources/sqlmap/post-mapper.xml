@@ -57,6 +57,22 @@
                  ORDER BY postDate DESC)
          WHERE ROWNUM &lt;= #{pages}
     </select>
+    
+    <select id="usersPosts"
+            resultMap="postResultMap">
+        SELECT *
+          FROM (SELECT <include refid="postColumns">
+                           <property name="loginUser" value="#{it}"/>
+                       </include>
+                  FROM posts JOIN users ON posts.author = users.id
+                 WHERE posts.isDeleted = 'N'
+                 <if test="since!=null">
+                   AND posts.postDate &lt; #{since}
+                 </if>
+                   AND users.id = #{id}
+                 ORDER BY postDate DESC)
+         WHERE ROWNUM &lt;= #{pages}
+    </select>
 
     <select id="findPost"
             parameterType="map"

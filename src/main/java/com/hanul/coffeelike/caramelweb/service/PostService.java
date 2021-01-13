@@ -34,6 +34,14 @@ public class PostService {
 		return new PostListResult(postDAO.recentPosts(loginUser, since, pages));
 	}
 
+
+	public PostListResult usersPosts(@Nullable Integer loginUser,@Nullable Date since, int pages, int id) {
+		if (pages < 1 || pages > 50) {
+			return new PostListResult("bad_pages");
+		}
+		return new PostListResult(postDAO.usersPosts(loginUser, since, pages, id));
+	}
+	
 	@Nullable
 	public Post post(int id, @Nullable Integer loginUser) {
 		return postDAO.findPost(id, loginUser);

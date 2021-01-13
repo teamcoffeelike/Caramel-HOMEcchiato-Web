@@ -12,9 +12,17 @@
 }
 
 #post_grid{
-	width: 650px; height: 900px;
+	width: 650px; 
 	margin: 0 auto;
-	border: 1px solid #ccc;
+	padding: 10px 0px; box-sizing: border-box;
+}
+
+.imageBox { display: inline-flex;}
+
+.post-image {
+	width: 200px; height: 200px;
+	flex-wrap:wrap; margin: 6px; 
+	justify-content: space-around;
 }
 
 .imgBox {

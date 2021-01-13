@@ -1,5 +1,16 @@
 package com.hanul.coffeelike.caramelweb.controller.api;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hanul.coffeelike.caramelweb.data.AuthToken;
@@ -9,17 +20,6 @@ import com.hanul.coffeelike.caramelweb.service.UserService;
 import com.hanul.coffeelike.caramelweb.service.UserService.SettingResult;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpSession;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class UserApiController extends BaseExceptionHandlingController{

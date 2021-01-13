@@ -31,7 +31,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * <b>성공 시:</b>
 	 * <pre>{@code
 	 * {
-	 *   posts: [ 20;
+	 *   posts: [ 10;
 	 *     {
 	 *       id: Integer # 포스트 ID
 	 * 	     author: { # 포스트 작성자
@@ -54,14 +54,55 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/recentPosts", produces = "application/json;charset=UTF-8")
 	public String recentPosts(HttpSession session,
-	                          @RequestParam(required = false) @Nullable Long since,
-	                          @RequestParam(defaultValue = "10") int pages){
+							  @RequestParam(required = false) @Nullable Long since,
+							  @RequestParam(defaultValue = "10") int pages){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		PostListResult result = postService.recentPosts(
 				loginUser==null ? null : loginUser.getUserId(),
 				since==null ? null : new Date(since),
 				pages);
 
+		return JsonHelper.GSON.toJson(result);
+	}
+	
+	/**
+	 * 유저별 최근 포스트 가져오기<br>
+	 * <br>
+	 * <b>성공 시:</b>
+	 * <pre>{@code
+	 * {
+	 *   posts: [ 9;
+	 *     {
+	 *       id: Integer # 포스트 ID
+	 * 	     author: { # 포스트 작성자
+	 *         id: Integer
+	 *         name: String
+	 *         [ profileImage ]: URL
+	 *         [ isFollowingYou ]: Boolean
+	 *         [ isFollowedByYou ]: Boolean
+	 *       }
+	 * 	     [ image ]: URL # 첨부된 이미지 URL
+	 * 	     text: String # 포스트 내용
+	 * 	     postDate: Date
+	 * 	     [ lastEditDate ]: Date
+	 * 	     likes: Integer # 숫자
+	 * 	     [ likedByYou ]: Boolean # 로그인한 유저가 이 포스트에 좋아요를 눌렀는지 여부, 로그인 정보가 없을 시 존재하지 않음
+	 *     }
+	 *   ]
+	 * }
+	 * }</pre>
+	 */
+	@RequestMapping(value = "/api/usersPosts", produces = "application/json;charset=UTF-8")
+	public String usersPosts(HttpSession session,
+							 @RequestParam(required = false) @Nullable Long since,
+							 @RequestParam(defaultValue = "9") int pages,
+							 @RequestParam int id){
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		PostListResult result = postService.usersPosts(
+					loginUser==null ? null : loginUser.getUserId(),
+						since==null ? null : new Date(since),
+								pages, id);
+		
 		return JsonHelper.GSON.toJson(result);
 	}
 
@@ -93,7 +134,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/post", produces = "application/json;charset=UTF-8")
 	public String post(HttpSession session,
-	                   @RequestParam int id){
+					   @RequestParam int id){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		Post post = postService.post(id, loginUser==null ? null : loginUser.getUserId());
 		if(post==null) return JsonHelper.failure("no_post");
@@ -117,8 +158,8 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/writePost", produces = "application/json;charset=UTF-8")
 	public String writePost(HttpSession session,
-	                        @RequestParam String text,
-	                        @RequestParam MultipartFile image){
+							@RequestParam String text,
+							@RequestParam MultipartFile image){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
 
@@ -141,8 +182,8 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/editPost", produces = "application/json;charset=UTF-8")
 	public String editPost(HttpSession session,
-	                       @RequestParam int post,
-	                       @RequestParam String text){
+						   @RequestParam int post,
+						   @RequestParam String text){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("cannot_edit");
 
@@ -190,7 +231,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/deletePost", produces = "application/json;charset=UTF-8")
 	public String deletePost(HttpSession session,
-	                         @RequestParam int post){
+							 @RequestParam int post){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("cannot_edit");
 
@@ -213,8 +254,8 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/likePost", produces = "application/json;charset=UTF-8")
 	public String likePost(HttpSession session,
-	                       @RequestParam int post,
-	                       @RequestParam boolean like){
+						   @RequestParam int post,
+						   @RequestParam boolean like){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
 

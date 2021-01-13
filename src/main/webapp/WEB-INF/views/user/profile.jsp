@@ -6,6 +6,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="css/profile.css">
+<script type="text/javascript" src="js/user_postlist.js"></script>
+<script type="text/javascript">
+userId = ${data.id};
+</script>
 </head>
 <body>
 	
@@ -34,11 +38,8 @@
 	</div>
 	<!-- 포스트 -->
 	<div id="post_grid">
-		<ul>
-			<c:forEach items="">
-				<li onclick=""></li>
-			</c:forEach>	
-		</ul>
+		<div class="postList"></div>
+		<span class="postEnd"></span>
 	</div>
 </div>
 </body>

@@ -79,7 +79,7 @@ public class PostController {
 		if(AttachmentFileResolver.doesPostImageExists(post.getImage()))
 			model.addAttribute("postImage", AttachmentURLConverter.postImageFromId(post.getId()));
 		else
-			model.addAttribute("postImage", "imgs/post.jpg");
+			model.addAttribute("postImage", "imgs/post.png");
 		//프로필사진
 		if(AttachmentFileResolver.doesProfileImageExists(post.getAuthor().getProfileImage()))
 			model.addAttribute("profileImage", AttachmentURLConverter.profileImageFromId(post.getAuthor().getId()));
@@ -113,7 +113,7 @@ public class PostController {
 		if(AttachmentFileResolver.doesPostImageExists(post.getImage()))
 			model.addAttribute("postImage", AttachmentURLConverter.postImageFromId(post.getId()));
 		else
-			model.addAttribute("postImage", "imgs/post.jpg");
+			model.addAttribute("postImage", "imgs/post.png");
 		return "post/modify";
 	}
 	

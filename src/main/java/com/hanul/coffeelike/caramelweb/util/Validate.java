@@ -12,7 +12,7 @@ public final class Validate{
 	private static final Pattern EMAIL_REGEX = Pattern.compile("[^@]+@[^@]+");
 	private static final Pattern PHONE_NUMBER_REGEX = Pattern.compile("(0\\d\\d)[ -]?(\\d{4})[ -]?(\\d{4})");
 	private static final Pattern PASSWORD_REGEX = Pattern.compile(".{3,63}");
-	private static final Pattern POST_TEXT_REGEX = Pattern.compile(".{0,1000}");
+	private static final Pattern POST_TEXT_REGEX = Pattern.compile("(?:\\S|\\s){0,1000}");
 	private static final Pattern MOTD_REGEX = Pattern.compile(".{0,100}");
 
 	public static boolean name(String name){

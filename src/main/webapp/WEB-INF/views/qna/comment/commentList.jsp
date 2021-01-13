@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <c:forEach items="${list }" var="data">
-<div data-id=${data.id}>
+<div data-id="${data.id}">
 	<span class="name">${data.name }</span>[${data.writeDate }]
 	<span class="commentBtn">
 		<a class="modify-saveBtn">수정</a>

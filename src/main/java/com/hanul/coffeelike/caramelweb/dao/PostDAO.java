@@ -9,7 +9,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.hanul.coffeelike.caramelweb.data.Post;
 
@@ -24,6 +23,15 @@ public class PostDAO{
 		m.put("since", since);
 		m.put("pages", pages);
 		return sql.selectList("post.recentPosts", m);
+	}
+
+	public List<Post> usersPosts(@Nullable Integer loginUser, Date since, int pages, int id) {
+		Map<String, Object> m = new HashMap<>();
+		m.put("loginUser", loginUser);
+		m.put("since", since);
+		m.put("pages", pages);
+		m.put("id", id);
+		return sql.selectList("post.usersPosts", m);
 	}
 
 	@Nullable public Post findPost(int id,

@@ -28,6 +28,7 @@
 		<img class='post-image' src='${postImage}'>
 
 		<div class='contentBox'>
+			<a id='btnLike'><i class="fas fa-heart fa-spin"></i></a>
 			<div class='content'>${fn:replace(post.text, crlf, '<br>')}</div>
 			<div class='postDate'>${post.postDate}</div>
 		</div>

@@ -18,8 +18,10 @@ footer {
 <body>
 <footer>
 <div>
-	<li><a href="notice">공지사항</a></li>
-	<li><a href="list.qna">문의</a></li>
+	<ul>
+		<li><a href="notice">공지사항</a></li>
+		<li><a href="list.qna">문의</a></li>
+	</ul>
 </div>
 <!-- 
 	<div>공지사항</div>	

@@ -41,7 +41,6 @@
 
 .postDate{
 	color: rgb(117, 117, 117); font-size: 0.8em;
-	border-bottom: 1px solid #ccc;
 }
 
 
@@ -68,4 +67,9 @@ a.btn-empty {
 a.btn-empty:hover { 
 	background-color: #97a776; color:#fff; 
 	font-size:13px;
+}
+
+#btnLike {
+	cursor: pointer; font-size: 20px; border: none;
+	background-color: white;
 }

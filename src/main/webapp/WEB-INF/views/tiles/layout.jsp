@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
 <link rel='stylesheet' type='text/css' 
 		href='css/common.css?v=<%=new java.util.Date().getTime()%>'>
 <meta charset="UTF-8">

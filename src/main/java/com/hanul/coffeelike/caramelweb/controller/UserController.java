@@ -1,11 +1,8 @@
 package com.hanul.coffeelike.caramelweb.controller;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +18,7 @@ import com.hanul.coffeelike.caramelweb.data.UserProfileData;
 import com.hanul.coffeelike.caramelweb.data.UserSettingData;
 import com.hanul.coffeelike.caramelweb.service.UserService;
 import com.hanul.coffeelike.caramelweb.service.UserService.SettingResult;
+import com.hanul.coffeelike.caramelweb.util.AttachmentFileResolver;
 import com.hanul.coffeelike.caramelweb.util.AttachmentURLConverter;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 
@@ -63,15 +61,16 @@ public class UserController {
 	//프로필
 	@RequestMapping("/profile")
 	public String myprofile(HttpSession session, 
-			Model model,
-			int userId){
+							Model model,
+							int userId){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser == null) return "loginRequired";
 		UserProfileData profile = userService.profile(loginUser.getUserId(), userId);
 		model.addAttribute("data", profile);
-		model.addAttribute("profileImage", profile.getProfileImage()==null ?
-				"imgs/profile.png" : 
-					AttachmentURLConverter.profileImageFromId(profile.getId()));
+		if(AttachmentFileResolver.doesProfileImageExists(profile.getProfileImage()))
+			model.addAttribute("profileImage", AttachmentURLConverter.profileImageFromId(userId));
+		else
+			model.addAttribute("profileImage", "imgs/profile.png");
 		return "user/profile";
 	}
 	
