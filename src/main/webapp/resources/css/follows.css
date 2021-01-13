@@ -5,8 +5,8 @@
 }
 
 .container, .search {
-	width: 400px;
-	margin: 30px auto;
+	width: 600px;
+	margin: 10px auto;
 }
 
 .tabs li {
@@ -40,18 +40,26 @@
   display: block;
 }
 
-.tab-content div.on li {
+.follow-content {
 	list-style: none;
-	margin: 20px;
+	margin: 20px 0;
+	padding: 0 20px;
+	display: block;
+	width: 600px;
+	height: 70px;
 }
 
-.tab-content img {
+.follow-content img {
 	width: 70px;
 	height: 70px;
 	float: left;
 }
 
 .followList-name {
+	display: flex;
+	height: 70px;
+	padding-left: 20px;
+	align-items: center;
 	float: left;
 	font-size: 18px;
 }
@@ -61,6 +69,8 @@
 	color: #e67461;
 	border: 1px solid #e67461;
 	border-radius: 5px;
+	float: right;
+	margin: 10px;
 }
 
 /* 친구검색창 */

@@ -52,7 +52,7 @@
 }
 
 .btnSet { margin-top:30px;}
-a.btn-empty, a.btn-follow {
+a.btn-empty, a.btnFollow {
 	text-align: center; 
 	padding: 3px 10px;
 	border: 1px solid #e67461;
@@ -60,5 +60,14 @@ a.btn-empty, a.btn-follow {
 	box-shadow: 2px 2px 3px #ba9165; 
 	background-color: #fff; color:#e67461; 
 }
-a.btn-follow {float:right;}
+a.btnFollow.following {
+	text-align: center; 
+	padding: 3px 10px;
+	border: 1px solid #e67461;
+	border-radius: 3px; 
+	box-shadow: 2px 2px 3px #ba9165; 
+	background-color: #e67461;
+	float: right;
+}
+a.btnFollow {float:right;}
 a.btn-empty:hover { background-color: #e67461; color:#fff; }

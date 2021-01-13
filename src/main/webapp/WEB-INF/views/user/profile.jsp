@@ -6,9 +6,19 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="css/profile.css">
+<<<<<<< Updated upstream
 <script type="text/javascript" src="js/user_postlist.js"></script>
 <script type="text/javascript">
 userId = ${data.id};
+=======
+<script src="js/follow_button.js"></script>
+<script type="text/javascript">
+$(function(){
+	registerFollowButton($(".btnFollow").toArray(),
+            ${data.id},
+            ${data.followedByYou ? 'true' : 'false'});
+});
+>>>>>>> Stashed changes
 </script>
 </head>
 <body>
@@ -31,7 +41,7 @@ userId = ${data.id};
 			</c:if>
 			<c:if test="${loginUser.userId ne data.id }">
 				<div class="btnSet">
-					<a id="btnFollow" class="btn-follow">+ 팔로우</a>
+					<a id="btnFollow" class="btnFollow"><span class="text"></span></a>
 				</div>
 			</c:if>
 		</section>

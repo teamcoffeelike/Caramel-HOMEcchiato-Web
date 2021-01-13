@@ -34,25 +34,25 @@ $(function(){
 		<li class="follow-tab button">팔로우</li>
 	</ul>
 	<div class="tab-content">
-		<!-- 팔로우 리스트 -->
+		<!-- 팔로워 리스트 -->
 		<div class="follow-tab on">
 			<ul>
 				<c:forEach var="u" items="${followers}">
-					<li>
+					<li class="follow-content">
 						<img src="${empty u.profileImage ? "imgs/profile.png" : u.profileImage }">
-						<li class="followList-name">${u.name }</li>
+						<span class="followList-name">${u.name }</span>
 						<a class="btnFollow id${u.id}">팔로잉</a>
 					</li>
 				</c:forEach>
 			</ul>
 		</div>
-		<!-- 팔로잉 리스트 -->
+		<!-- 팔로우 리스트 -->
 		<div class="follow-tab">
 			<ul>
 				<c:forEach var="u" items="${following}">
-					<li>
+					<li class="follow-content">
 						<img src="${empty u.profileImage ? "imgs/profile.png" : u.profileImage }">
-						<li class="followList-name">${u.name }</li>
+						<span class="followList-name">${u.name }</span>
 						<a class="btnFollow id${u.id}" onload="registerFollowButton(this, ${u.id}, ${u.followedByYou ? 'true' : 'false'});">팔로잉</a>
 					</li>
 				</c:forEach>

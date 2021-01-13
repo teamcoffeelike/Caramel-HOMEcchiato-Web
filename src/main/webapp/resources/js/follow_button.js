@@ -32,9 +32,14 @@ function registerFollowButton(widgets, id, following){
 
 function updateClass(o){
 	for(e of o.widget){
-		if(o.following)
+		if(o.following){
 			$(e).removeClass("following");
-		else
+			$(".text").html("팔로우");
+			$(".text").css("color", "#e67461");
+		}else{
 			$(e).addClass("following");
+			$(".text").html("팔로잉");
+			$(".text").css("color", "#fff");
+		}
 	}
 }
