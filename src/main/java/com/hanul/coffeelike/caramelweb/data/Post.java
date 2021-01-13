@@ -20,7 +20,6 @@ public class Post{
 	@Nullable private Date lastEditDate;
 
 	private int likes;
-	private int reactions;
 	@Nullable private Boolean likedByYou;
 
 	public Post(){}
@@ -40,7 +39,6 @@ public class Post{
 		this.postDate = postDate;
 		this.lastEditDate = lastEditDate;
 		this.likes = likes;
-		this.reactions = reactions;
 		this.likedByYou = likedByYou;
 	}
 
@@ -88,12 +86,6 @@ public class Post{
 	public void setLikes(int likes){
 		this.likes = likes;
 	}
-	public int getReactions(){
-		return reactions;
-	}
-	public void setReactions(int reactions){
-		this.reactions = reactions;
-	}
 	@Nullable
 	public Boolean getLikedByYou(){
 		return likedByYou;
@@ -111,7 +103,6 @@ public class Post{
 				", postDate="+postDate+
 				", lastEditDate="+lastEditDate+
 				", likes="+likes+
-				", reactions="+reactions+
 				", likedByYou="+likedByYou+
 				'}';
 	}
@@ -134,7 +125,6 @@ public class Post{
 				jsonObject.add("lastEditDate", context.serialize(src.getLastEditDate()));
 
 			jsonObject.addProperty("likes", src.getLikes());
-			jsonObject.addProperty("reactions", src.getReactions());
 			if(src.getLikedByYou()!=null)
 				jsonObject.addProperty("likedByYou", src.getLikedByYou());
 			return jsonObject;

@@ -46,7 +46,6 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * 	     postDate: Date
 	 * 	     [ lastEditDate ]: Date
 	 * 	     likes: Integer # 숫자
-	 * 	     reactions: Integer # 댓글 수??
 	 * 	     [ likedByYou ]: Boolean # 로그인한 유저가 이 포스트에 좋아요를 눌렀는지 여부, 로그인 정보가 없을 시 존재하지 않음
 	 *     }
 	 *   ]
@@ -85,7 +84,6 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * 	 postDate: Date
 	 * 	 [ lastEditDate ]: Date
 	 * 	 likes: Integer # 숫자
-	 * 	 reactions: Integer # 댓글 수??
 	 * 	 [ likedByYou ]: Boolean # 로그인한 유저가 이 포스트에 좋아요를 눌렀는지 여부, 로그인 정보가 없을 시 존재하지 않음
 	 * }
 	 * }</pre>

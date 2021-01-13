@@ -37,7 +37,6 @@ function fetchPost(){
                             <div class='contentBox'>
                                 <div class='content'>${e.text}</div>
                                 <div class='postDate'>${date_short}</div>
-                                <a class='reaction' href='post?id=${e.id}'><strong>댓글 ${e.reactions }</strong>&nbsp;&nbsp; 댓글보기</a>
                             </div>`
                         );
                     }

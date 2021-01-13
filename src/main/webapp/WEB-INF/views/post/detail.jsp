@@ -30,7 +30,6 @@
 		<div class='contentBox'>
 			<div class='content'>${fn:replace(post.text, crlf, '<br>')}</div>
 			<div class='postDate'>${post.postDate}</div>
-			<span class='reaction'><strong>댓글 ${post.reactions }</strong>&nbsp;&nbsp; 댓글</span>
 		</div>
 	</div>
 
