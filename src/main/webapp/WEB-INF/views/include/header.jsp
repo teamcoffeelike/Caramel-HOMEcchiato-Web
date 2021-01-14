@@ -31,29 +31,7 @@
 		</ul>
 	</div>
 </header>
-<style>
-header div.category { font-size: 18px; }
-header div.category a:hover, header div.category a.active { font-weight: bold; }
-#mainMenu {margin: 0px auto; padding: 0px;  list-style: none;}
-#mainMenu>li { float: left;}
-#mainMenu>li a {display:inline-block; width:150px; padding:10px 5px; } 
-#mainMenu>li a:hover, #mainMenu>li a:active { font-weight: bold; color: #e67461;}
-.hide {
-padding: 8px; display: none; width: 150px; 
-background: #f4eae1; list-style: none;
-border-radius: 10px;
-z-index: 2;
-}
-.hide:after {
-border-top: 0 solid transparent;
-border-left: 10px solid transparent;
-border-right: 10px solid transparent; 
-border-bottom: 10px solid #f4eae1;
-content: "";
-position: absolute;
-top: 32px; left: 330px;
-}
-</style>
+<link rel="stylesheet" href="css/header.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 $(function(){

@@ -1,15 +1,18 @@
 @charset "UTF-8";
 
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Jua&family=Noto+Sans+KR&display=swap');
+
 * {
 	margin: 0px;
 	padding: 0px;
 	box-sizing: border-box;
 	color: #865449;
 	list-style: none;
+	font-family: 'Noto Sans KR', sans-serif;
 }
 
-#content{ padding: 20px;}
-
+#content{ padding: 20px; }
+	
 a:link, a:visited { text-decoration:none;}		
 a:hover { cursor:pointer; }
 

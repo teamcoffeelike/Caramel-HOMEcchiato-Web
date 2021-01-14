@@ -178,7 +178,7 @@
 			       <property name="userId" value="id"/>
 		       </include> isFollowedByYou
 		  FROM users
-		 WHERE name LIKE '%' || #{name} || '%'
+		 WHERE LOWER(name) LIKE LOWER('%' || #{name} || '%')
 	</select>
 
 </mapper>
