@@ -269,8 +269,11 @@ public class UserApiController extends BaseExceptionHandlingController{
 	}
 	
 	@RequestMapping(value = "/api/searchUserByName", produces="application/json;charset=UTF-8")
-	public String searchUserByName(@RequestParam String name){
-		List<UserProfileData> list = service.searchUserByName(name);
+	public String searchUserByName(HttpSession session,
+								   @RequestParam String name){
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		
+		List<UserProfileData> list = service.searchUserByName(name, loginUser == null ? null : loginUser.getUserId());
 		
 		JsonElement e = JsonHelper.GSON.toJsonTree(list);
 

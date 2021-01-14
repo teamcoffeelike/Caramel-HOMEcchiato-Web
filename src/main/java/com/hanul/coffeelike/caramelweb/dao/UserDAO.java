@@ -90,8 +90,11 @@ public class UserDAO{
 		return sql.selectOne("user.checkIfUserExists", author)!=null;
 	}
 
-	public List<UserProfileData> searchUserByName(String name) {
-		return sql.selectList("user.searchUserByName", name);
+	public List<UserProfileData> searchUserByName(String name, Integer loginUser) {
+		Map<String, Object> m = new HashMap<>();
+		m.put("name", name);
+		m.put("loginUser", loginUser);
+		return sql.selectList("user.searchUserByName", m);
 	}
 
 }

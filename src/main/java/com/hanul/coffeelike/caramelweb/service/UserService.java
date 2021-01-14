@@ -123,8 +123,8 @@ public class UserService{
 		}
 	}
 
-	public List<UserProfileData> searchUserByName(String name) {
-		return dao.searchUserByName(name);
+	public List<UserProfileData> searchUserByName(String name, Integer loginUser) {
+		return dao.searchUserByName(name, loginUser);
 	}
 
 }

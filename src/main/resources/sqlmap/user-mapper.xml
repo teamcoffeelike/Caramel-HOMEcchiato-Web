@@ -168,7 +168,15 @@
 
 	<select id="searchUserByName"
 			resultType="UserProfileData">
-		SELECT id, name, profileImage
+		SELECT id,
+		       name,
+		       profileImage,
+		       <include refid="isFollowingYou">
+			       <property name="userId" value="id"/>
+		       </include> isFollowingYou,
+		       <include refid="isFollowedByYou">
+			       <property name="userId" value="id"/>
+		       </include> isFollowedByYou
 		  FROM users
 		 WHERE name LIKE '%' || #{name} || '%'
 	</select>
