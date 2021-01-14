@@ -1,11 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<header style="border-bottom: 1px solid #ccc; padding: 25px 0;">
-	<div class="category" style="margin-left: 50px;">
-		<a href="<c:url value='/allPostList'/>"><img src="" alt="홈으로"/></a>
+<header class="headerJsp">
+	<div style="margin-left: 50px;">
+		<img src="imgs/l.svg" alt="홈으로" class="header-logo"/>
+		<a href="<c:url value='/allPostList'/>" class="header-title">
+			<span class="header-caramel">Caramel</span>
+			<span class="header-homecchiato"><span class="header-home">HOME</span>cchiato</span>
+		</a>
 	</div>
-	<div style="position: absolute; right: 0; top: 25px; margin-right: 100px;">
+	<div class="category">
 		<ul id="mainMenu">
 			<li><a href="list.in">소개</a></li>
 			<li><a href="list.re">레시피</a></li>

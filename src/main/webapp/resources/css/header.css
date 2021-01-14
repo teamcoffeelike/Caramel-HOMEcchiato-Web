@@ -1,17 +1,28 @@
 @charset "UTF-8";
 
-header div.category { font-size: 18px; }
-header div.category a:hover, header div.category a.active { font-weight: bold; }
+.headerJsp {
+	border-bottom: 1px solid #ccc; padding: 25px 0;
+}
+.header-title:hover { font-weight: bold; }
+
+.category {
+	position: absolute; 
+	right: 0; 
+	top: 25px;
+}
+
 #mainMenu {margin: 0px auto; padding: 0px;  list-style: none;}
 #mainMenu>li { float: left;}
-#mainMenu>li a {display:inline-block; width:150px; padding:10px 5px; } 
+#mainMenu>li a {display:inline-block; width:150px; padding:10px 5px;} 
 #mainMenu>li a:hover, #mainMenu>li a:active { font-weight: bold; color: #e67461;}
+
 .hide {
 padding: 8px; display: none; width: 150px; 
 background: #f4eae1; list-style: none;
 border-radius: 10px;
 z-index: 2;
 }
+
 .hide:after {
 border-top: 0 solid transparent;
 border-left: 10px solid transparent;
