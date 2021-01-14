@@ -1,16 +1,5 @@
 package com.hanul.coffeelike.caramelweb.controller.api;
 
-import java.sql.Date;
-
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.Post;
 import com.hanul.coffeelike.caramelweb.service.PostService;
@@ -19,6 +8,15 @@ import com.hanul.coffeelike.caramelweb.service.PostService.PostModifyResult;
 import com.hanul.coffeelike.caramelweb.service.PostService.PostWriteResult;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpSession;
+import java.sql.Date;
 
 @RestController
 public class PostApiController extends BaseExceptionHandlingController{
@@ -49,13 +47,14 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * 	     [ likedByYou ]: Boolean # 로그인한 유저가 이 포스트에 좋아요를 눌렀는지 여부, 로그인 정보가 없을 시 존재하지 않음
 	 *     }
 	 *   ]
+	 *   endOfList: Boolean
 	 * }
 	 * }</pre>
 	 */
 	@RequestMapping(value = "/api/recentPosts", produces = "application/json;charset=UTF-8")
 	public String recentPosts(HttpSession session,
-							  @RequestParam(required = false) @Nullable Long since,
-							  @RequestParam(defaultValue = "10") int pages){
+	                          @RequestParam(required = false) @Nullable Long since,
+	                          @RequestParam(defaultValue = "10") int pages){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		PostListResult result = postService.recentPosts(
 				loginUser==null ? null : loginUser.getUserId(),
@@ -64,7 +63,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 
 		return JsonHelper.GSON.toJson(result);
 	}
-	
+
 	/**
 	 * 유저별 최근 포스트 가져오기<br>
 	 * <br>
@@ -89,20 +88,22 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 * 	     [ likedByYou ]: Boolean # 로그인한 유저가 이 포스트에 좋아요를 눌렀는지 여부, 로그인 정보가 없을 시 존재하지 않음
 	 *     }
 	 *   ]
+	 *   endOfList: Boolean
 	 * }
 	 * }</pre>
 	 */
 	@RequestMapping(value = "/api/usersPosts", produces = "application/json;charset=UTF-8")
 	public String usersPosts(HttpSession session,
-							 @RequestParam(required = false) @Nullable Long since,
-							 @RequestParam(defaultValue = "9") int pages,
-							 @RequestParam int id){
+	                         @RequestParam(required = false) @Nullable Long since,
+	                         @RequestParam(defaultValue = "9") int pages,
+	                         @RequestParam int id){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		PostListResult result = postService.usersPosts(
-					loginUser==null ? null : loginUser.getUserId(),
-						since==null ? null : new Date(since),
-								pages, id);
-		
+				loginUser==null ? null : loginUser.getUserId(),
+				since==null ? null : new Date(since),
+				pages,
+				id);
+
 		return JsonHelper.GSON.toJson(result);
 	}
 
@@ -134,7 +135,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/post", produces = "application/json;charset=UTF-8")
 	public String post(HttpSession session,
-					   @RequestParam int id){
+	                   @RequestParam int id){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		Post post = postService.post(id, loginUser==null ? null : loginUser.getUserId());
 		if(post==null) return JsonHelper.failure("no_post");
@@ -158,8 +159,8 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/writePost", produces = "application/json;charset=UTF-8")
 	public String writePost(HttpSession session,
-							@RequestParam String text,
-							@RequestParam MultipartFile image){
+	                        @RequestParam String text,
+	                        @RequestParam MultipartFile image){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
 
@@ -182,8 +183,8 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/editPost", produces = "application/json;charset=UTF-8")
 	public String editPost(HttpSession session,
-						   @RequestParam int post,
-						   @RequestParam String text){
+	                       @RequestParam int post,
+	                       @RequestParam String text){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("cannot_edit");
 
@@ -191,7 +192,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 
 		return JsonHelper.GSON.toJson(result);
 	}
-	
+
 	/**
 	 * 포스트 사진 수정<br>
 	 * <br>
@@ -207,13 +208,13 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/editPostImage", produces = "application/json;charset=UTF-8")
 	public String editPostImage(HttpSession session,
-								@RequestParam int post,
-								@RequestParam MultipartFile image){
+	                            @RequestParam int post,
+	                            @RequestParam MultipartFile image){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("cannot_edit");
-		
+
 		PostModifyResult result = postService.editPostImage(loginUser.getUserId(), post, image);
-		
+
 		return JsonHelper.GSON.toJson(result);
 	}
 
@@ -231,7 +232,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/deletePost", produces = "application/json;charset=UTF-8")
 	public String deletePost(HttpSession session,
-							 @RequestParam int post){
+	                         @RequestParam int post){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("cannot_edit");
 
@@ -254,8 +255,8 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/likePost", produces = "application/json;charset=UTF-8")
 	public String likePost(HttpSession session,
-						   @RequestParam int post,
-						   @RequestParam boolean like){
+	                       @RequestParam int post,
+	                       @RequestParam boolean like){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
 
