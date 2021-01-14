@@ -13,9 +13,10 @@
 <script src="https://codepen.io/shshaw/pen/QmZYMG.js"></script>
 </head>
 <body>
+<div class="intro-container">
 <!-- Header -->
 <section class="intro-section">
-	<h1>Caramel HOMEcchiato</h1>
+	<h1 class="intro-h1">Caramel HOMEcchiato</h1>
 	<p class="intro-text"><span class="intro-point">집</span>에서도 여유롭게 <span class="intro-point">카페</span> 분위기를 즐겨보세요</p>
 </section>
  
@@ -28,8 +29,8 @@
 	</figure>
 	
 	<!-- 텍스트 -->
-	<div class="content">
-		<header class="header">
+	<div class="intro-content">
+		<header class="intro-header">
 			<div class="subheading"></div>
 			<div data-splitting>
 				<h2 class="heading">Recipe</h2>
@@ -50,8 +51,8 @@
 	</figure>
 	
 	<!-- 텍스트 -->
-	<div class="content">
-		<header class="header">
+	<div class="intro-content">
+		<header class="intro-header">
 			<div class="subheading"></div>
 			<h2 class="heading">Post</h2>
 		</header>
@@ -70,8 +71,8 @@
 	</figure>
 	
 	<!-- 텍스트 -->
-	<div class="content">
-		<header class="header">
+	<div class="intro-content">
+		<header class="intro-header">
 			<div class="subheading"></div>
 			<h2 class="heading">Follow</h2>
 		</header>
@@ -90,8 +91,8 @@
 	</figure>
 	
 	<!-- 텍스트 -->
-	<div class="content">
-		<header class="header">
+	<div class="intro-content">
+		<header class="intro-header">
 			<div class="subheading"></div>
 			<h2 class="heading">Like</h2>
 		</header>
@@ -110,8 +111,8 @@
 	</figure>
 	
 	<!-- 텍스트 -->
-	<div class="content">
-		<header class="header">
+	<div class="intro-content">
+		<header class="intro-header">
 			<div class="subheading"></div>
 			<h2 class="heading">My Page</h2>
 		</header>
@@ -124,6 +125,7 @@
 		<a class="scrollTop" href="#">↑</a>
 	</div>
 </section>
+</div>
 <script> Splitting(); </script>
 <script>
 console.clear();
