@@ -41,7 +41,7 @@ $(function(){
 					<li class="follow-content">
 						<img src="${empty u.profileImage ? "imgs/profile.png" : u.profileImage }">
 						<span class="followList-name">${u.name }</span>
-						<a class="btnFollow id${u.id}">팔로잉</a>
+						<a class="btnFollow id${u.id}"><span class="text"></span></a>
 					</li>
 				</c:forEach>
 			</ul>
@@ -53,7 +53,7 @@ $(function(){
 					<li class="follow-content">
 						<img src="${empty u.profileImage ? "imgs/profile.png" : u.profileImage }">
 						<span class="followList-name">${u.name }</span>
-						<a class="btnFollow id${u.id}" onload="registerFollowButton(this, ${u.id}, ${u.followedByYou ? 'true' : 'false'});">팔로잉</a>
+						<a class="btnFollow id${u.id}"><span class="text"></span></a>
 					</li>
 				</c:forEach>
 			</ul>

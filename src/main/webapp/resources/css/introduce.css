@@ -98,12 +98,14 @@ p span {
 .paragraph {
 	grid-row: 2 / 3;
 	line-height: 1.5;
+	color: white;
 }
 
 .heading {
 	margin: 0;
 	font-size: 2.75em;
 	font-weight: 700;
+	color: white;
 }
 
 .subheading {
@@ -178,8 +180,8 @@ body, html {
 
 .scrollTop {
 	position: fixed;
-	width: 45px;
-	height: 45px;
+	width: 40px;
+	height: 40px;
 	right: 2%;
 	bottom: 20px;
 	font-size: 20px;
@@ -188,4 +190,5 @@ body, html {
 	text-align: center;
 	padding-top: 5px;
 	border-radius: 50px;
+	z-index: 2
 }

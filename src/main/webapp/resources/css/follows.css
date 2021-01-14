@@ -73,6 +73,15 @@
 	margin: 10px;
 }
 
+.btnFollow.following {
+	padding: 6px 15px;
+	background-color: #e67461;
+	border: 1px solid #e67461;
+	border-radius: 5px;
+	float: right;
+	margin: 10px;
+}
+
 /* 친구검색창 */
 .search {
 	text-align: right;

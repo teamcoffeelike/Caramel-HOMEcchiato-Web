@@ -16,7 +16,7 @@
 <!-- Header -->
 <section class="intro-section">
 	<h1>Caramel HOMEcchiato</h1>
-	<p><span class="intro-point">집</span>에서도 여유롭게 <span class="intro-point">카페</span> 분위기를 즐겨보세요</p>
+	<p class="intro-text"><span class="intro-point">집</span>에서도 여유롭게 <span class="intro-point">카페</span> 분위기를 즐겨보세요</p>
 </section>
  
 <!-- Content  -->
@@ -57,7 +57,7 @@
 		</header>
 		<p class="paragraph">
 			인기 포스트를 통해 다양한 레시피와 일상을 공유할 수 있습니다.<br/>
-			마음에 드는 포스트가 있다면 좋아요를 누르고 댓글을 달아보세요!
+			마음에 드는 포스트가 있다면 좋아요를 눌러보세요!
 		</p>
 	</div>
 </section>
@@ -77,7 +77,7 @@
 		</header>
 		<p class="paragraph">
 			친구를 검색하고 팔로우 할 수 있습니다.<br/>
-			팔로우한 친구와 이야기를 주고 받으며 소통해보세요!
+			팔로우한 친구와 함께 소통해보세요!
 		</p>
 	</div>
 </section>
@@ -138,7 +138,7 @@ ScrollOut({
 Splitting({ target: '.heading' });
 
 $(function(){
-	$(".intro-point").fadeIn(500);
+	$(".intro-text").fadeIn(500);
 });
 
 $(".scrollTop").click(function(){
