@@ -30,7 +30,6 @@ public class Post{
 	            Date postDate,
 	            @Nullable Date lastEditDate,
 	            int likes,
-	            int reactions,
 	            @Nullable Boolean likedByYou){
 		this.id = id;
 		this.image = image;
