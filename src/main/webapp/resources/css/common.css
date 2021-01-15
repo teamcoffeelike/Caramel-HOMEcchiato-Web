@@ -11,7 +11,8 @@
 	font-family: 'Noto Sans KR', sans-serif;
 }
 
-#content{ padding: 20px; }
+#content{ padding: 20px; width: 1280px;
+margin: 0px auto;}
 	
 a:link, a:visited { text-decoration:none;}		
 a:hover { cursor:pointer; }

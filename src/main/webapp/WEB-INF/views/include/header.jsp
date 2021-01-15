@@ -2,16 +2,17 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <header class="headerJsp">
-	<div style="margin-left: 50px;">
+	<div class="mainTitle">
 		<img src="imgs/l.svg" alt="홈으로" class="header-logo"/>
 		<a href="<c:url value='/allPostList'/>" class="header-title">
 			<span class="header-caramel">Caramel</span>
 			<span class="header-homecchiato"><span class="header-home">HOME</span>cchiato</span>
 		</a>
 	</div>
-	<div class="category">
-		<ul id="mainMenu">
+	<div class="header-category">
+		<ul class="header-mainMenu">
 			<li><a href="list.in">소개</a></li>
+			<li><a href="notice">공지사항</a></li>
 			<li><a href="list.re">레시피</a></li>
 			
 			<!-- 로그인 안한 상태 -->
@@ -27,8 +28,8 @@
 					<li><a href="follows">팔로워/팔로잉</a></li>
 					<li><a href="likePost">좋아요</a></li>
 					<li><a href="myrecipe">내 레시피</a></li>
-					<li><a href="search">친구찾기</a></li>
 					<li><a href="settings">설정</a></li>
+					<li><a href="list.qna">문의</a></li>
 					<li><a href="logout">로그아웃</a></li>
 				</ul>
 			</c:if>
