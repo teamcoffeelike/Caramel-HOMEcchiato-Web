@@ -13,7 +13,7 @@
 	<span>Caramel HOMEcchiato 서비스의 오류, 장애, 기타 공지사항을 안내드립니다.</span>
 </div>
 <form method="post" action="insert.no">
-	<table>
+	<table style="width: 80%;">
 	<tr>
 		<th class="w-px200">제목</th>
 		<td><input title="제목" class="mandatory" type="text" name="title"/></td>

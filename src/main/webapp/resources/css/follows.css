@@ -6,8 +6,10 @@
 
 .container, .search {
 	width: 600px;
-	margin: 10px auto;
+	margin: 100px auto;
 }
+
+.container { position: relative; z-index: 1; }
 
 .tabs li {
   list-style: none;
@@ -85,24 +87,27 @@
 /* 친구검색창 */
 .search {
 	text-align: right;
+	position:absolute; z-index: 2; top: 80px;
+	left: 50%;
+	transform: translateX(-300px);
 }
 
 #searchName {
-	width: 200px;
-	padding: 5px 10px;
+	width: 300px;
+	padding: 10px 15px;
 	outline: none;
 	border: 1px solid #bebebe;
 }
 
 #searchNameResult {
 	display: inline-block;
-	width: 200px;
+	width: 300px;
 	font-size: 14px;
 	height: 50px;
 }
 
 .searchNameRow {
-	background-color: #f4eae1;
+	background-color: white;
 	text-align: left;
 	padding: 5px 10px 1px;
 	border: 1px solid #bebebe;

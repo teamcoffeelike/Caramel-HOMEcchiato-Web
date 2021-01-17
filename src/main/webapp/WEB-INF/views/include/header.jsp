@@ -3,7 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <header class="headerJsp">
 	<div class="mainTitle">
-		<img src="imgs/l.svg" alt="홈으로" class="header-logo"/>
+		<img src="imgs/logo.svg" alt="홈으로" class="header-logo"/>
 		<a href="<c:url value='/allPostList'/>" class="header-title">
 			<span class="header-caramel">Caramel</span>
 			<span class="header-homecchiato"><span class="header-home">HOME</span>cchiato</span>

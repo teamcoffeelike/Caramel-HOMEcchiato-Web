@@ -2,21 +2,25 @@
 
 #post {
 	width: 600px;
-	margin: 20px auto; padding: 20px;
-	background-color: #f4eae1;
-	border-radius: 20px;
+	margin: 50px auto; padding: 20px;
+    border: 1px solid #bebebe;
 	text-align: center;
+	border-radius: 5px;
 }
 
 .imgbox { margin: 0 auto; }
 #img-attach{ display: none; }
-.post-img{ width: 550px; }
+.post-img{ width: 550px; border: 1px solid #bebebe; }
 .postbox{ margin-top: 20px; }
 
 textarea[name=text] { 
 	width:calc(100% - 6px); height:200px; resize:none;
-	border: none; 
+	border: 1px solid #bebebe;
 	padding: 10px;
+}
+
+textarea[name=text]:focus {
+	outline: none;
 }
 
 .btnSet { margin-top:10px; }
@@ -24,10 +28,11 @@ textarea[name=text] {
 a.btn-fill, a.btn-empty {
 	text-align: center;
 	padding: 3px 10px;
-	border: 1px solid #e67461;
+    color: #67432a;
 	border-radius: 3px; 
-	box-shadow: 2px 2px 3px #ba9165; 
+	transition: 0.3s;
 }
 
-a.btn-fill { background-color: #e67461; color:#fff; }
-a.btn-empty { background-color: #fff; color:#e67461; }
+a.btn-fill:hover, a.btn-empty:hover {
+	background-color: #F4EAE1;
+}

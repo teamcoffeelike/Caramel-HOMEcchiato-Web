@@ -24,7 +24,7 @@ $(function(){
 <body>
 <div class="searchContainer">
 	<ul class="search">
-		<li><input type="text" id="searchName" name="name" autocomplete="off" placeholder="닉네임을 입력하세요"></li>
+		<li><input type="text" id="searchName" name="name" autocomplete="off" placeholder="검색할 닉네임을 입력하세요"></li>
 		<li><div id="searchNameResult"></div></li>
 	</ul>
 </div>

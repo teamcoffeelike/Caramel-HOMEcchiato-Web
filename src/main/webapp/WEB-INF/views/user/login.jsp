@@ -15,6 +15,7 @@
 <body>
 <!-- 로그인 폼 -->
 <div class="login-form">
+<img alt="로고" src="imgs/logo.svg" class="logo">
 <h1>LOGIN</h1>
 <div class="content">
 	<div class="login">

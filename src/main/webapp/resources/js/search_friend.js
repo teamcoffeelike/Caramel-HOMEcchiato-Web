@@ -9,7 +9,7 @@ $(function(){
 			url: "api/searchUserByName",
 			data: { name: this.value },
 			success: function(response){
-				//console.log("searchUserByName "+JSON.stringify(response));
+				console.log("searchUserByName "+JSON.stringify(response));
 				
 				if($("#searchName").val() != "") {
 					$("#searchNameResult").html(

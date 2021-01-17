@@ -5,8 +5,8 @@
 }
 
 #profile {
-	width: 650px; height: 200px;
-	margin: 0px auto; overflow:hidden;
+	width: 650px; height: 220px;
+	margin: 10px auto; overflow:hidden;
 	display: block;
 	border-bottom: 1px solid #ccc;
 }
@@ -55,19 +55,13 @@
 a.btn-empty, a.btnFollow {
 	text-align: center; 
 	padding: 3px 10px;
-	border: 1px solid #e67461;
-	border-radius: 3px; 
-	box-shadow: 2px 2px 3px #ba9165; 
 	background-color: #fff; color:#e67461; 
 }
 a.btnFollow.following {
 	text-align: center; 
 	padding: 3px 10px;
-	border: 1px solid #e67461;
-	border-radius: 3px; 
-	box-shadow: 2px 2px 3px #ba9165; 
 	background-color: #e67461;
 	float: right;
 }
 a.btnFollow {float:right;}
-a.btn-empty:hover { background-color: #e67461; color:#fff; }
+a.btn-empty:hover { font-weight: bold; }

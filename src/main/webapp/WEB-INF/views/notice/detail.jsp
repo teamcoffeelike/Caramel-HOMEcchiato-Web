@@ -14,7 +14,7 @@
 	<h3>공지사항</h3>
 	<span>Caramel HOMEcchiato 서비스의 오류, 장애, 기타 공지사항을 안내드립니다.</span>
 </div>
-<table>
+<table style="width: 80%;">
 <tr>
 	<td class="w-px200" style="font-weight: bold;">${data.title }</td>
 </tr>

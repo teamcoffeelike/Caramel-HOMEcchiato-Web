@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>소개</title>
+
 <link rel="stylesheet" href="css/introduce.css">
 <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css" />
 <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting-cells.css" />

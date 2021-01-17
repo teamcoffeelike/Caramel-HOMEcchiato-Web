@@ -8,12 +8,13 @@ table {
 }
 
 table th, table td {
-	border-bottom: 1px solid #bebebe;
+	border-bottom: 1px solid #865449;
 	padding: 10px;
 }
 
 table th {
-	border-right: 1px solid #bebebe;
+	border-right: 1px solid #865449;
+	background-color: #fee9cd;
 }
 
 .text {
@@ -32,7 +33,7 @@ input[type=text] {
     margin: 5px;
     height: 30px;
     padding-left: 10px;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 textarea {
@@ -40,7 +41,11 @@ textarea {
     height: 200px;
     margin: 5px;
     padding: 5px 10px;
-    font-size: 16px;
+    font-size: 14px;
+}
+
+input[type=text]:focus, textarea:focus {
+	outline: none;
 }
 
 .btn {
@@ -49,16 +54,24 @@ textarea {
 	text-align: center;
 }
 
-.modify, .delete {
-	float: right;
-	padding: 5px 10px;
-	background-color: #FCD092;
-	border-radius: 10px;
+.save, .cancel, .list {
+	text-align: center;
+	padding: 3px 10px;
+    color: #67432a;
+	border-radius: 3px; 
+	transition: 0.3s;
 }
 
-.list {
-	background-color: #FCD092;
-	padding: 5px 10px;
+.save:hover, .cancel:hover, .modify:hover, .delete:hover, .list:hover {
+	background-color: #F4EAE1;
+}
+
+.modify, .delete {
+	float: right;
+	padding: 3px 10px;
+    color: #67432a;
+	border-radius: 3px; 
+	transition: 0.3s;
 }
 
 .modify {

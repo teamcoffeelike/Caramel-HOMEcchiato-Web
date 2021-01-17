@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 .notice {
-	width: 80%;
+	width: 100%;
 	margin: 0 auto;
 }
 
@@ -14,7 +14,7 @@
 }
 
 table {
-	width: 80%;
+	width: 100%;
 	margin: 0 auto;
 	border-top: 2px solid #865449;
 	border-bottom: 2px solid #865449;
@@ -28,7 +28,7 @@ table th, table td {
 }
 
 table th {
-	background-color: #f4eae1;
+	background-color: #fee9cd;
 }
 
 table td {
@@ -93,6 +93,10 @@ input[name=title] {
 	width:calc(100% - 7px);
 }
 
+input[name=title]:focus, textarea[name=content]:focus {
+	 outline: none;
+}
+
 textarea[name=content] {
 	width:calc(100% - 6px);
 	height:150px;
@@ -109,28 +113,23 @@ textarea {
 	text-align: center;
 }
 
-.btnSubmit, .btnCancel, .btnNew {
-	padding: 5px 15px;
-	border-radius: 5px;
+.btnSubmit, .btnCancel {
 	text-align: center;
-	border: 1px solid #e67461;
+	padding: 3px 10px;
+    color: #67432a;
+	border-radius: 3px; 
+	transition: 0.3s;
 }
 
-.btnSubmit, .btnNew {
-	background-color: #e67461;
-	color: #ffffff;
-}
-
-.btnCancel {
-	color: #e67461;
-	
-}
-
-.noticeNew {
-	width: 80%;
-	margin-bottom: 30px;
+.btnSubmit:hover, .btnCancel:hover {
+	background-color: #F4EAE1;
 }
 
 .btnNew {
-	float: right;
+	display: inline-block;
+    background-color: #FCD092;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-decoration: none;
 }

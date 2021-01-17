@@ -9,7 +9,8 @@
 </head>
 <body>
 <div class="text">
-	<h3>문의글 쓰기</h3>
+	<h3>Q&A 게시판</h3>
+    <span>게시판에 글을 남겨주시면 자세히 답변해 드리겠습니다. 문의 내용에 개인정보가 노출되지 않도록 유의해주세요!</span>
 </div>
 	<form method="post" action="insert.qna">
 	<input type="hidden" name="writer" value="${loginUser.userId }" />
@@ -26,7 +27,7 @@
 
 	<div class="btn">
             <a class="save" onclick="if( necessary() ){ $('form').submit() }">저장</a>
-            <a href="list.qna">취소</a>
+            <a class="cancel" href="list.qna">취소</a>
     </div>
 <script type="text/javascript" src='js/mandatory_check.js'></script>
 	</form>

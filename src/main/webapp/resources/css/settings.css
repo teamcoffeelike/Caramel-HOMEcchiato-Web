@@ -1,26 +1,27 @@
 @charset "UTF-8";
 
 #modifyProfile{
-	width: 500px;	height: 550px;	background-color: #eed7be;
+	width: 500px;	height: 550px;
 	margin: 20px auto;	padding: 20px;	border-radius: 20px;
 }
 
 #tabs{
 	overflow: hidden; width: 100%; 
-	margin: 0 auto; padding: 0;	list-style: none;
+	margin: 0 auto; margin-bottom: 60px; padding: 0;	list-style: none;
 	border-bottom: 2px solid #67432a;	text-align: center;
 }
 
 #tabs li {
 	float: left; width: 120px; cursor: pointer;
 	margin: 0 -1px 0 0;	line-height: 40px;
-	color: #67432a; background-color: #f4e6b9;
+	color: #67432a; background-color: #F4EAE1;
 	border: 1px solid #67432a; border-bottom: none; 
 }
 
 #tabs li.active{
-	color: #f4e6b9; background-color: #67432a;
+	color: #67432a; background-color: #EED7BE;
 	border: 1px solid #67432a; border-bottom: none; 
+    font-weight: bold;
 }
 
 #tabContent{ width: 460px; margin: 0 auto; }
@@ -50,8 +51,8 @@
 #popup{
 	position:absolute;	left:50%;  top:50%;  transform:translate(-50%, -90%);
 	width:300px;	height:300px;
-	border:2px solid #666;	border-radius: 15px; 
-	background-color: #e7f0f9;	padding: 10px; display: none;
+	border:2px solid #67432A;
+	background-color: white; padding: 10px; display: none;
 }
 
 .popup-title{
@@ -59,10 +60,9 @@
 }
 
 .popup-btns a{
-	display: block;	padding: 20px 10px;
+	display: block;	padding: 18px 10px;
 	text-align: center;	border-top: 1px solid #ccc;
 }
-
 .profile, .password {
 	width: 300px;	font-weight: bold;	color: #865449;
 	margin: 0 auto;
@@ -92,13 +92,15 @@
 	font-size: 12px;
 }
 
-.btnSet { margin-top:50px; text-align: center; }
+.btnSet { margin-top:80px; text-align: center; }
 a.btn-fill, a.btn-empty {
 	text-align: center;
 	padding: 3px 10px;
-	border: 1px solid #e67461;
+    color: #67432a;
 	border-radius: 3px; 
-	box-shadow: 2px 2px 3px #ba9165; 
+	transition: 0.3s;
 }
-a.btn-fill { background-color: #e67461; color:#fff; }
-a.btn-empty { background-color: #fff; color:#e67461; }
+
+a.btn-fill:hover, a.btn-empty:hover {
+	background-color: #F4EAE1;
+}
