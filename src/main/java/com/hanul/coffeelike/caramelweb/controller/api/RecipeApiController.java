@@ -4,24 +4,22 @@ import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.Recipe;
 import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
 import com.hanul.coffeelike.caramelweb.data.RecipeCover;
-import com.hanul.coffeelike.caramelweb.service.FileService;
 import com.hanul.coffeelike.caramelweb.service.RecipeService;
+import com.hanul.coffeelike.caramelweb.service.RecipeService.RecipeCoverListResult;
 import com.hanul.coffeelike.caramelweb.service.UserService;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.sql.Date;
 
 @RestController
 public class RecipeApiController extends BaseExceptionHandlingController{
@@ -29,8 +27,6 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	private RecipeService recipeService;
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private FileService fileService;
 
 	/**
 	 * 레시피 리스트, 최신순 정렬<br>
@@ -41,30 +37,29 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 *   recipes: [
 	 *     {
 	 *       id: Integer
-	 *       category: String
-	 *                  ( "hot_coffee" | "ice_coffee" | "tea" | "ade" | "smoothie" | "etc" )
+	 *       category: ( "hot_coffee" | "ice_coffee" | "tea" | "ade" | "smoothie" | "etc" )
 	 *       title: String
 	 *       [ coverImage ]: URL
 	 *       author: Integer
 	 *       postDate: Date
 	 *       [ lastEditDate ]: Date
-	 *       ratings: Integer # 평가받은 수
 	 *       [ averageRating ]: Number # 평가 평균
+	 *       [ yourRating ]: Number # 로그인한 유저의 평가
 	 *     }
 	 *   ]
 	 * }
 	 * }</pre>
 	 *
 	 * <b>에러: </b><br>
-	 * bad_request : category와 author 모두 존재하지 않음<br>
 	 * bad_category : 유효하지 않은 category<br>
 	 * no_user : 존재하지 않는 author<br>
 	 */
 	@RequestMapping(value = "/api/recipeList", produces = "application/json;charset=UTF-8")
 	public String recipeList(HttpSession session,
+	                         @RequestParam(required = false) @Nullable Long since,
+	                         @RequestParam(defaultValue = "10") int pages,
 	                         @Nullable @RequestParam(required = false) String category,
 	                         @Nullable @RequestParam(required = false) Integer author){
-		if(category==null&&author==null) return JsonHelper.failure("bad_request");
 		if(category!=null&&RecipeCategory.fromString(category)==null){
 			return JsonHelper.failure("bad_category");
 		}
@@ -72,7 +67,15 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 			return JsonHelper.failure("no_user");
 		}
 
-		return JsonHelper.GSON.toJson(recipeService.list(category, author));
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+
+		RecipeCoverListResult result = recipeService.list(
+				loginUser==null ? null : loginUser.getUserId(),
+				since==null ? null : new Date(since),
+				pages,
+				category,
+				author);
+		return JsonHelper.GSON.toJson(result);
 	}
 
 	/**
@@ -82,13 +85,14 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 * <pre>{@code
 	 * {
 	 *   id: Integer
-	 *   category: String
-	 *              ( "hot_coffee" | "ice_coffee" | "tea" | "ade" | "smoothie" | "etc" )
+	 *   category: ( "hot_coffee" | "ice_coffee" | "tea" | "ade" | "smoothie" | "etc" )
 	 *   title: String
 	 *   [ coverImage ]: URL
 	 *   author: Integer
-	 *   ratings: Integer # 평가받은 수
-	 *   averageRating: Number # 평가 평균
+	 *   postDate: Date
+	 *   [ lastEditDate ]: Date
+	 *   [ averageRating ]: Number # 평가 평균
+	 *   [ yourRating ]: Number # 로그인한 유저의 평가
 	 *   steps: [
 	 *     {
 	 *       index: Integer

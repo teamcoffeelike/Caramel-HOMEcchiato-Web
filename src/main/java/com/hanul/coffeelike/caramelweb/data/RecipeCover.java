@@ -16,23 +16,22 @@ public class RecipeCover{
 	private String title;
 	@Nullable private String coverImage;
 	private int author;
-	private int ratings;
 	@Nullable private Double averageRating;
+	@Nullable private Double yourRating;
 
 	public RecipeCover(int id,
 	                   RecipeCategory category,
 	                   String title,
 	                   @Nullable String coverImage,
 	                   int author,
-	                   int ratings,
-	                   @Nullable Double averageRating){
+	                   @Nullable Double averageRating, @Nullable Double yourRating){
 		this.id = id;
 		this.category = category;
 		this.title = title;
 		this.coverImage = coverImage;
 		this.author = author;
-		this.ratings = ratings;
 		this.averageRating = averageRating;
+		this.yourRating = yourRating;
 	}
 
 	public int getId(){
@@ -65,18 +64,19 @@ public class RecipeCover{
 	public void setAuthor(int author){
 		this.author = author;
 	}
-	public int getRatings(){
-		return ratings;
-	}
-	public void setRatings(int ratings){
-		this.ratings = ratings;
-	}
 	@Nullable public Double getAverageRating(){
 		return averageRating;
 	}
 	public void setAverageRating(@Nullable Double averageRating){
 		this.averageRating = averageRating;
 	}
+	@Nullable public Double getYourRating(){
+		return yourRating;
+	}
+	public void setYourRating(@Nullable Double yourRating){
+		this.yourRating = yourRating;
+	}
+
 
 	public enum Json implements JsonSerializer<RecipeCover>{
 		INSTANCE;
@@ -91,7 +91,6 @@ public class RecipeCover{
 			if(AttachmentFileResolver.doesRecipeCoverImageExists(src.getCoverImage()))
 				jsonObject.addProperty("coverImage", AttachmentURLConverter.recipeCoverImageFromId(src.getId()));
 			jsonObject.addProperty("author", src.getAuthor());
-			jsonObject.addProperty("ratings", src.getRatings());
 			if(src.getAverageRating()!=null)
 				jsonObject.addProperty("averageRating", src.getAverageRating());
 			return jsonObject;

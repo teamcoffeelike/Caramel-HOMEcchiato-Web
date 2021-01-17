@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +18,17 @@ public class RecipeDAO{
 	@Autowired
 	private SqlSession sql;
 
-	public List<RecipeCover> list(String category, Integer author){
+	public List<RecipeCover> list(@Nullable Integer loginUser,
+	                              @Nullable Date since,
+	                              int pages,
+	                              @Nullable String category,
+	                              @Nullable Integer author){
 		Map<String, Object> m = new HashMap<>();
-		m.put("category", category);
-		m.put("author", author);
+		if(loginUser!=null) m.put("loginUser", loginUser);
+		if(since!=null) m.put("since", since);
+		m.put("pages", pages);
+		if(category!=null) m.put("category", category);
+		if(author!=null) m.put("author", author);
 		return sql.selectList("recipe.list", m);
 	}
 

@@ -2,42 +2,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="recipe">
+
     <sql id="recipeCover">
-        ${recipes}.id,
-        ${recipes}.category,
-        ${recipes}.title,
-        ${recipes}.coverImage,
-        ${recipes}.author,
-        ${recipes}.postDate,
-        ${recipes}.lastEditDate,
-        (SELECT COUNT(*)
-           FROM recipeRatings
-          WHERE recipe = ${table}.id) ratings,
-        (SELECT AVG(rating)
-           FROM recipeRatings
-          WHERE recipe = ${table}.id) averageRating
+        recipes.id,
+        recipes.category,
+        recipes.title,
+        recipes.coverImage,
+        recipes.author,
+        recipes.postDate,
+        recipes.lastEditDate,
+        (SELECT AVG(recipeRatings.rating)
+           FROM recipeRatings JOIN users ON recipeRatings.userId = users.id
+          WHERE recipeRatings.recipe = recipes.id
+            AND users.isDeleted = 'N') averageRating,
+        <choose>
+            <when test="loginUser == null">NULL</when>
+            <otherwise>
+                (SELECT recipeRatings.rating
+                   FROM recipeRatings
+                  WHERE recipeRatings.userId = #{loginUser})
+            </otherwise>
+        </choose> yourRating
     </sql>
 
     <select id="list"
             parameterType="map"
             resultType="RecipeCover">
-        SELECT <include refid="recipeCover">
-                 <property name="recipes" value="r"/>
-               </include>
-          FROM recipes r
-         WHERE isDeleted = 'N'
-           AND (#{category, jdbcType=VARCHAR} IS NULL
-               OR category = #{category, jdbcType=VARCHAR})
-           AND (#{author, jdbcType=INTEGER} IS NULL
-               OR author = #{author, jdbcType=INTEGER})
-         ORDER BY postDate DESC
+        SELECT *
+          FROM (SELECT <include refid="recipeCover"/>
+                  FROM recipes
+                 WHERE isDeleted = 'N'
+                       <if test="category != null">
+                           AND category = #{category}
+                       </if>
+                       <if test="author != null">
+                           AND author = #{author}
+                       </if>
+                       <if test="since != null">
+                           AND posts.postDate &lt; #{since}
+                       </if>
+                 ORDER BY postDate DESC)
+         WHERE ROWNUM &lt;= #{pages}
     </select>
 
     <select id="getCover"
             resultType="RecipeCover">
-        SELECT <include refid="recipeCover">
-                 <property name="table" value="r"/>
-               </include>
+        SELECT <include refid="recipeCover"/>
           FROM recipes r
          WHERE isDeleted = 'N'
            AND id = #{id}
