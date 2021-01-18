@@ -8,12 +8,16 @@ import java.util.regex.Pattern;
 public final class Validate{
 	private Validate(){}
 
+	public static final int MAX_RECIPE_STEPS = 30;
+
 	private static final Pattern NAME_REGEX = Pattern.compile("[^\t\n]{1,40}");
 	private static final Pattern EMAIL_REGEX = Pattern.compile("[^@]+@[^@]+");
 	private static final Pattern PHONE_NUMBER_REGEX = Pattern.compile("(0\\d\\d)[ -]?(\\d{4})[ -]?(\\d{4})");
 	private static final Pattern PASSWORD_REGEX = Pattern.compile(".{3,63}");
 	private static final Pattern POST_TEXT_REGEX = Pattern.compile("(?:\\S|\\s){0,1000}");
 	private static final Pattern MOTD_REGEX = Pattern.compile(".{0,100}");
+	private static final Pattern RECIPE_TITLE_REGEX = Pattern.compile(".{0,100}");
+	private static final Pattern RECIPE_STEP_REGEX = Pattern.compile("(?:\\s|\\S){0,1000}");
 
 	public static boolean name(String name){
 		return NAME_REGEX.matcher(name).matches();
@@ -32,6 +36,12 @@ public final class Validate{
 	}
 	public static boolean motd(String motd){
 		return MOTD_REGEX.matcher(motd).matches();
+	}
+	public static boolean recipeTitle(String motd){
+		return RECIPE_TITLE_REGEX.matcher(motd).matches();
+	}
+	public static boolean recipeStep(String motd){
+		return RECIPE_STEP_REGEX.matcher(motd).matches();
 	}
 
 	/**
