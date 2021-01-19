@@ -6,20 +6,28 @@ import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
 import com.hanul.coffeelike.caramelweb.data.RecipeCover;
 import com.hanul.coffeelike.caramelweb.service.RecipeService;
 import com.hanul.coffeelike.caramelweb.service.RecipeService.RecipeCoverListResult;
+import com.hanul.coffeelike.caramelweb.service.RecipeService.RecipeWriteResult;
 import com.hanul.coffeelike.caramelweb.service.UserService;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
+import com.hanul.coffeelike.caramelweb.util.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 @RestController
 public class RecipeApiController extends BaseExceptionHandlingController{
@@ -124,6 +132,17 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	/**
 	 * 레시피 작성<br>
 	 * <br>
+	 * <pre>{@code
+	 * -> title: Plain Text
+	 * -> coverImage: Image
+	 * -> category: Plain Text ( "hot_coffee" | "ice_coffee" | "tea" | "ade" | "smoothie" | "etc" )
+	 * -> steps: Integer
+	 * [ N = 1 2 3...steps
+	 *   [-> imageN]: Image
+	 *   -> textN: Plain Text
+	 * ]
+	 * }</pre>
+	 * <br>
 	 * <b>성공 시:</b><br>
 	 * <pre>{@code
 	 * {
@@ -133,17 +152,44 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 *
 	 * <b>에러: </b><br>
 	 * not_logged_in : 로그인 상태가 아님<br>
+	 * bad_title : 유효하지 않은 타이틀<br>
+	 * bad_category : 유효하지 않은 카테고리<br>
+	 * bad_steps : 유효하지 않은 레시피 단계 갯수<br>
+	 * bad_step_text : 유효하지 않은 레시피 단계 텍스트<br>
 	 */
 	@RequestMapping(value = "/api/writeRecipe", produces = "application/json;charset=UTF-8")
 	public String writeRecipe(HttpSession session,
-	                          MultipartRequest request,
-	                          @RequestParam String title,
-	                          @RequestParam MultipartFile titleImage){
+	                          @RequestParam Map<String, MultipartFile> fileMap/*,
+	                          @RequestParam("title") String title,
+	                          @RequestParam("coverImage") MultipartFile coverImage,
+	                          @RequestParam("category") String category,
+	                          @RequestParam("steps") int steps*/) throws IOException{
+		logger.info(String.join(", ", fileMap.keySet()));
+		return JsonHelper.failure("ok");
+/*
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
-		// TODO 멀티파트 직접 핸들링 필요?
 
-		return JsonHelper.failure("work_in_progress");
+		RecipeCategory recipeCategory = RecipeCategory.fromString(category);
+		if(recipeCategory==null) return JsonHelper.failure("bad_category");
+
+		if(steps<1||steps>Validate.MAX_RECIPE_STEPS){
+			return JsonHelper.failure("bad_steps");
+		}
+
+		List<Entry<MultipartFile, String>> stepsList = new ArrayList<>();
+
+		for(int i = 1; i<=steps; i++){
+			MultipartFile imageN = fileMap.get("image"+i);
+			MultipartFile textN = fileMap.get("text"+i);
+			if(textN==null) return JsonHelper.failure("bad_parameter");
+
+			stepsList.add(new SimpleEntry<>(imageN, new String(textN.getBytes(), StandardCharsets.UTF_8)));
+		}
+
+		RecipeWriteResult result = recipeService.writeRecipe(loginUser.getUserId(), title, coverImage, recipeCategory, stepsList);
+
+		return JsonHelper.GSON.toJson(result);*/
 	}
 
 	/**

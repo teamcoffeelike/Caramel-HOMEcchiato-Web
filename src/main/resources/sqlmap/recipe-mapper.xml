@@ -54,7 +54,7 @@
     </select>
 
     <select id="steps"
-            resultType="map">
+            resultType="RecipeStep">
         SELECT recipe,
                ordinal index,
                image,
@@ -70,6 +70,12 @@
           FROM recipes
          WHERE isDeleted = 'N'
            AND id = #{id}
+    </select>
+
+    <select id="generatePostId"
+            resultType="Integer">
+        SELECT seq_recipes.nextval
+          FROM dual
     </select>
 
 </mapper>

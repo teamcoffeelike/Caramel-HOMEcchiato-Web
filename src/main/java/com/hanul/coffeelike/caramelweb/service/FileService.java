@@ -125,7 +125,27 @@ public class FileService{
 		return AttachmentFileResolver.getPostImageFile(postImage.getImage());
 	}
 
-	@Nullable private String trySaveFile(MultipartFile multipartFile, AttachmentType type, String generatedName){
+	///////////////////////////////////////////////////////////////////////
+	//
+	// 레시피 커버 이미지
+	//
+	///////////////////////////////////////////////////////////////////////
+
+	@Nullable public String saveRecipeCoverImage(int recipeId, MultipartFile image){
+		return trySaveFile(image, AttachmentType.RECIPE_COVER, generateUniqueFilename(AttachmentType.RECIPE_COVER, recipeId));
+	}
+
+	///////////////////////////////////////////////////////////////////////
+	//
+	// 레시피 단계 이미지
+	//
+	///////////////////////////////////////////////////////////////////////
+
+	@Nullable public String saveRecipeStepImage(int recipeId, int index, MultipartFile image){
+		return trySaveFile(image, AttachmentType.RECIPE_STEP, generateUniqueFilename(AttachmentType.RECIPE_STEP, recipeId+"-"+index));
+	}
+
+	@Nullable private static String trySaveFile(MultipartFile multipartFile, AttachmentType type, String generatedName){
 		File storage = AttachmentFileResolver.getStorage(type);
 		File dest = new File(storage, generatedName);
 		try{
@@ -157,7 +177,7 @@ public class FileService{
 		return generatedName+"."+ext;
 	}
 
-	private boolean tryRemoveFile(File file){
+	private static boolean tryRemoveFile(File file){
 		try{
 			if(!file.delete()){
 				LOGGER.error("파일 '{} ({})'이 존재하지 않아 삭제할 수 없습니다.", file.getPath(), file.getAbsolutePath());

@@ -1,5 +1,6 @@
 package com.hanul.coffeelike.caramelweb.dao;
 
+import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
 import com.hanul.coffeelike.caramelweb.data.RecipeCover;
 import com.hanul.coffeelike.caramelweb.data.RecipeStep;
 import org.apache.ibatis.session.SqlSession;
@@ -11,7 +12,6 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Repository
 public class RecipeDAO{
@@ -37,16 +37,32 @@ public class RecipeDAO{
 	}
 
 	public List<RecipeStep> steps(int id){
-		List<Map<String, Object>> result = sql.selectOne("recipe.steps", id);
-		// TODO debug code
-		System.out.println(result.stream().map(m -> m.entrySet()
-				.stream()
-				.map(e -> e.getKey()+":"+e.getValue())
-				.collect(Collectors.joining(", "))));
-		return null; // TODO TODO
+		return sql.selectOne("recipe.steps", id);
 	}
 
 	public boolean checkIfRecipeExists(int id){
 		return sql.selectOne("recipe.checkIfRecipeExists", id)!=null;
+	}
+
+	public int generateRecipeId(){
+		return sql.selectOne("recipe.generateRecipeId");
+	}
+
+	public void insertRecipe(int author, String title, String coverImageId, RecipeCategory recipeCategory){
+		Map<String, Object> m = new HashMap<>();
+		m.put("author", author);
+		m.put("title", title);
+		m.put("coverImage", coverImageId);
+		m.put("recipeCategory", recipeCategory);
+		sql.insert("recipe.insertRecipe", m);
+	}
+
+	public void insertRecipeStep(int recipe, int index, @Nullable String image, String text){
+		Map<String, Object> m = new HashMap<>();
+		m.put("recipe", recipe);
+		m.put("index", index);
+		if(image!=null) m.put("image", image);
+		m.put("text", text);
+		sql.insert("recipe.insertRecipeStep", m);
 	}
 }
