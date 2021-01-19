@@ -181,6 +181,7 @@ $(function(){
 			url: "api/emailExists",
 			data: { email:$("#joinUserEmail").val() },
 			success:function(response) {
+				//console.log(response);
 				if(response.exists) {
 					$("#joinEmailCheck_msg").html("이미 사용중인 이메일입니다!");
 				}else {
@@ -213,7 +214,10 @@ $(function(){
 			url: "api/phoneNumberExists",
 			data: { phoneNumber:$("#joinUserPhone").val() },
 			success:function(response) {
-				if(response.exists) {
+				var data = JSON.parse(response);
+				//console.log(data.exists);
+				
+				if(data.exists == false) {
 					$("#joinPhoneCheck_msg").html("이미 사용중인 번호입니다!");
 				}else {
 					$("#joinPhoneCheck_msg").html("사용가능한 번호입니다!");

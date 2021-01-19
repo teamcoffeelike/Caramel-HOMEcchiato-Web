@@ -17,6 +17,7 @@ import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.UserProfileData;
 import com.hanul.coffeelike.caramelweb.data.UserSettingData;
 import com.hanul.coffeelike.caramelweb.service.UserService;
+import com.hanul.coffeelike.caramelweb.service.UserService.SearchUserResult;
 import com.hanul.coffeelike.caramelweb.service.UserService.SettingResult;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
@@ -268,18 +269,15 @@ public class UserApiController extends BaseExceptionHandlingController{
 		return "{}";
 	}
 	
+	
 	@RequestMapping(value = "/api/searchUserByName", produces="application/json;charset=UTF-8")
 	public String searchUserByName(HttpSession session,
 								   @RequestParam String name){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		if(loginUser==null) return JsonHelper.failure("not__logged_in");
 		
-		List<UserProfileData> list = service.searchUserByName(name, loginUser == null ? null : loginUser.getUserId());
+		SearchUserResult result = service.searchUserByName(name, loginUser.getUserId());
 		
-		JsonElement e = JsonHelper.GSON.toJsonTree(list);
-
-		JsonObject o = new JsonObject();
-		o.add("users", e);
-
-		return JsonHelper.GSON.toJson(o);
+		return JsonHelper.GSON.toJson(result);
 	}
 }

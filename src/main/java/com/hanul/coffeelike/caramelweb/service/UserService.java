@@ -123,8 +123,38 @@ public class UserService{
 		}
 	}
 
-	public List<UserProfileData> searchUserByName(String name, Integer loginUser) {
-		return dao.searchUserByName(name, loginUser);
+	public SearchUserResult searchUserByName(String name, Integer loginUser) {
+		name = name.trim();
+		if(name == "") return new SearchUserResult("no_keyword");
+		return users(dao.searchUserByName(name, loginUser));
+	}
+	
+	public SearchUserResult users(List<UserProfileData> users) {
+		return new SearchUserResult(users);
+	}
+	
+	public static class SearchUserResult{
+		@Nullable private List<UserProfileData> users;
+		@Nullable private final String error;
+		
+		public SearchUserResult(List<UserProfileData> users) {
+			this.users = users;
+			this.error = null;
+		}
+		
+		public SearchUserResult(String error) {
+			this.error = error;
+		}
+		
+		@Nullable
+		public List<UserProfileData> getUsers(){
+			return users;
+		}
+		
+		@Nullable
+		public String getError() {
+			return error;
+		}
 	}
 
 }

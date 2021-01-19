@@ -43,7 +43,6 @@
 	color: rgb(117, 117, 117); font-size: 0.8em;
 }
 
-
 .btnSet1 { 
 	height: 50px; line-height: 50px;
 	margin-top:10px; text-align: center; float: right; 
@@ -53,20 +52,13 @@
 a.btn-fill, a.btn-empty {
 	text-align: center;
 	padding: 3px 10px;
-	border: 1px solid #606b43;
+    color: #67432a;
 	border-radius: 3px; 
+	transition: 0.3s;
 }
 
-a.btn-fill { 
-	background-color: #606b43; color:#fff; 
-}
-a.btn-empty { 
-	background-color: #fff; color:#606b43; 
-	font-size:13px;
-}
-a.btn-empty:hover { 
-	background-color: #97a776; color:#fff; 
-	font-size:13px;
+a.btn-fill:hover, a.btn-empty:hover {
+	background-color: #F4EAE1;
 }
 
 #btnLike {
