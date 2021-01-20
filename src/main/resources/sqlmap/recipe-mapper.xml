@@ -8,9 +8,21 @@
         recipes.category,
         recipes.title,
         recipes.coverImage,
-        recipes.author,
+        recipes.author     authorId,
+        users.name         authorName,
+        users.profileImage authorProfileImage,
+        <include refid="user.isFollowingYou">
+            <property name="userId" value="recipes.author"/>
+        </include>         authorIsFollowingYou,
+        <include refid="user.isFollowedByYou">
+            <property name="userId" value="recipes.author"/>
+        </include>         authorIsFollowedByYou,
         recipes.postDate,
         recipes.lastEditDate,
+        (SELECT COUNT(*)
+           FROM recipeRatings JOIN users ON recipeRatings.userId = users.id
+          WHERE recipeRatings.recipe = recipes.id
+            AND users.isDeleted = 'N') ratings,
         (SELECT AVG(recipeRatings.rating)
            FROM recipeRatings JOIN users ON recipeRatings.userId = users.id
           WHERE recipeRatings.recipe = recipes.id
@@ -25,57 +37,111 @@
         </choose> yourRating
     </sql>
 
+    <resultMap id="recipeCoverResultMap" type="RecipeCover">
+        <id property="id" column="id"/>
+        <result property="category" column="category"/>
+        <result property="title" column="title"/>
+        <result property="coverImage" column="coverImage"/>
+        <result property="postDate" column="postDate"/>
+        <result property="lastEditDate" column="lastEditDate"/>
+        <result property="ratings" column="ratings"/>
+        <result property="averageRating" column="averageRating"/>
+        <result property="yourRating" column="yourRating"/>
+        <association property="author" javaType="UserProfileData">
+            <id property="id" column="authorId"/>
+            <result property="name" column="authorName"/>
+            <result property="profileImage" column="authorProfileImage"/>
+            <result property="isFollowingYou" column="authorIsFollowingYou"/>
+            <result property="isFollowedByYou" column="authorIsFollowedByYou"/>
+        </association>
+    </resultMap>
+
     <select id="list"
             parameterType="map"
-            resultType="RecipeCover">
+            resultMap="recipeCoverResultMap">
         SELECT *
           FROM (SELECT <include refid="recipeCover"/>
-                  FROM recipes
-                 WHERE isDeleted = 'N'
+                  FROM recipes JOIN users ON recipes.author = users.id
+                 WHERE recipes.isDeleted = 'N'
                        <if test="category != null">
-                           AND category = #{category}
+                           AND recipes.category = #{category}
                        </if>
                        <if test="author != null">
-                           AND author = #{author}
+                           AND recipes.author = #{author}
                        </if>
                        <if test="since != null">
-                           AND posts.postDate &lt; #{since}
+                           AND recipes.postDate &lt; #{since}
                        </if>
-                 ORDER BY postDate DESC)
+                 ORDER BY recipes.postDate DESC)
          WHERE ROWNUM &lt;= #{pages}
     </select>
 
     <select id="getCover"
-            resultType="RecipeCover">
+            resultMap="recipeCoverResultMap">
         SELECT <include refid="recipeCover"/>
-          FROM recipes r
-         WHERE isDeleted = 'N'
-           AND id = #{id}
+          FROM recipes JOIN users ON recipes.author = users.id
+         WHERE recipes.isDeleted = 'N'
+           AND recipes.id = #{id}
     </select>
 
     <select id="steps"
             resultType="RecipeStep">
         SELECT recipe,
-               ordinal index,
+               step,
                image,
                text
-          FROM steps s
+          FROM steps
          WHERE recipe = #{recipe}
-         ORDER BY ordinal
+         ORDER BY step
     </select>
 
     <select id="checkIfRecipeExists"
-            parameterType="Integer">
+            parameterType="Integer"
+            resultType="Integer">
         SELECT id
           FROM recipes
          WHERE isDeleted = 'N'
            AND id = #{id}
     </select>
 
-    <select id="generatePostId"
+    <select id="generateRecipeId"
             resultType="Integer">
         SELECT seq_recipes.nextval
           FROM dual
     </select>
+
+    <insert id="insertRecipe"
+            parameterType="map">
+        INSERT INTO recipes(id, category, title, author, coverImage)
+        VALUES (#{id}, #{category}, #{title}, #{author}, #{coverImage})
+    </insert>
+
+    <insert id="insertRecipeStep"
+            parameterType="map">
+        INSERT INTO steps(step, recipe, <if test="image != null">image, </if>text)
+        VALUES (#{step}, #{recipe}, <if test="image != null">#{image}, </if>#{text})
+    </insert>
+
+    <delete id="deleteRecipeAndSteps">
+        DELETE FROM recipes
+         WHERE id = #{id}
+    </delete>
+
+    <update id="markDeleted">
+        UPDATE recipes
+           SET isDeleted = 'Y'
+         WHERE id = #{id}
+    </update>
+
+    <insert id="insertRecipeRating">
+        INSERT INTO recipeRatings(userId, recipe, rating)
+        VALUES (#{user}, #{recipe}, #{rating})
+    </insert>
+
+    <delete id="deleteRecipeRating">
+        DELETE FROM recipeRatings
+         WHERE userId = #{user}
+           AND recipe = #{recipe}
+    </delete>
 
 </mapper>

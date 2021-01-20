@@ -6,17 +6,23 @@ import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
 import com.hanul.coffeelike.caramelweb.data.RecipeCover;
 import com.hanul.coffeelike.caramelweb.data.RecipeStep;
 import com.hanul.coffeelike.caramelweb.util.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
 @Service
 public class RecipeService{
+	private static final Logger LOGGER = LoggerFactory.getLogger(RecipeService.class);
+
 	@Autowired
 	private RecipeDAO recipeDAO;
 	@Autowired
@@ -36,15 +42,15 @@ public class RecipeService{
 		return new RecipeCoverListResult(list, true);
 	}
 
-	@Nullable public Recipe recipe(int id){
-		RecipeCover cover = recipeDAO.getCover(id);
+	@Nullable public Recipe recipe(int id, @Nullable Integer loginUser){
+		RecipeCover cover = recipeDAO.getCover(id, loginUser);
 		if(cover==null) return null;
 		List<RecipeStep> steps = recipeDAO.steps(id);
 		return new Recipe(cover, steps);
 	}
 
-	public RecipeCover getCover(int id){
-		return recipeDAO.getCover(id);
+	public RecipeCover getCover(int id, @Nullable Integer loginUser){
+		return recipeDAO.getCover(id, loginUser);
 	}
 
 	public boolean checkIfRecipeExists(int id){
@@ -52,7 +58,7 @@ public class RecipeService{
 	}
 
 	public void delete(int recipe){
-		// TODO
+		recipeDAO.markDeleted(recipe);
 	}
 
 	public RecipeWriteResult writeRecipe(int author,
@@ -72,18 +78,57 @@ public class RecipeService{
 
 		String coverImageId = fileService.saveRecipeCoverImage(recipeId, coverImage);
 
-		recipeDAO.insertRecipe(author, title, coverImageId, recipeCategory);
+		List<Entry<String, String>> steps = new ArrayList<>();
+		try{
+			for(int i = 0; i<stepsList.size(); i++){
+				Entry<MultipartFile, String> e = stepsList.get(i);
+				MultipartFile image = e.getKey();
 
-		for(int i = 0; i<stepsList.size(); i++){
-			Entry<MultipartFile, String> e = stepsList.get(i);
-			MultipartFile image = e.getKey();
-			String stepImageId = image==null ? null : fileService.saveRecipeStepImage(recipeId, i, image);
-			String text = e.getValue();
+				steps.add(new SimpleEntry<>(
+						image==null ? null : fileService.saveRecipeStepImage(recipeId, i, image),
+						e.getValue()));
+			}
 
-			recipeDAO.insertRecipeStep(recipeId, i, stepImageId, text);
+			recipeDAO.insertRecipe(recipeId, author, title, coverImageId, recipeCategory);
+
+			try{
+				for(int index = 0; index<steps.size(); index++){
+					Entry<String, String> e = steps.get(index);
+					recipeDAO.insertRecipeStep(recipeId, index, e.getKey(), e.getValue());
+				}
+
+				return new RecipeWriteResult(recipeId);
+			}catch(Exception ex){
+				recipeDAO.deleteRecipeAndSteps(recipeId);
+				throw ex;
+			}
+		}catch(Exception ex){
+			LOGGER.error("레시피 저장 중 오류 발생", ex);
+			fileService.removeRecipeCoverImage(coverImageId);
+			for(Entry<String, String> e : steps){
+				String stepImageId = e.getKey();
+				if(stepImageId!=null){
+					fileService.removeRecipeStepImage(stepImageId);
+				}
+			}
+			return new RecipeWriteResult("unexpected");
 		}
+	}
 
-		return new RecipeWriteResult(recipeId);
+	public RecipeRateResult rateRecipe(int user, int recipe, double rating){
+		if(rating<0||rating>5){
+			return new RecipeRateResult("bad_rating");
+		}
+		if(!recipeDAO.checkIfRecipeExists(recipe)) return new RecipeRateResult("no_recipe");
+		recipeDAO.deleteRecipeRating(user, recipe);
+		recipeDAO.insertRecipeRating(user, recipe, rating);
+		return new RecipeRateResult();
+	}
+
+	public boolean deleteRecipeRating(int user, int recipe){
+		if(!recipeDAO.checkIfRecipeExists(recipe)) return false;
+		recipeDAO.deleteRecipeRating(user, recipe);
+		return true;
 	}
 
 
@@ -131,6 +176,21 @@ public class RecipeService{
 		@Nullable public Integer getId(){
 			return id;
 		}
+		@Nullable public String getError(){
+			return error;
+		}
+	}
+
+	public static final class RecipeRateResult{
+		@Nullable private final String error;
+
+		public RecipeRateResult(){
+			this(null);
+		}
+		public RecipeRateResult(@Nullable String error){
+			this.error = error;
+		}
+
 		@Nullable public String getError(){
 			return error;
 		}

@@ -32,12 +32,15 @@ public class RecipeDAO{
 		return sql.selectList("recipe.list", m);
 	}
 
-	@Nullable public RecipeCover getCover(int id){
-		return sql.selectOne("recipe.getCover", id);
+	@Nullable public RecipeCover getCover(int id, @Nullable Integer loginUser){
+		Map<String, Object> m = new HashMap<>();
+		m.put("id", id);
+		if(loginUser!=null) m.put("loginUser", loginUser);
+		return sql.selectOne("recipe.getCover", m);
 	}
 
 	public List<RecipeStep> steps(int id){
-		return sql.selectOne("recipe.steps", id);
+		return sql.selectList("recipe.steps", id);
 	}
 
 	public boolean checkIfRecipeExists(int id){
@@ -48,21 +51,48 @@ public class RecipeDAO{
 		return sql.selectOne("recipe.generateRecipeId");
 	}
 
-	public void insertRecipe(int author, String title, String coverImageId, RecipeCategory recipeCategory){
+	public void insertRecipe(int id, int author, String title, String coverImageId, RecipeCategory recipeCategory){
 		Map<String, Object> m = new HashMap<>();
-		m.put("author", author);
+		m.put("id", id);
+		m.put("category", recipeCategory);
 		m.put("title", title);
+		m.put("author", author);
 		m.put("coverImage", coverImageId);
-		m.put("recipeCategory", recipeCategory);
 		sql.insert("recipe.insertRecipe", m);
 	}
 
-	public void insertRecipeStep(int recipe, int index, @Nullable String image, String text){
+	public void insertRecipeStep(int recipe, int step, @Nullable String image, String text){
 		Map<String, Object> m = new HashMap<>();
+		m.put("step", step);
 		m.put("recipe", recipe);
-		m.put("index", index);
 		if(image!=null) m.put("image", image);
 		m.put("text", text);
 		sql.insert("recipe.insertRecipeStep", m);
+	}
+
+	/**
+	 * <b>주의:</b> isDeleted 체크가 아니라 DB 내부 데이터 삭제. Fallback 옵션.
+	 */
+	public void deleteRecipeAndSteps(int recipeId){
+		sql.delete("recipe.deleteRecipeAndSteps", recipeId);
+	}
+
+	public void markDeleted(int recipe){
+		sql.update("recipe.markDeleted", recipe);
+	}
+
+	public void insertRecipeRating(int user, int recipe, double rating){
+		Map<String, Object> m = new HashMap<>();
+		m.put("user", user);
+		m.put("recipe", recipe);
+		m.put("rating", rating);
+		sql.delete("recipe.insertRecipeRating", m);
+	}
+
+	public void deleteRecipeRating(int user, int recipe){
+		Map<String, Object> m = new HashMap<>();
+		m.put("user", user);
+		m.put("recipe", recipe);
+		sql.delete("recipe.deleteRecipeRating", m);
 	}
 }

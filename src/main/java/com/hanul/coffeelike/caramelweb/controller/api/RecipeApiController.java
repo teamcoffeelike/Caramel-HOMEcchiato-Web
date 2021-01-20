@@ -6,6 +6,7 @@ import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
 import com.hanul.coffeelike.caramelweb.data.RecipeCover;
 import com.hanul.coffeelike.caramelweb.service.RecipeService;
 import com.hanul.coffeelike.caramelweb.service.RecipeService.RecipeCoverListResult;
+import com.hanul.coffeelike.caramelweb.service.RecipeService.RecipeRateResult;
 import com.hanul.coffeelike.caramelweb.service.RecipeService.RecipeWriteResult;
 import com.hanul.coffeelike.caramelweb.service.UserService;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
@@ -17,11 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -48,13 +48,20 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 *       category: ( "hot_coffee" | "ice_coffee" | "tea" | "ade" | "smoothie" | "etc" )
 	 *       title: String
 	 *       [ coverImage ]: URL
-	 *       author: Integer
+	 *       author: {
+	 *         id: Integer
+	 *         name: String
+	 *         [ profileImage ]: URL
+	 *         [ isFollowingYou ]: Boolean
+	 *         [ isFollowedByYou ]: Boolean
+	 *       }
 	 *       postDate: Date
 	 *       [ lastEditDate ]: Date
 	 *       [ averageRating ]: Number # 평가 평균
 	 *       [ yourRating ]: Number # 로그인한 유저의 평가
 	 *     }
 	 *   ]
+	 *   endOfList: Boolean
 	 * }
 	 * }</pre>
 	 *
@@ -96,7 +103,13 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 *   category: ( "hot_coffee" | "ice_coffee" | "tea" | "ade" | "smoothie" | "etc" )
 	 *   title: String
 	 *   [ coverImage ]: URL
-	 *   author: Integer
+	 *   author: {
+	 *     id: Integer
+	 *     name: String
+	 *     [ profileImage ]: URL
+	 *     [ isFollowingYou ]: Boolean
+	 *     [ isFollowedByYou ]: Boolean
+	 *   }
 	 *   postDate: Date
 	 *   [ lastEditDate ]: Date
 	 *   [ averageRating ]: Number # 평가 평균
@@ -124,7 +137,8 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	@RequestMapping(value = "/api/recipe", produces = "application/json;charset=UTF-8")
 	public String recipe(HttpSession session,
 	                     @RequestParam int id){
-		Recipe recipe = recipeService.recipe(id);
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		Recipe recipe = recipeService.recipe(id, loginUser==null ? null : loginUser.getUserId());
 		if(recipe==null) return JsonHelper.failure("no_recipe");
 		return JsonHelper.GSON.toJson(recipe);
 	}
@@ -159,14 +173,12 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/writeRecipe", produces = "application/json;charset=UTF-8")
 	public String writeRecipe(HttpSession session,
-	                          @RequestParam Map<String, MultipartFile> fileMap/*,
+	                          @RequestParam Map<String, String> allRequestParams,
+	                          MultipartRequest multipartRequest,
 	                          @RequestParam("title") String title,
 	                          @RequestParam("coverImage") MultipartFile coverImage,
 	                          @RequestParam("category") String category,
-	                          @RequestParam("steps") int steps*/) throws IOException{
-		logger.info(String.join(", ", fileMap.keySet()));
-		return JsonHelper.failure("ok");
-/*
+	                          @RequestParam("steps") int steps){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
 
@@ -180,16 +192,16 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 		List<Entry<MultipartFile, String>> stepsList = new ArrayList<>();
 
 		for(int i = 1; i<=steps; i++){
-			MultipartFile imageN = fileMap.get("image"+i);
-			MultipartFile textN = fileMap.get("text"+i);
+			MultipartFile imageN = multipartRequest.getFile("image"+i);
+			String textN = allRequestParams.get("text"+i);
 			if(textN==null) return JsonHelper.failure("bad_parameter");
 
-			stepsList.add(new SimpleEntry<>(imageN, new String(textN.getBytes(), StandardCharsets.UTF_8)));
+			stepsList.add(new SimpleEntry<>(imageN, textN));
 		}
 
 		RecipeWriteResult result = recipeService.writeRecipe(loginUser.getUserId(), title, coverImage, recipeCategory, stepsList);
 
-		return JsonHelper.GSON.toJson(result);*/
+		return JsonHelper.GSON.toJson(result);
 	}
 
 	/**
@@ -236,11 +248,11 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	@RequestMapping(value = "/api/deleteRecipe", produces = "application/json;charset=UTF-8")
 	public String deleteRecipe(HttpSession session,
 	                           @RequestParam int recipe){
-		RecipeCover cover = recipeService.getCover(recipe);
+		RecipeCover cover = recipeService.getCover(recipe, null);
 		if(cover==null) return JsonHelper.failure("no_recipe");
 
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
-		if(loginUser==null||loginUser.getUserId()==cover.getAuthor())
+		if(loginUser==null||loginUser.getUserId()==cover.getAuthor().getId())
 			return JsonHelper.failure("cannot_delete");
 
 		recipeService.delete(recipe);
@@ -266,7 +278,35 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	public String rateRecipe(HttpSession session,
 	                         @RequestParam int recipe,
 	                         @RequestParam double rating){
-		// TODO
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		if(loginUser==null) return JsonHelper.failure("not_logged_in");
+
+		RecipeRateResult result = recipeService.rateRecipe(loginUser.getUserId(), recipe, rating);
+		return JsonHelper.GSON.toJson(result);
+	}
+
+	/**
+	 * 레시피 평가 삭제<br>
+	 * 삭제할 평가가 없어도 OK처리<br>
+	 * <br>
+	 * <b>성공 시:</b><br>
+	 * <pre>{@code
+	 * 추가 데이터 없음
+	 * }</pre>
+	 *
+	 * <b>에러: </b><br>
+	 * not_logged_in : 로그인 상태가 아님<br>
+	 * no_recipe : 해당 ID의 레시피가 존재하지 않음<br>
+	 */
+	@RequestMapping(value = "/api/deleteRecipeRating", produces = "application/json;charset=UTF-8")
+	public String deleteRecipeRating(HttpSession session, @RequestParam int recipe){
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		if(loginUser==null) return JsonHelper.failure("not_logged_in");
+
+		if(!recipeService.deleteRecipeRating(loginUser.getUserId(), recipe)){
+			return JsonHelper.failure("no_recipe");
+		}
+
 		return "{}";
 	}
 }

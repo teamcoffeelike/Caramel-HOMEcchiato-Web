@@ -37,4 +37,26 @@
            AND isDeleted = 'N'
     </select>
 
+    <select id="findRecipeCoverImage"
+            parameterType="Integer"
+            resultType="RecipeCoverImageData">
+        SELECT id,
+               coverImage
+          FROM recipes
+         WHERE id = #{id}
+           AND isDeleted = 'N'
+    </select>
+
+    <select id="findRecipeStepImage"
+            parameterType="map"
+            resultType="RecipeStepImageData">
+        SELECT steps.recipe recipe,
+               steps.step step,
+               steps.image image
+          FROM steps JOIN recipes ON steps.recipe = recipes.id
+         WHERE steps.recipe = #{recipe}
+           AND steps.step = #{step}
+           AND recipes.isDeleted = 'N'
+    </select>
+
 </mapper>
