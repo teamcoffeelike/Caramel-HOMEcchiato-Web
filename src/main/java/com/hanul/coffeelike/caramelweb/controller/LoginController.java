@@ -55,12 +55,13 @@ public class LoginController{
 	}
 	
 	//카카오 로그인
-	@RequestMapping("loginWithKakao")
+	@RequestMapping("/loginWithKakao")
 	public String loginWithKakao(HttpSession session) {
 		String state = UUID.randomUUID().toString();
 		session.setAttribute("state", state);
 		
-		String url = "https://kauth.kakao.com/oauth/authorize?response_type=code"
+		
+		String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&&scope=profile"
 		+ "&client_id=" + KakaoApiUtils.KAKAO_API_KEY
 		+ "&redirect_uri=" + "http://localhost/caramelweb/loginWithKakaoCallback"
 		+ "&state=" + state;
@@ -70,20 +71,21 @@ public class LoginController{
 	
 	//카카오 callback URL 처리
 	@RequestMapping("/loginWithKakaoCallback")
-	public String joinWithKakao(HttpSession session,
+	public String loginWithKakaoCallback(HttpSession session,
 								@RequestParam String state,
 								@RequestParam(required = false) String code,
-								@RequestParam(required = false) String error) {
-		if(!state.equals((String)session.getAttribute("state")) || error != null)
+								@RequestParam(required = false) String error,
+								@RequestParam @Nullable String name) {
+		if(!state.equals(session.getAttribute("state")) || error != null)
 			return "redirect:/";
 		
 		
 		try {
-			//토큰 발급
 			HttpConnector.Response<JsonObject> response = HttpConnector
 					.create("https://kauth.kakao.com/oauth/token?grant_type=authorization_code"
 								+ "&client_id=" + KakaoApiUtils.KAKAO_API_KEY
-								+ "&code=" + code + "&state=" + state)
+								+ "&code=" + code
+								+ "&state=" + state)
 					.setRequestProperty("Content-type", "application/json")
 					.readAsJsonObject();
 			JsonObject jsonObject = response.getResponse();
@@ -93,27 +95,34 @@ public class LoginController{
 			response = HttpConnector.create("https://kapi.kakao.com/v2/user/me")
 					.setRequestProperty("Content-type", "application/json")
 					.setRequestProperty("Authorization", type + " " + token)
+					.setRequestProperty("property_keys", "[\"properties.nickname\"]")
 					.readAsJsonObject();
-			
+			if(!response.isSuccess()) return getResponseError(response);
 			long kakaoUserId = response.getResponse().get("id").getAsLong();
-			LoginResult result = loginService.loginWithKakao(kakaoUserId);
-			if(result.getUserId() != null) {
-				SessionAttributes.setLoginUser(session, result.createAuthToken());
-				return "redirect:/list.in";
+			
+			if(name==null) {
+				name=getName(response);
+				if(name==null) return JsonHelper.failure("needs_agreement");
 			}
 			
+			//카카오톡 회원가입
+			LoginResult result = joinService.joinWithKakaoAccount(name, kakaoUserId);
+			if(result.getError()==null) {
+				SessionAttributes.setLoginUser(session, result.createAuthToken());
+			}
 			
-			
+			//로그인
+			result = loginService.loginWithKakao(kakaoUserId);
+			if(result.getUserId() != null) {
+				SessionAttributes.setLoginUser(session, result.createAuthToken());
+			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
-		return "redirect:/list.in";
+		return "redirect:allPostList";
 	}
 	
-
 	@Nullable private String getName(HttpConnector.Response<JsonObject> response){
 		JsonElement kakaoAccount = response.getResponse().get("kakao_account");
 		if(kakaoAccount==null) return null;
@@ -123,6 +132,22 @@ public class LoginController{
 		if(nickname==null) return null;
 
 		return nickname.getAsString();
+	}
+	
+	private static String getResponseError(HttpConnector.Response<JsonObject> response){
+		if(response.isSuccess()) throw new IllegalArgumentException("Response not failed");
+
+		int errorCode = response.getResponse().get("code").getAsInt();
+		switch(errorCode){
+		case -1: // 카카오 사망
+			return JsonHelper.failure("kakao_service_unavailable");
+		case -2: // 몬가이상함
+		case -401: // 만료됨
+			return JsonHelper.failure("bad_kakao_login_token");
+		default:
+			// TODO 카카오 로그아웃?
+			return JsonHelper.failure("unknown");
+		}
 	}
 	
 	//로그아웃 처리
