@@ -6,6 +6,15 @@ import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
 import com.hanul.coffeelike.caramelweb.data.RecipeCover;
 import com.hanul.coffeelike.caramelweb.data.RecipeStep;
 import com.hanul.coffeelike.caramelweb.util.Validate;
+import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditMode;
+import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditMode.EditMode;
+import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditMode.WriteMode;
+import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditor;
+import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditorAST;
+import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditorException;
+import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeTemplate;
+import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeWriter;
+import com.hanul.coffeelike.caramelweb.util.recipeedit.StepTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,6 +138,63 @@ public class RecipeService{
 		if(!recipeDAO.checkIfRecipeExists(recipe)) return false;
 		recipeDAO.deleteRecipeRating(user, recipe);
 		return true;
+	}
+
+	public RecipeWriteResult editRecipe(int author,
+	                                    RecipeEditMode mode,
+	                                    List<RecipeEditorAST> functions) throws RecipeEditorException{
+		if(mode instanceof WriteMode){
+			RecipeWriter writer = new RecipeWriter();
+			for(RecipeEditorAST f : functions) f.visit(writer);
+			RecipeTemplate template = writer.compile();
+
+			int recipeId = recipeDAO.generateRecipeId();
+
+			String coverImageId = fileService.saveRecipeCoverImage(recipeId, template.getCoverImage());
+
+			List<Entry<String, String>> steps = new ArrayList<>();
+			try{
+				for(int i = 0; i<template.getSteps().length; i++){
+					StepTemplate step = template.getSteps()[i];
+					MultipartFile image = step.getImage();
+
+					steps.add(new SimpleEntry<>(
+							image==null ? null : fileService.saveRecipeStepImage(recipeId, i, image),
+							step.getText()));
+				}
+
+				recipeDAO.insertRecipe(recipeId, author, template.getTitle(), coverImageId, template.getCategory());
+
+				try{
+					for(int index = 0; index<steps.size(); index++){
+						Entry<String, String> e = steps.get(index);
+						recipeDAO.insertRecipeStep(recipeId, index, e.getKey(), e.getValue());
+					}
+
+					return new RecipeWriteResult(recipeId);
+				}catch(Exception ex){
+					recipeDAO.deleteRecipeAndSteps(recipeId);
+					throw ex;
+				}
+			}catch(Exception ex){
+				LOGGER.error("레시피 저장 중 오류 발생", ex);
+				fileService.removeRecipeCoverImage(coverImageId);
+				for(Entry<String, String> e : steps){
+					String stepImageId = e.getKey();
+					if(stepImageId!=null){
+						fileService.removeRecipeStepImage(stepImageId);
+					}
+				}
+				return new RecipeWriteResult("unexpected");
+			}
+		}else if(mode instanceof EditMode){
+			Recipe recipe = recipe(((EditMode)mode).id, null);
+			if(recipe==null) throw new RecipeEditorException("존재하지 않는 레시피 수정");
+			RecipeEditor editor = new RecipeEditor(recipe);
+
+			// TODO
+			return new RecipeWriteResult("FUCK");
+		}else throw new RecipeEditorException("액션이 정의되지 않은 Mode "+mode);
 	}
 
 

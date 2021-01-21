@@ -12,6 +12,9 @@ import com.hanul.coffeelike.caramelweb.service.UserService;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 import com.hanul.coffeelike.caramelweb.util.Validate;
+import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditMode;
+import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditorAST;
+import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditorDecoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +24,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.sql.Date;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 public class RecipeApiController extends BaseExceptionHandlingController{
@@ -205,7 +209,7 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	}
 
 	/**
-	 * 레시피 수정<br>
+	 * 레시피 작성/수정<br>
 	 * <br>
 	 * <b>성공 시:</b><br>
 	 * <pre>{@code
@@ -220,17 +224,30 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 */
 	@RequestMapping(value = "/api/editRecipe", produces = "application/json;charset=UTF-8")
 	public String editRecipe(HttpSession session,
-	                         @RequestParam int recipe,
-	                         @RequestParam String text,
-	                         @RequestParam File titleImage){
-
-
+	                         MultipartRequest multipartRequest){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return JsonHelper.failure("not_logged_in");
 
-		// TODO 멀티파트 직접 핸들링 필요?
+		MultipartFile inst = multipartRequest.getFile("inst");
+		try{
+			RecipeEditorDecoder decoder = new RecipeEditorDecoder(Objects.requireNonNull(inst).getInputStream(),
+					value -> multipartRequest.getFile(Integer.toString(value)));
+			RecipeEditMode mode = decoder.readMode();
+			List<RecipeEditorAST> functions = new ArrayList<>();
+			while(true){
+				RecipeEditorAST function = decoder.readFunction();
+				if(function==null) break;
+				functions.add(function);
+			}
 
-		return JsonHelper.failure("work_in_progress");
+			logger.info(mode+" : "+functions.stream().map(Object::toString).collect(Collectors.joining(", ")));
+
+			recipeService.editRecipe(mode, functions);
+		}catch(Exception e){
+			logger.error("아ㅋㅋ", e);
+		}
+
+		return JsonHelper.failure("ok");
 	}
 
 	/**
