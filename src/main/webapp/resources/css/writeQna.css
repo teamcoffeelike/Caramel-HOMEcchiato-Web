@@ -42,6 +42,7 @@ textarea {
     margin: 5px;
     padding: 5px 10px;
     font-size: 14px;
+    resize: none;
 }
 
 input[type=text]:focus, textarea:focus {

@@ -8,7 +8,10 @@
 <link rel="stylesheet" href="css/writeQna.css">
 </head>
 <body>
-<h3>문의글 수정</h3>
+<div class="text">
+	<h3>Q&A 게시판</h3>
+    <span>게시판에 글을 남겨주시면 자세히 답변해 드리겠습니다. 문의 내용에 개인정보가 노출되지 않도록 유의해주세요!</span>
+</div>
 <form method="post" action="update.qna" accept-charset="utf-8">
 <input type="hidden" name="id" value="${data.id }" />
 <table>
@@ -26,8 +29,8 @@
  	</tr>
 </table>
 <div class="btn">
-	<a onclick="if(necessary()) {$('form').submit()}">저장</a>
-	<a onclick="history.go(-1)">취소</a>
+	<a onclick="if(necessary()) {$('form').submit()}" class="save">저장</a>
+	<a onclick="history.go(-1)" class="cancel">취소</a>
 </div>
 </form>
 <script type="text/javascript" src="js/mandatory_check.js"></script>
