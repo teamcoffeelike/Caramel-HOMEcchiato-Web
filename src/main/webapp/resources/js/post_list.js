@@ -35,11 +35,32 @@ function fetchPost(){
 							<a href='post?id=${e.id}'><img class='post-image' src='${e.image?e.image : "imgs/post.png"}'></a>
 							
 							<div class='contentBox'>
-								<a id='btnLike'><i class="far fa-heart"></i></a>
+								<a class='btnLike'
+									><i class='far fa-heart'></i>
+									<span class='likeCount'>0</span
+								></a>
 								<div class='content'>${e.text}</div>
 								<div class='postDate'>${date_short}</div>
 							</div>`
 						);
+
+						let id = e.id;
+						$(".postList>*:last-child .btnLike").on("click", function(){
+							//console.log(this);
+							
+							let likeCount = $(this).children(".likeCount");
+							if(likeCount){
+								likeCount == true;
+								$(".far fa-heart").css("color", "#865449");
+								likeCount.text(parseInt(likeCount.text())+1);
+							}else{
+								likeCount == false;
+								$(".far fa-heart").css("color", "#fff");
+								likeCount.text(parseInt(likeCount.text())-1);
+							}
+							
+							console.log(`asdfasdfasdfasdf ${id}`);
+						});
 					}
 					let lastData = data.posts[data.posts.length-1];
 					oldest = lastData.postDate;
@@ -57,4 +78,32 @@ $(function(){
 		if(scrolled($(".postEnd").offset().top)) fetchPost();
 	});
 	fetchPost();
+
+	// $(document).on("click", "#btnLike", function(){
+	// 	if(!ajaxSent){
+	// 		ajaxSent == true;
+	// 		$.ajax({
+	// 			url: "api/likePost",
+	// 			type: "get",
+	// 			data: {  },
+	// 			dataType: "json",
+	// 			success: function(data){
+	// 				ajaxSent = false;
+	// 				if(data.error){
+	// 					alert("Error: "+data.error);
+	// 					return;
+	// 				}
+	// 				if(data.like == 0){
+	// 					$(".far fa-heart").addClass();
+	// 				}else{
+	// 					$(".far fa-heart").css("color", "#865449");
+	// 				}
+	// 			}, error: function(req, text){
+	// 				ajaxSent = false;
+	// 				alert(text+':'+req.status);
+	// 			}
+	// 		});
+	// 	}
+	// });
 });
+

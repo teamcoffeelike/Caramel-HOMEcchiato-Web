@@ -8,7 +8,7 @@ function registerFollowButton(widgets, id, following){
 		onclick: function(){
 			let o = followButtons[id];
 
-			console.log(`id ${id}, following ${o.following}`);
+			//console.log(`id ${id}, following ${o.following}`);
 
 			$.ajax({
 				url: "api/setFollowing",
@@ -16,7 +16,7 @@ function registerFollowButton(widgets, id, following){
 				data: { "followingId": id, "following": !o.following },
 				dataType: "json",
 				success: function(data){
-					console.log("Received "+JSON.stringify(data));
+					//console.log("Received "+JSON.stringify(data));
 				}
 			});
 			o.following = !o.following;
