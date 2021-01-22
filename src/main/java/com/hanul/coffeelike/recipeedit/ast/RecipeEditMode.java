@@ -1,6 +1,6 @@
-package com.hanul.coffeelike.caramelweb.util.recipeedit;
+package com.hanul.coffeelike.recipeedit.ast;
 
-public class RecipeEditMode{
+public abstract class RecipeEditMode{
 	public static final class WriteMode extends RecipeEditMode{
 		public static final WriteMode INSTANCE = new WriteMode();
 		private WriteMode(){}

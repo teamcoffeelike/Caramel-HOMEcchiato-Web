@@ -122,9 +122,37 @@
         VALUES (#{step}, #{recipe}, <if test="image != null">#{image}, </if>#{text})
     </insert>
 
+    <update id="updateRecipe"
+            parameterType="map">
+        UPDATE recipes
+           <set>
+               <if test="category != null">category = #{category},</if>
+               <if test="title != null">title = #{title},</if>
+               <if test="coverImage != null">coverImage = #{coverImage},</if>
+               lastEditDate = SYSDATE
+           </set>
+         WHERE id = #{id}
+           AND isDeleted = 'N'
+    </update>
+
+    <update id="updateRecipeStep"
+            parameterType="map">
+        UPDATE steps
+           SET image = #{image,jdbcType=VARCHAR},
+               text = #{text}
+         WHERE step = #{step}
+           AND recipe = #{recipe}
+    </update>
+
     <delete id="deleteRecipeAndSteps">
         DELETE FROM recipes
          WHERE id = #{id}
+    </delete>
+
+    <delete id="trimStep">
+        DELETE FROM steps
+         WHERE recipe = #{recipe}
+           AND step >= #{steps}
     </delete>
 
     <update id="markDeleted">

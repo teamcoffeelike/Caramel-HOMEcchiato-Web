@@ -1,6 +1,22 @@
-package com.hanul.coffeelike.caramelweb.util.recipeedit;
+package com.hanul.coffeelike.recipeedit;
 
 import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
+import com.hanul.coffeelike.recipeedit.ast.RecipeEditMode;
+import com.hanul.coffeelike.recipeedit.ast.RecipeEditorAST;
+import com.hanul.coffeelike.recipeedit.ast.RemoveStep;
+import com.hanul.coffeelike.recipeedit.ast.RemoveStepImage;
+import com.hanul.coffeelike.recipeedit.ast.SetCategory;
+import com.hanul.coffeelike.recipeedit.ast.SetCoverImage;
+import com.hanul.coffeelike.recipeedit.ast.SetStepImage;
+import com.hanul.coffeelike.recipeedit.ast.SetStepText;
+import com.hanul.coffeelike.recipeedit.ast.SetTitle;
+import com.hanul.coffeelike.recipeedit.ast.SetTotalStepCount;
+import com.hanul.coffeelike.recipeedit.ast.StepSelector;
+import com.hanul.coffeelike.recipeedit.exception.RecipeEditorException;
+import com.hanul.coffeelike.recipeedit.exception.compile.InvalidResourceReference;
+import com.hanul.coffeelike.recipeedit.exception.compile.MalformedInstruction;
+import com.hanul.coffeelike.recipeedit.exception.compile.UnknownFunction;
+import com.hanul.coffeelike.recipeedit.exception.compile.UnknownMode;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +50,11 @@ import java.util.function.IntFunction;
  *   | REMOVE_STEP_IMAGE
  *   | SET_STEP_TEXT S
  *   ;
+ *
+ * S : (DataInput에서 정의된 Modified UTF-8 String)
+ * B : (uint8)
+ * I : (int32)
+ * NULL : (uint8 0)
  * </pre>
  * ㅅㅂㅋㅋ<br>
  * 레시피 수정을 위한 작은 domain specific regular language.<br>
@@ -54,7 +75,11 @@ import java.util.function.IntFunction;
  * 리소스 간의 연결은 1바이트의 index 번호로 전달됩니다.<br>
  * <br>
  * step count는 무조건 제공되어야 하며, 모든 추가/삭제/유지되는 step은 각자 한 번씩 '선택'되어야 합니다.
- * 비어 있는 인덱스가 있거나 기존에 존재하던 step이 아무런 작업이 이루어지지 않았다면 불완전한 작업으로 간주하게 됩니다.
+ * 비어 있는 인덱스가 있거나 기존에 존재하던 step이 아무런 작업이 이루어지지 않았다면 불완전한 작업으로 간주하게 됩니다.<br>
+ * step count는 step의 선택 이전에 제공되어야 하며, step 내부 값을 수정하는 작업(내용 수정, 이미지 수정/삭제)은 step의 선택 이후에 이루어져야 합니다.
+ * 모든 step 수정 작업은 마지막으로 선택한 step을 대상으로 이루어집니다.<br>
+ * <br>
+ * 모든 수정 작업에 대해, 두 번 이상의 값 제공 또는 이미 선택된 step의 재선택은 작업 요청에서의 오류로 간주하여 에러를 일으킵니다.
  */
 public final class RecipeEditorDecoder{
 	private static final byte MODE_WRITE = '1';
@@ -83,12 +108,9 @@ public final class RecipeEditorDecoder{
 	public RecipeEditMode readMode() throws IOException, RecipeEditorException{
 		byte mode = reader.readByte();
 		switch(mode){
-		case MODE_WRITE:
-			return RecipeEditMode.WriteMode.INSTANCE;
-		case MODE_EDIT:
-			return new RecipeEditMode.EditMode(reader.readInt());
-		default:
-			throw new RecipeEditorException("정의되지 않은 Mode "+(char)mode);
+		case MODE_WRITE: return RecipeEditMode.WriteMode.INSTANCE;
+		case MODE_EDIT: return new RecipeEditMode.EditMode(reader.readInt());
+		default: throw new UnknownMode((char)mode);
 		}
 	}
 
@@ -98,49 +120,48 @@ public final class RecipeEditorDecoder{
 		RecipeEditorAST fun;
 		switch(selector){
 		case OP_SET_CATEGORY:
-			fun = new RecipeEditorAST.SetCategory(RecipeCategory.fromString(reader.readUTF()));
+			fun = new SetCategory(RecipeCategory.fromString(reader.readUTF()));
 			break;
 		case OP_SET_TITLE:
-			fun = new RecipeEditorAST.SetTitle(reader.readUTF());
+			fun = new SetTitle(reader.readUTF());
 			break;
 		case OP_SET_COVER_IMAGE:
-			fun = new RecipeEditorAST.SetCoverImage(readResource());
+			fun = new SetCoverImage(readResource());
 			break;
 		case OP_SET_TOTAL_STEP_COUNT:
-			fun = new RecipeEditorAST.SetTotalStepCount(reader.readInt());
+			fun = new SetTotalStepCount(reader.readInt());
 			break;
 		case OP_NEW_STEP:
-			fun = new RecipeEditorAST.StepSelector.NewStep(reader.readInt());
+			fun = new StepSelector.NewStep(reader.readInt());
 			break;
 		case OP_SELECT_STEP:
-			fun = new RecipeEditorAST.StepSelector.SelectStep(reader.readInt());
+			fun = new StepSelector.SelectStep(reader.readInt());
 			break;
 		case OP_MOVE_STEP:
-			fun = new RecipeEditorAST.StepSelector.MoveStep(reader.readInt(), reader.readInt());
+			fun = new StepSelector.MoveStep(reader.readInt(), reader.readInt());
 			break;
 		case OP_REMOVE_STEP:
-			fun = new RecipeEditorAST.RemoveStep(reader.readInt());
+			fun = new RemoveStep(reader.readInt());
 			break;
 		case OP_SET_STEP_IMAGE:
-			fun = new RecipeEditorAST.SetStepImage(readResource());
+			fun = new SetStepImage(readResource());
 			break;
 		case OP_REMOVE_STEP_IMAGE:
-			fun = RecipeEditorAST.RemoveStepImage.INSTANCE;
+			fun = RemoveStepImage.INSTANCE;
 			break;
 		case OP_SET_STEP_TEXT:
-			fun = new RecipeEditorAST.SetStepText(reader.readUTF());
+			fun = new SetStepText(reader.readUTF());
 			break;
-		default:
-			throw new RecipeEditorException("정의되지 않은 Function "+(char)selector);
+		default: throw new UnknownFunction((char)selector);
 		}
-		if(reader.readByte()!=0) throw new RecipeEditorException("Expected null terminator");
+		if(reader.readByte()!=0) throw new MalformedInstruction("Expected null terminator");
 		return fun;
 	}
 
 	@NonNull private MultipartFile readResource() throws IOException, RecipeEditorException{
 		int id = reader.readUnsignedByte();
 		MultipartFile resource = resourceMap.apply(id);
-		if(resource==null) throw new RecipeEditorException("존재하지 않는 리소스 "+id+" 참조");
+		if(resource==null) throw new InvalidResourceReference(id);
 		return resource;
 	}
 }

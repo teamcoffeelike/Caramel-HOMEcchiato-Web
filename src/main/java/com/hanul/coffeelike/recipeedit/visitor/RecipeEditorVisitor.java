@@ -1,9 +1,10 @@
-package com.hanul.coffeelike.caramelweb.util.recipeedit;
+package com.hanul.coffeelike.recipeedit.visitor;
 
 import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
+import com.hanul.coffeelike.recipeedit.exception.RecipeEditorException;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface RecipeEditorFunctionVisitor{
+public interface RecipeEditorVisitor{
 	void setCategory(RecipeCategory category) throws RecipeEditorException;
 	void setTitle(String title) throws RecipeEditorException;
 	void setCoverImage(MultipartFile image) throws RecipeEditorException;

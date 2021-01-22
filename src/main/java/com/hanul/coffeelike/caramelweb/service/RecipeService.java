@@ -4,17 +4,20 @@ import com.hanul.coffeelike.caramelweb.dao.RecipeDAO;
 import com.hanul.coffeelike.caramelweb.data.Recipe;
 import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
 import com.hanul.coffeelike.caramelweb.data.RecipeCover;
+import com.hanul.coffeelike.caramelweb.data.RecipeCoverListResult;
+import com.hanul.coffeelike.caramelweb.data.RecipeRateResult;
 import com.hanul.coffeelike.caramelweb.data.RecipeStep;
+import com.hanul.coffeelike.caramelweb.data.RecipeWriteResult;
 import com.hanul.coffeelike.caramelweb.util.Validate;
-import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditMode;
-import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditMode.EditMode;
-import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditMode.WriteMode;
-import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditor;
-import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditorAST;
-import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditorException;
-import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeTemplate;
-import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeWriter;
-import com.hanul.coffeelike.caramelweb.util.recipeedit.StepTemplate;
+import com.hanul.coffeelike.recipeedit.ast.RecipeEditMode;
+import com.hanul.coffeelike.recipeedit.ast.RecipeEditMode.EditMode;
+import com.hanul.coffeelike.recipeedit.ast.RecipeEditMode.WriteMode;
+import com.hanul.coffeelike.recipeedit.ast.RecipeEditorAST;
+import com.hanul.coffeelike.recipeedit.exception.RecipeEditorException;
+import com.hanul.coffeelike.recipeedit.template.RecipeTemplate;
+import com.hanul.coffeelike.recipeedit.template.StepTemplate;
+import com.hanul.coffeelike.recipeedit.visitor.RecipeEditor;
+import com.hanul.coffeelike.recipeedit.visitor.RecipeWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +26,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class RecipeService{
@@ -75,53 +79,22 @@ public class RecipeService{
 	                                     MultipartFile coverImage,
 	                                     RecipeCategory recipeCategory,
 	                                     List<Entry<MultipartFile, String>> stepsList){
-		if(!Validate.recipeTitle(title = title.trim())){
-			return new RecipeWriteResult("bad_title");
+		RecipeTemplate t = new RecipeTemplate();
+		t.category = recipeCategory;
+		t.title = title;
+		t.coverImage.setFile(coverImage);
+
+		t.steps = new StepTemplate[stepsList.size()];
+		for(int i = 0; i<stepsList.size(); i++){
+			StepTemplate st = new StepTemplate();
+			Entry<MultipartFile, String> e = stepsList.get(i);
+			MultipartFile file = e.getKey();
+			if(file!=null) st.image.setFile(file);
+			st.text = e.getValue();
+			t.steps[i] = st;
 		}
 
-		for(Entry<MultipartFile, String> e : stepsList){
-			if(!Validate.recipeStep(e.getValue())) return new RecipeWriteResult("bad_step_text");
-		}
-
-		int recipeId = recipeDAO.generateRecipeId();
-
-		String coverImageId = fileService.saveRecipeCoverImage(recipeId, coverImage);
-
-		List<Entry<String, String>> steps = new ArrayList<>();
-		try{
-			for(int i = 0; i<stepsList.size(); i++){
-				Entry<MultipartFile, String> e = stepsList.get(i);
-				MultipartFile image = e.getKey();
-
-				steps.add(new SimpleEntry<>(
-						image==null ? null : fileService.saveRecipeStepImage(recipeId, i, image),
-						e.getValue()));
-			}
-
-			recipeDAO.insertRecipe(recipeId, author, title, coverImageId, recipeCategory);
-
-			try{
-				for(int index = 0; index<steps.size(); index++){
-					Entry<String, String> e = steps.get(index);
-					recipeDAO.insertRecipeStep(recipeId, index, e.getKey(), e.getValue());
-				}
-
-				return new RecipeWriteResult(recipeId);
-			}catch(Exception ex){
-				recipeDAO.deleteRecipeAndSteps(recipeId);
-				throw ex;
-			}
-		}catch(Exception ex){
-			LOGGER.error("레시피 저장 중 오류 발생", ex);
-			fileService.removeRecipeCoverImage(coverImageId);
-			for(Entry<String, String> e : steps){
-				String stepImageId = e.getKey();
-				if(stepImageId!=null){
-					fileService.removeRecipeStepImage(stepImageId);
-				}
-			}
-			return new RecipeWriteResult("unexpected");
-		}
+		return write(author, t, null);
 	}
 
 	public RecipeRateResult rateRecipe(int user, int recipe, double rating){
@@ -148,27 +121,124 @@ public class RecipeService{
 			for(RecipeEditorAST f : functions) f.visit(writer);
 			RecipeTemplate template = writer.compile();
 
-			int recipeId = recipeDAO.generateRecipeId();
+			return write(author, template, null);
+		}else if(mode instanceof EditMode){
+			int recipeId = ((EditMode)mode).id;
+			Recipe recipe = recipe(recipeId, null);
+			if(recipe==null) return new RecipeWriteResult("no_recipe");
+			else if(recipe.getCover().getAuthor().getId()!=author) return new RecipeWriteResult("cannot_edit");
 
-			String coverImageId = fileService.saveRecipeCoverImage(recipeId, template.getCoverImage());
+			RecipeEditor editor = new RecipeEditor(recipe);
+			for(RecipeEditorAST f : functions) f.visit(editor);
+			RecipeTemplate template = editor.compile();
 
-			List<Entry<String, String>> steps = new ArrayList<>();
+			return write(author, template, recipe);
+		}else{
+			LOGGER.error("액션이 정의되지 않은 Mode "+mode);
+			return new RecipeWriteResult("unexpected");
+		}
+	}
+
+	private RecipeWriteResult write(int author, RecipeTemplate template, @Nullable Recipe editingRecipe){
+		if(template.title!=null&&!Validate.recipeTitle(template.title = template.title.trim())){
+			return new RecipeWriteResult("bad_title");
+		}
+
+		for(StepTemplate step : template.steps){
+			if(step.text!=null&&!Validate.recipeStep(step.text)) return new RecipeWriteResult("bad_step_text");
+		}
+
+		if(editingRecipe!=null){
+			int recipeId = editingRecipe.getCover().getId();
+
+			String coverImageId;
+			if(template.coverImage.isSet()){
+				if(template.coverImage.imageId!=null){
+					coverImageId = template.coverImage.imageId;
+				}else{
+					coverImageId = fileService.saveRecipeCoverImage(recipeId, Objects.requireNonNull(template.coverImage.getFile()));
+				}
+			}else coverImageId = null;
+
 			try{
-				for(int i = 0; i<template.getSteps().length; i++){
-					StepTemplate step = template.getSteps()[i];
-					MultipartFile image = step.getImage();
-
-					steps.add(new SimpleEntry<>(
-							image==null ? null : fileService.saveRecipeStepImage(recipeId, i, image),
-							step.getText()));
+				for(int i = 0; i<template.steps.length; i++){
+					StepTemplate step = template.steps[i];
+					if(step.image.imageId==null&&step.image.getFile()!=null){
+						step.image.imageId = fileService.saveRecipeStepImage(recipeId, i, step.image.getFile());
+					}
 				}
 
-				recipeDAO.insertRecipe(recipeId, author, template.getTitle(), coverImageId, template.getCategory());
+				recipeDAO.updateRecipe(recipeId, template.title, coverImageId, template.category);
 
 				try{
-					for(int index = 0; index<steps.size(); index++){
-						Entry<String, String> e = steps.get(index);
-						recipeDAO.insertRecipeStep(recipeId, index, e.getKey(), e.getValue());
+					for(int index = 0; index<template.steps.length; index++){
+						StepTemplate step = template.steps[index];
+						if(index<editingRecipe.getSteps().size()){
+							// UPDATE, 모든 데이터 복붙
+							recipeDAO.updateRecipeStep(recipeId,
+									index,
+									step.image.imageId,
+									step.text);
+						}else{
+							// 새 step INSERT
+							recipeDAO.insertRecipeStep(recipeId,
+									index,
+									step.image.imageId,
+									step.text);
+						}
+					}
+					recipeDAO.trimStep(recipeId, template.steps.length);
+				}catch(Exception ex){
+					LOGGER.error("레시피 {} 수정 중 오류 발생.\n"+
+							"진행된 수정 작업은 되돌려지지 않으며 백업 시스템을 구축할 정도로 본인이 한가하지 못하기 때문에, 데이터 일부가 손상되었을 수 있습니다.", editingRecipe.getCover().getId(), ex);
+					throw ex;
+				}
+
+				String originalCover = editingRecipe.getCover().getCoverImage();
+				if(coverImageId!=null&&originalCover!=null&&!coverImageId.equals(originalCover)){
+					fileService.removeRecipeCoverImage(originalCover);
+				}
+
+				Set<String> resources = new HashSet<>();
+				for(StepTemplate step : template.steps){
+					if(step.image.imageId!=null) resources.add(step.image.imageId);
+				}
+
+				for(RecipeStep step : editingRecipe.getSteps()){
+					String image = step.getImage();
+					if(image!=null&&!resources.contains(image)){
+						fileService.removeRecipeStepImage(image);
+					}
+				}
+
+				return new RecipeWriteResult(recipeId);
+			}catch(Exception ex){
+				LOGGER.error("레시피 저장 중 오류 발생", ex);
+				if(coverImageId!=null) fileService.removeRecipeCoverImage(coverImageId);
+				return new RecipeWriteResult("unexpected");
+			}
+		}else{
+			int recipeId = recipeDAO.generateRecipeId();
+
+			String coverImageId = fileService.saveRecipeCoverImage(recipeId, template.coverImage.getFile());
+
+			try{
+				for(int i = 0; i<template.steps.length; i++){
+					StepTemplate step = template.steps[i];
+					MultipartFile image = step.image.getFile();
+
+					if(image!=null) step.image.imageId = fileService.saveRecipeStepImage(recipeId, i, image);
+				}
+
+				recipeDAO.insertRecipe(recipeId, author, template.title, coverImageId, template.category);
+
+				try{
+					for(int index = 0; index<template.steps.length; index++){
+						StepTemplate step = template.steps[index];
+						recipeDAO.insertRecipeStep(recipeId,
+								index,
+								step.image.imageId,
+								Objects.requireNonNull(step.text));
 					}
 
 					return new RecipeWriteResult(recipeId);
@@ -179,86 +249,13 @@ public class RecipeService{
 			}catch(Exception ex){
 				LOGGER.error("레시피 저장 중 오류 발생", ex);
 				fileService.removeRecipeCoverImage(coverImageId);
-				for(Entry<String, String> e : steps){
-					String stepImageId = e.getKey();
-					if(stepImageId!=null){
-						fileService.removeRecipeStepImage(stepImageId);
+				for(StepTemplate step : template.steps){
+					if(step.image.imageId!=null){
+						fileService.removeRecipeStepImage(step.image.imageId);
 					}
 				}
 				return new RecipeWriteResult("unexpected");
 			}
-		}else if(mode instanceof EditMode){
-			Recipe recipe = recipe(((EditMode)mode).id, null);
-			if(recipe==null) throw new RecipeEditorException("존재하지 않는 레시피 수정");
-			RecipeEditor editor = new RecipeEditor(recipe);
-
-			// TODO
-			return new RecipeWriteResult("FUCK");
-		}else throw new RecipeEditorException("액션이 정의되지 않은 Mode "+mode);
-	}
-
-
-	public static final class RecipeCoverListResult{
-		@Nullable private final List<RecipeCover> recipes;
-		@Nullable private final Boolean endOfList;
-		@Nullable private final String error;
-
-		public RecipeCoverListResult(List<RecipeCover> recipes, boolean endOfList){
-			this.recipes = recipes;
-			this.error = null;
-			this.endOfList = endOfList;
-		}
-
-		public RecipeCoverListResult(String error){
-			this.recipes = null;
-			this.error = error;
-			this.endOfList = null;
-		}
-
-		@Nullable public List<RecipeCover> getRecipes(){
-			return recipes;
-		}
-		@Nullable public String getError(){
-			return error;
-		}
-		@Nullable public Boolean isEndOfList(){
-			return endOfList;
-		}
-	}
-
-	public static final class RecipeWriteResult{
-		@Nullable private final Integer id;
-		@Nullable private final String error;
-
-		public RecipeWriteResult(@Nullable Integer id){
-			this.id = id;
-			this.error = null;
-		}
-		public RecipeWriteResult(@Nullable String error){
-			this.id = null;
-			this.error = error;
-		}
-
-		@Nullable public Integer getId(){
-			return id;
-		}
-		@Nullable public String getError(){
-			return error;
-		}
-	}
-
-	public static final class RecipeRateResult{
-		@Nullable private final String error;
-
-		public RecipeRateResult(){
-			this(null);
-		}
-		public RecipeRateResult(@Nullable String error){
-			this.error = error;
-		}
-
-		@Nullable public String getError(){
-			return error;
 		}
 	}
 }

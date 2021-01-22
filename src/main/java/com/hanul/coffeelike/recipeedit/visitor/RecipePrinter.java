@@ -1,9 +1,9 @@
-package com.hanul.coffeelike.caramelweb.util.recipeedit;
+package com.hanul.coffeelike.recipeedit.visitor;
 
 import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
 import org.springframework.web.multipart.MultipartFile;
 
-public abstract class RecipeFunctionPrinter implements RecipeEditorFunctionVisitor{
+public abstract class RecipePrinter implements RecipeEditorVisitor{
 	@Override public void setCategory(RecipeCategory category){
 		print("SetCategory "+category);
 	}
@@ -29,7 +29,7 @@ public abstract class RecipeFunctionPrinter implements RecipeEditorFunctionVisit
 		print("RemoveStep "+step);
 	}
 	@Override public void setStepImage(MultipartFile image){
-		print("SetStepImage "+image.getName());
+		print("SetStepImage #"+image.getName());
 	}
 	@Override public void removeStepImage(){
 		print("RemoveStepImage");

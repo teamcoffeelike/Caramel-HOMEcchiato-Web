@@ -70,6 +70,34 @@ public class RecipeDAO{
 		sql.insert("recipe.insertRecipeStep", m);
 	}
 
+	public void updateRecipe(int id, @Nullable String title, @Nullable String coverImageId, @Nullable RecipeCategory recipeCategory){
+		Map<String, Object> m = new HashMap<>();
+		m.put("id", id);
+		if(recipeCategory!=null) m.put("category", recipeCategory);
+		if(title!=null) m.put("title", title);
+		if(coverImageId!=null) m.put("coverImage", coverImageId);
+		sql.insert("recipe.updateRecipe", m);
+	}
+
+	public void updateRecipeStep(int recipe, int step, @Nullable String image, String text){
+		Map<String, Object> m = new HashMap<>();
+		m.put("step", step);
+		m.put("recipe", recipe);
+		if(image!=null) m.put("image", image);
+		m.put("text", text);
+		sql.update("recipe.updateRecipeStep", m);
+	}
+
+	/**
+	 * {@code steps} 이상 인덱스 값을 가지는 step 삭제
+	 */
+	public void trimStep(int recipe, int steps){
+		Map<String, Object> m = new HashMap<>();
+		m.put("recipe", recipe);
+		m.put("steps", steps);
+		sql.delete("recipe.trimStep", m);
+	}
+
 	/**
 	 * <b>주의:</b> isDeleted 체크가 아니라 DB 내부 데이터 삭제. Fallback 옵션.
 	 */

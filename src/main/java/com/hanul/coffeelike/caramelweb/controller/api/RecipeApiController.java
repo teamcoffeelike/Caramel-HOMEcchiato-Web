@@ -5,16 +5,18 @@ import com.hanul.coffeelike.caramelweb.data.Recipe;
 import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
 import com.hanul.coffeelike.caramelweb.data.RecipeCover;
 import com.hanul.coffeelike.caramelweb.service.RecipeService;
-import com.hanul.coffeelike.caramelweb.service.RecipeService.RecipeCoverListResult;
-import com.hanul.coffeelike.caramelweb.service.RecipeService.RecipeRateResult;
-import com.hanul.coffeelike.caramelweb.service.RecipeService.RecipeWriteResult;
+import com.hanul.coffeelike.caramelweb.data.RecipeCoverListResult;
+import com.hanul.coffeelike.caramelweb.data.RecipeRateResult;
+import com.hanul.coffeelike.caramelweb.data.RecipeWriteResult;
 import com.hanul.coffeelike.caramelweb.service.UserService;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 import com.hanul.coffeelike.caramelweb.util.Validate;
-import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditMode;
-import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditorAST;
-import com.hanul.coffeelike.caramelweb.util.recipeedit.RecipeEditorDecoder;
+import com.hanul.coffeelike.recipeedit.RecipeEditorDecoder;
+import com.hanul.coffeelike.recipeedit.ast.RecipeEditMode;
+import com.hanul.coffeelike.recipeedit.ast.RecipeEditorAST;
+import com.hanul.coffeelike.recipeedit.exception.RecipeEditorException;
+import com.hanul.coffeelike.recipeedit.visitor.RecipeJoiner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -214,13 +216,18 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 * <b>성공 시:</b><br>
 	 * <pre>{@code
 	 * {
-	 *   id: Integer # 수정한 레시피 ID
+	 *   id: Integer # 작성/수정한 레시피 ID
 	 * }
 	 * }</pre>
 	 *
-	 * <b>에러: </b><br>
+	 * <b>공통 에러: </b><br>
+	 * not_logged_in : 로그인 상태가 아님<br>
+	 * <br>
+	 * <b>수정 모드 에러: </b><br>
 	 * no_recipe : 해당 ID의 레시피가 존재하지 않음<br>
-	 * cannot_edit : 해당 글을 수정할 수 없음 (비 로그인 상태 포함)<br>
+	 * cannot_edit : 해당 글을 수정할 수 없음<br>
+	 *
+	 * @see RecipeEditorDecoder
 	 */
 	@RequestMapping(value = "/api/editRecipe", produces = "application/json;charset=UTF-8")
 	public String editRecipe(HttpSession session,
@@ -240,11 +247,15 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 				functions.add(function);
 			}
 
-			logger.info(mode+" : "+functions.stream().map(Object::toString).collect(Collectors.joining(", ")));
+			logger.info(mode+" : "+new RecipeJoiner(", ").apply(functions).toString());
 
-			recipeService.editRecipe(mode, functions);
-		}catch(Exception e){
-			logger.error("아ㅋㅋ", e);
+			RecipeWriteResult result = recipeService.editRecipe(loginUser.getUserId(), mode, functions);
+			return JsonHelper.GSON.toJson(result);
+		}catch(RecipeEditorException ex){
+			logger.error("RecipeEditorException", ex); // TODO 곧 쓸모가 없어질 것
+			return ex.toJson();
+		}catch(Exception ex){
+			logger.error("레시피 edit 중 오류 발생", ex);
 		}
 
 		return JsonHelper.failure("ok");
