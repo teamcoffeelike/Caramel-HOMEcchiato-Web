@@ -4,10 +4,10 @@ import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.Recipe;
 import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
 import com.hanul.coffeelike.caramelweb.data.RecipeCover;
-import com.hanul.coffeelike.caramelweb.service.RecipeService;
 import com.hanul.coffeelike.caramelweb.data.RecipeCoverListResult;
 import com.hanul.coffeelike.caramelweb.data.RecipeRateResult;
 import com.hanul.coffeelike.caramelweb.data.RecipeWriteResult;
+import com.hanul.coffeelike.caramelweb.service.RecipeService;
 import com.hanul.coffeelike.caramelweb.service.UserService;
 import com.hanul.coffeelike.caramelweb.util.JsonHelper;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 public class RecipeApiController extends BaseExceptionHandlingController{
@@ -252,7 +251,7 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 			RecipeWriteResult result = recipeService.editRecipe(loginUser.getUserId(), mode, functions);
 			return JsonHelper.GSON.toJson(result);
 		}catch(RecipeEditorException ex){
-			logger.error("RecipeEditorException", ex); // TODO 곧 쓸모가 없어질 것
+			logger.error("RecipeEditorException", ex);
 			return ex.toJson();
 		}catch(Exception ex){
 			logger.error("레시피 edit 중 오류 발생", ex);
@@ -280,7 +279,7 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 		if(cover==null) return JsonHelper.failure("no_recipe");
 
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
-		if(loginUser==null||loginUser.getUserId()==cover.getAuthor().getId())
+		if(loginUser==null||loginUser.getUserId()!=cover.getAuthor().getId())
 			return JsonHelper.failure("cannot_delete");
 
 		recipeService.delete(recipe);

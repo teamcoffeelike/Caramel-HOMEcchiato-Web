@@ -32,7 +32,8 @@
             <otherwise>
                 (SELECT recipeRatings.rating
                    FROM recipeRatings
-                  WHERE recipeRatings.userId = #{loginUser})
+                  WHERE recipeRatings.userId = #{loginUser}
+                    AND recipeRatings.recipe = recipes.id)
             </otherwise>
         </choose> yourRating
     </sql>

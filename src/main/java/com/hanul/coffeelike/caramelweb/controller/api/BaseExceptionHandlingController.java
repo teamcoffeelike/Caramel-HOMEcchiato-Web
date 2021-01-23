@@ -31,6 +31,6 @@ public class BaseExceptionHandlingController{
 		logger.error("Unexpected error", ex);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		return new ResponseEntity<>(JsonHelper.failure("unexpected"), headers, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(JsonHelper.failure("unexpected"), headers, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
