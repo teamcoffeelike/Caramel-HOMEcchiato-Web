@@ -39,6 +39,6 @@ public class ScheduledTasks{
 
 	private void deleteUnreferencedFiles(){
 		LOGGER.info("쓰이지 않는 이미지 파일 제거 중...");
-		// TODO
+		// TODO 데이터베이스 내부에 사용되지 않는 파일을 그냥 제거하게 되면 비동기적으로 돌아가는 다른 트랜잭션과 충돌할 수 있음. 쓰이지 않는 이미지를 DB에 마킹 -> 두 번째 제거 시 삭제?
 	}
 }

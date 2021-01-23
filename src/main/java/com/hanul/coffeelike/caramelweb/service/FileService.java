@@ -3,6 +3,8 @@ package com.hanul.coffeelike.caramelweb.service;
 import com.hanul.coffeelike.caramelweb.dao.FileDAO;
 import com.hanul.coffeelike.caramelweb.data.PostImageData;
 import com.hanul.coffeelike.caramelweb.data.ProfileImageData;
+import com.hanul.coffeelike.caramelweb.data.RecipeCoverImageData;
+import com.hanul.coffeelike.caramelweb.data.RecipeStepImageData;
 import com.hanul.coffeelike.caramelweb.util.AttachmentFileResolver;
 import com.hanul.coffeelike.caramelweb.util.AttachmentType;
 import com.hanul.coffeelike.caramelweb.util.FileExtensionUtils;
@@ -125,7 +127,47 @@ public class FileService{
 		return AttachmentFileResolver.getPostImageFile(postImage.getImage());
 	}
 
-	@Nullable private String trySaveFile(MultipartFile multipartFile, AttachmentType type, String generatedName){
+	///////////////////////////////////////////////////////////////////////
+	//
+	// 레시피 커버 이미지
+	//
+	///////////////////////////////////////////////////////////////////////
+
+	@Nullable public String saveRecipeCoverImage(int recipeId, MultipartFile image){
+		return trySaveFile(image, AttachmentType.RECIPE_COVER, generateUniqueFilename(AttachmentType.RECIPE_COVER, recipeId));
+	}
+
+	public boolean removeRecipeCoverImage(String image){
+		return tryRemoveFile(AttachmentFileResolver.getRecipeCoverImageFile(image));
+	}
+
+	public File getRecipeCoverImage(int recipeId){
+		RecipeCoverImageData image = fileDAO.findRecipeCoverImage(recipeId);
+		if(image==null||image.getCoverImage()==null) return null;
+		return AttachmentFileResolver.getRecipeCoverImageFile(image.getCoverImage());
+	}
+
+	///////////////////////////////////////////////////////////////////////
+	//
+	// 레시피 단계 이미지
+	//
+	///////////////////////////////////////////////////////////////////////
+
+	@Nullable public String saveRecipeStepImage(int recipeId, int index, MultipartFile image){
+		return trySaveFile(image, AttachmentType.RECIPE_STEP, generateUniqueFilename(AttachmentType.RECIPE_STEP, recipeId+"-"+index));
+	}
+
+	public boolean removeRecipeStepImage(String image){
+		return tryRemoveFile(AttachmentFileResolver.getRecipeStepImageFile(image));
+	}
+
+	public File getRecipeStepImage(int recipe, int step){
+		RecipeStepImageData image = fileDAO.findRecipeStepImage(recipe, step);
+		if(image==null||image.getImage()==null) return null;
+		return AttachmentFileResolver.getRecipeStepImageFile(image.getImage());
+	}
+
+	@Nullable private static String trySaveFile(MultipartFile multipartFile, AttachmentType type, String generatedName){
 		File storage = AttachmentFileResolver.getStorage(type);
 		File dest = new File(storage, generatedName);
 		try{
@@ -157,7 +199,7 @@ public class FileService{
 		return generatedName+"."+ext;
 	}
 
-	private boolean tryRemoveFile(File file){
+	private static boolean tryRemoveFile(File file){
 		try{
 			if(!file.delete()){
 				LOGGER.error("파일 '{} ({})'이 존재하지 않아 삭제할 수 없습니다.", file.getPath(), file.getAbsolutePath());

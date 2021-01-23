@@ -51,14 +51,26 @@ public class AttachmentController{
 	@RequestMapping(value = "/images/recipeImage/cover")
 	public void recipeCoverImage(HttpServletResponse response,
 	                             @RequestParam int id){
-		// TODO
+		File image = fileService.getRecipeCoverImage(id);
+		if(image==null||!image.exists()){
+			respondWithBadRequest(response);
+			return;
+		}
+
+		paste(image, response);
 	}
 
 	@RequestMapping(value = "/images/recipeImage/step")
 	public void recipeStepImage(HttpServletResponse response,
 	                            @RequestParam int recipe,
-	                            @RequestParam int index){
-		// TODO
+	                            @RequestParam int step){
+		File image = fileService.getRecipeStepImage(recipe, step);
+		if(image==null||!image.exists()){
+			respondWithBadRequest(response);
+			return;
+		}
+
+		paste(image, response);
 	}
 
 	private void respondWithBadRequest(HttpServletResponse response){

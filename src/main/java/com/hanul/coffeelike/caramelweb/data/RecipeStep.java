@@ -12,14 +12,17 @@ import java.lang.reflect.Type;
 
 public class RecipeStep{
 	private int recipe;
-	private int index;
+	private int step;
 	@Nullable private String image;
 	private String text;
 	@Nullable private RecipeTask task;
 
-	public RecipeStep(int recipe, int index, @Nullable String image, String text, @Nullable RecipeTask task){
+	public RecipeStep(int recipe, int step, @Nullable String image, String text){
+		this(recipe, step, image, text, null);
+	}
+	public RecipeStep(int recipe, int step, @Nullable String image, String text, @Nullable RecipeTask task){
 		this.recipe = recipe;
-		this.index = index;
+		this.step = step;
 		this.image = image;
 		this.text = text;
 		this.task = task;
@@ -31,11 +34,11 @@ public class RecipeStep{
 	public void setRecipe(int recipe){
 		this.recipe = recipe;
 	}
-	public int getIndex(){
-		return index;
+	public int getStep(){
+		return step;
 	}
-	public void setIndex(int index){
-		this.index = index;
+	public void setStep(int step){
+		this.step = step;
 	}
 	@Nullable public String getImage(){
 		return image;
@@ -64,10 +67,10 @@ public class RecipeStep{
 		                                       JsonSerializationContext context){
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("recipe", src.getRecipe());
-			jsonObject.addProperty("index", src.getIndex());
+			jsonObject.addProperty("step", src.getStep());
 			if(AttachmentFileResolver.doesRecipeStepImageExists(src.getImage()))
 				jsonObject.addProperty("image",
-						AttachmentURLConverter.recipeStepImageFromId(src.getRecipe(), src.getIndex()));
+						AttachmentURLConverter.recipeStepImageFromId(src.getRecipe(), src.getStep()));
 			jsonObject.addProperty("text", src.getText());
 			if(src.getTask()!=null)
 				jsonObject.add("task", context.serialize(src.getTask()));

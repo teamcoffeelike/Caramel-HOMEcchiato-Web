@@ -19,7 +19,7 @@ public final class AttachmentURLConverter{
 	}
 
 	public static String recipeStepImageFromId(int recipe, int index){
-		return resolve("recipeImage/step", "recipe="+recipe+"&index="+index);
+		return resolve("recipeImage/step", "recipe="+recipe+"&step="+index);
 	}
 
 	private static String resolve(String type, String query){
