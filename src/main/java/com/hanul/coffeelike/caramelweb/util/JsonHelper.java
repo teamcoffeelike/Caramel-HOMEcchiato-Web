@@ -13,7 +13,6 @@ import com.hanul.coffeelike.caramelweb.data.*;
 public final class JsonHelper{
 	public static final Gson GSON = new GsonBuilder()
 			.registerTypeAdapter(RecipeCategory.class, RecipeCategory.Json.INSTANCE)
-			.registerTypeAdapter(RecipeTask.Timer.class, RecipeTask.Timer.Json.INSTANCE)
 			.registerTypeAdapter(UserProfileData.class, UserProfileData.Json.INSTANCE)
 			.registerTypeAdapter(Post.class, Post.Json.INSTANCE)
 			.registerTypeAdapter(RecipeStep.class, RecipeStep.Json.INSTANCE)

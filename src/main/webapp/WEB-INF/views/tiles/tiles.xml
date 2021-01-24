@@ -23,5 +23,9 @@
 	<definition name="user/join" template="/WEB-INF/views/tiles/default.jsp">
 		<put-attribute name="content" value="/WEB-INF/views/user/join.jsp"/>
 	</definition>
+
+	<definition name="recipe/recipeError" template="/WEB-INF/views/tiles/default.jsp">
+		<put-attribute name="content" value="/WEB-INF/views/recipe/recipeError.jsp"/>
+	</definition>
 	
 </tiles-definitions>

@@ -62,7 +62,7 @@ public class RecipeService{
 		return new Recipe(cover, steps);
 	}
 
-	public RecipeCover getCover(int id, @Nullable Integer loginUser){
+	@Nullable public RecipeCover getCover(int id, @Nullable Integer loginUser){
 		return recipeDAO.getCover(id, loginUser);
 	}
 

@@ -13,7 +13,7 @@
 		<ul class="header-mainMenu">
 			<li><a href="list.in">소개</a></li>
 			<li><a href="notice">공지사항</a></li>
-			<li><a href="list.re">레시피</a></li>
+			<li><a href="recipeList">레시피</a></li>
 			
 			<!-- 로그인 안한 상태 -->
 			<c:if test="${empty loginUser }">

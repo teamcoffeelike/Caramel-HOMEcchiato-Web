@@ -15,17 +15,12 @@ public class RecipeStep{
 	private int step;
 	@Nullable private String image;
 	private String text;
-	@Nullable private RecipeTask task;
 
 	public RecipeStep(int recipe, int step, @Nullable String image, String text){
-		this(recipe, step, image, text, null);
-	}
-	public RecipeStep(int recipe, int step, @Nullable String image, String text, @Nullable RecipeTask task){
 		this.recipe = recipe;
 		this.step = step;
 		this.image = image;
 		this.text = text;
-		this.task = task;
 	}
 
 	public int getRecipe(){
@@ -52,12 +47,6 @@ public class RecipeStep{
 	public void setText(String text){
 		this.text = text;
 	}
-	@Nullable public RecipeTask getTask(){
-		return task;
-	}
-	public void setTask(@Nullable RecipeTask task){
-		this.task = task;
-	}
 
 	public enum Json implements JsonSerializer<RecipeStep>{
 		INSTANCE;
@@ -72,8 +61,6 @@ public class RecipeStep{
 				jsonObject.addProperty("image",
 						AttachmentURLConverter.recipeStepImageFromId(src.getRecipe(), src.getStep()));
 			jsonObject.addProperty("text", src.getText());
-			if(src.getTask()!=null)
-				jsonObject.add("task", context.serialize(src.getTask()));
 			return jsonObject;
 		}
 	}

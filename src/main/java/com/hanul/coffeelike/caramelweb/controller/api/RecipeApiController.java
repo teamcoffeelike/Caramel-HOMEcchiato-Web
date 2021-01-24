@@ -124,13 +124,6 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 *       index: Integer
 	 *       [ image ]: URL
 	 *       text: String
-	 *       [ task ]: (
-	 *         {
-	 *           type: "timer"
-	 *           seconds: Integer # 시간
-	 *           purpose: ( "cook" | "wait" ) # 타이머의 용도 (예: ~초 동안 기다리세요, ~초 동안 조리하세요...)
-	 *         }
-	 *       )
 	 *     }
 	 *   ]
 	 * }
