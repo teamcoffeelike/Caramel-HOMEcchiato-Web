@@ -10,7 +10,7 @@
         <result property="lastEditDate" column="lastEditDate"/>
         <result property="likes" column="likes"/>
         <result property="likedByYou" column="likedByYou"/>
-        <result property="likedDate" column="likedTime"/>
+        <result property="likedDate" column="likedDate"/>
         <association property="author" javaType="UserProfileData">
             <id property="id" column="authorId"/>
             <result property="name" column="authorName"/>
@@ -40,25 +40,20 @@
           WHERE post = posts.id) likes,
         <choose>
             <when test="loginUser == null">NULL</when>
-            <otherwise>postLikes.post</otherwise>
-        </choose> likedByYou,
-        <choose>
-            <when test="loginUser == null">NULL</when>
-            <otherwise>postLikes.likedTime</otherwise>
-        </choose> likedTime
+            <otherwise>
+                (SELECT COUNT(*)
+                   FROM postLikes
+                  WHERE userId = #{loginUser}
+                    AND post = posts.id)
+            </otherwise>
+        </choose> likedByYou
     </sql>
 
     <select id="recentPosts"
             resultMap="postResultMap">
         SELECT *
           FROM (SELECT <include refid="postColumns"/>
-                  FROM posts
-                       JOIN users ON posts.author = users.id
-                  <if test="loginUser != null">
-                       LEFT JOIN postLikes
-                         ON posts.id = postLikes.post
-                        AND #{loginUser} = postLikes.userId
-                  </if>
+                  FROM posts JOIN users ON posts.author = users.id
                  WHERE posts.isDeleted = 'N'
                  <if test="since!=null">
                    AND posts.postDate &lt; #{since}
@@ -73,7 +68,8 @@
     <select id="likedPosts"
             resultMap="postResultMap">
         SELECT *
-          FROM (SELECT <include refid="postColumns"/>
+          FROM (SELECT <include refid="postColumns"/>,
+                       postLikes.likedTime likedDate
                   FROM postLikes
                        JOIN posts ON postLikes.post = posts.id
                        JOIN users ON posts.author = users.id
@@ -93,13 +89,7 @@
             parameterType="map"
             resultMap="postResultMap">
         SELECT <include refid="postColumns"/>
-          FROM posts
-               JOIN users ON posts.author = users.id
-          <if test="loginUser != null">
-               LEFT JOIN postLikes
-                 ON posts.id = postLikes.post
-                AND #{loginUser} = postLikes.userId
-          </if>
+          FROM posts JOIN users ON posts.author = users.id
          WHERE posts.id = #{id}
            AND posts.isDeleted = 'N'
     </select>

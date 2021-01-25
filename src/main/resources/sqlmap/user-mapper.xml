@@ -98,7 +98,6 @@
 		 WHERE id = #{userId}
 	</update>
 
-	<!-- TODO 테스트 -->
 	<select id="getFollower"
 	        parameterType="map"
 	        resultType="UserProfileData">
@@ -117,7 +116,6 @@
 		 WHERE f.following = #{user}
 	</select>
 
-	<!-- TODO 테스트 -->
 	<select id="getFollowing"
 			parameterType="map"
 			resultType="UserProfileData">

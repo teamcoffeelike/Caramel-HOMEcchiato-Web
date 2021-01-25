@@ -46,7 +46,6 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 *       [ lastEditDate ]: Date
 	 *       likes: Integer # 숫자
 	 *       [ likedByYou ]: Boolean # 로그인한 유저가 이 포스트에 좋아요를 눌렀는지 여부, 로그인 정보가 없을 시 존재하지 않음
-	 *       [ likedDate ]: Date
 	 *     }
 	 *   ]
 	 *   endOfList: Boolean
@@ -88,7 +87,6 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 *       [ lastEditDate ]: Date
 	 *       likes: Integer # 숫자
 	 *       [ likedByYou ]: Boolean # 로그인한 유저가 이 포스트에 좋아요를 눌렀는지 여부, 로그인 정보가 없을 시 존재하지 않음
-	 *       [ likedDate ]: Date
 	 *     }
 	 *   ]
 	 *   endOfList: Boolean
@@ -132,7 +130,7 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 *       [ lastEditDate ]: Date
 	 *       likes: Integer # 숫자
 	 *       [ likedByYou ]: Boolean # 로그인한 유저가 이 포스트에 좋아요를 눌렀는지 여부, 로그인 정보가 없을 시 존재하지 않음
-	 *       [ likedDate ]: Date
+	 *       likedDate: Date # 해당 유저가 좋아요를 누른 날짜
 	 *     }
 	 *   ]
 	 *   endOfList: Boolean
@@ -174,7 +172,6 @@ public class PostApiController extends BaseExceptionHandlingController{
 	 *   [ lastEditDate ]: Date
 	 *   likes: Integer # 숫자
 	 *   [ likedByYou ]: Boolean # 로그인한 유저가 이 포스트에 좋아요를 눌렀는지 여부, 로그인 정보가 없을 시 존재하지 않음
-	 *   [ likedDate ]: Date
 	 * }
 	 * }</pre>
 	 *
