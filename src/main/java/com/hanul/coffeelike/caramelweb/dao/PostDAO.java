@@ -1,37 +1,37 @@
 package com.hanul.coffeelike.caramelweb.dao;
 
-import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.hanul.coffeelike.caramelweb.data.Post;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
-import com.hanul.coffeelike.caramelweb.data.Post;
+import java.sql.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class PostDAO{
 	@Autowired
 	private SqlSession sql;
 
-	public List<Post> recentPosts(@Nullable Integer loginUser, Date since, int pages){
+	public List<Post> recentPosts(@Nullable Integer loginUser, Date since, int pages, @Nullable Integer author){
 		Map<String, Object> m = new HashMap<>();
 		m.put("loginUser", loginUser);
 		m.put("since", since);
 		m.put("pages", pages);
+		if(author!=null) m.put("author", author);
 		return sql.selectList("post.recentPosts", m);
 	}
 
-	public List<Post> usersPosts(@Nullable Integer loginUser, Date since, int pages, int id) {
+	public List<Post> likedPosts(@Nullable Integer loginUser, Date since, int pages, int likedBy){
 		Map<String, Object> m = new HashMap<>();
 		m.put("loginUser", loginUser);
 		m.put("since", since);
 		m.put("pages", pages);
-		m.put("id", id);
-		return sql.selectList("post.usersPosts", m);
+		m.put("likedBy", likedBy);
+		return sql.selectList("post.likedPosts", m);
 	}
 
 	@Nullable public Post findPost(int id,
@@ -65,7 +65,7 @@ public class PostDAO{
 		sql.update("post.editPost", m);
 	}
 
-	public boolean editPostImage(int post, String imageId) {
+	public boolean editPostImage(int post, String imageId){
 		Map<String, Object> m = new HashMap<>();
 		m.put("post", post);
 		m.put("image", imageId);
@@ -88,5 +88,9 @@ public class PostDAO{
 		m.put("loginUser", loginUser);
 		m.put("post", post);
 		return sql.delete("post.removeLike", m);
+	}
+
+	public int getLikes(int post){
+		return sql.selectOne("post.getLikes", post);
 	}
 }

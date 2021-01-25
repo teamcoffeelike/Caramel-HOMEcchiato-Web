@@ -21,6 +21,7 @@ public class Post{
 
 	private int likes;
 	@Nullable private Boolean likedByYou;
+	@Nullable private Date likedDate;
 
 	public Post(){}
 	public Post(int id,
@@ -30,7 +31,8 @@ public class Post{
 	            Date postDate,
 	            @Nullable Date lastEditDate,
 	            int likes,
-	            @Nullable Boolean likedByYou){
+	            @Nullable Boolean likedByYou,
+	            @Nullable Date likedDate){
 		this.id = id;
 		this.image = image;
 		this.text = text;
@@ -39,6 +41,7 @@ public class Post{
 		this.lastEditDate = lastEditDate;
 		this.likes = likes;
 		this.likedByYou = likedByYou;
+		this.likedDate = likedDate;
 	}
 
 	public int getId(){
@@ -92,6 +95,12 @@ public class Post{
 	public void setLikedByYou(@Nullable Boolean likedByYou){
 		this.likedByYou = likedByYou;
 	}
+	@Nullable public Date getLikedDate(){
+		return likedDate;
+	}
+	public void setLikedDate(@Nullable Date likedDate){
+		this.likedDate = likedDate;
+	}
 
 	@Override public String toString(){
 		return "Post{"+
@@ -103,6 +112,7 @@ public class Post{
 				", lastEditDate="+lastEditDate+
 				", likes="+likes+
 				", likedByYou="+likedByYou+
+				", likedDate="+likedDate+
 				'}';
 	}
 
@@ -126,6 +136,8 @@ public class Post{
 			jsonObject.addProperty("likes", src.getLikes());
 			if(src.getLikedByYou()!=null)
 				jsonObject.addProperty("likedByYou", src.getLikedByYou());
+			if(src.getLikedDate()!=null)
+				jsonObject.add("likedDate", context.serialize(src.getLikedDate()));
 			return jsonObject;
 		}
 	}

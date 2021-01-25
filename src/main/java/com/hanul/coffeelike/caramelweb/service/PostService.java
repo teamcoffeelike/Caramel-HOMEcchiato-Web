@@ -26,7 +26,7 @@ public class PostService{
 	 */
 	public PostListResult recentPosts(@Nullable Integer loginUser, @Nullable Date since, int pages){
 		if(pages<1||pages>50) return new PostListResult("bad_pages");
-		return trimPosts(postDAO.recentPosts(loginUser, since, pages+1), pages);
+		return trimPosts(postDAO.recentPosts(loginUser, since, pages+1, null), pages);
 	}
 
 	/**
@@ -37,7 +37,18 @@ public class PostService{
 	 */
 	public PostListResult usersPosts(@Nullable Integer loginUser, @Nullable Date since, int pages, int id){
 		if(pages<1||pages>50) return new PostListResult("bad_pages");
-		return trimPosts(postDAO.usersPosts(loginUser, since, pages+1, id), pages);
+		return trimPosts(postDAO.recentPosts(loginUser, since, pages+1, id), pages);
+	}
+
+	/**
+	 * 해당 유저가 좋아요를 누른 최근 포스트 가져오기<br>
+	 * <br>
+	 * <b>에러: </b><br>
+	 * bad_pages : 유효하지 않은 pages<br>
+	 */
+	public PostListResult likedPosts(@Nullable Integer loginUser, @Nullable Date since, int pages, int likedBy){
+		if(pages<1||pages>50) return new PostListResult("bad_pages");
+		return trimPosts(postDAO.likedPosts(loginUser, since, pages+1, likedBy), pages);
 	}
 
 	private PostListResult trimPosts(List<Post> posts, int pages){
@@ -156,17 +167,17 @@ public class PostService{
 		return new PostModifyResult();
 	}
 
-	public PostModifyResult likePost(int loginUser, int post, boolean like){
+	public PostLikeResult likePost(int loginUser, int post, boolean like){
 		Post postData = postDAO.findPost(post, null);
 
 		if(postData==null)
-			return new PostModifyResult("no_post");
+			return new PostLikeResult("no_post");
 
 		if(like)
 			postDAO.like(loginUser, post);
 		else
 			postDAO.removeLike(loginUser, post);
-		return new PostModifyResult();
+		return new PostLikeResult(postDAO.getLikes(post));
 	}
 
 	public static final class PostListResult{
@@ -239,6 +250,28 @@ public class PostService{
 		@Nullable
 		public String getError(){
 			return error;
+		}
+	}
+
+	public static class PostLikeResult{
+		@Nullable private final String error;
+		@Nullable private final Integer likes;
+
+		public PostLikeResult(int likes){
+			this.error = null;
+			this.likes = likes;
+		}
+
+		public PostLikeResult(String error){
+			this.error = error;
+			this.likes = null;
+		}
+
+		@Nullable public String getError(){
+			return error;
+		}
+		@Nullable public Integer getLikes(){
+			return likes;
 		}
 	}
 }

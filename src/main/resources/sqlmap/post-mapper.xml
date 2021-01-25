@@ -10,6 +10,7 @@
         <result property="lastEditDate" column="lastEditDate"/>
         <result property="likes" column="likes"/>
         <result property="likedByYou" column="likedByYou"/>
+        <result property="likedDate" column="likedTime"/>
         <association property="author" javaType="UserProfileData">
             <id property="id" column="authorId"/>
             <result property="name" column="authorName"/>
@@ -37,40 +38,54 @@
         (SELECT COUNT(*)
            FROM postLikes
           WHERE post = posts.id) likes,
-        (SELECT COUNT(*)
-           FROM postLikes
-          WHERE userId = #{loginUser, jdbcType=INTEGER}
-            AND post = posts.id) likedByYou
+        <choose>
+            <when test="loginUser == null">NULL</when>
+            <otherwise>postLikes.post</otherwise>
+        </choose> likedByYou,
+        <choose>
+            <when test="loginUser == null">NULL</when>
+            <otherwise>postLikes.likedTime</otherwise>
+        </choose> likedTime
     </sql>
 
     <select id="recentPosts"
             resultMap="postResultMap">
         SELECT *
-          FROM (SELECT <include refid="postColumns">
-                           <property name="loginUser" value="#{it}"/>
-                       </include>
-                  FROM posts JOIN users ON posts.author = users.id
+          FROM (SELECT <include refid="postColumns"/>
+                  FROM posts
+                       JOIN users ON posts.author = users.id
+                  <if test="loginUser != null">
+                       LEFT JOIN postLikes
+                         ON posts.id = postLikes.post
+                        AND #{loginUser} = postLikes.userId
+                  </if>
                  WHERE posts.isDeleted = 'N'
                  <if test="since!=null">
                    AND posts.postDate &lt; #{since}
+                 </if>
+                 <if test="author!=null">
+                   AND posts.author = #{author}
                  </if>
                  ORDER BY postDate DESC)
          WHERE ROWNUM &lt;= #{pages}
     </select>
-    
-    <select id="usersPosts"
+
+    <select id="likedPosts"
             resultMap="postResultMap">
         SELECT *
-          FROM (SELECT <include refid="postColumns">
-                           <property name="loginUser" value="#{it}"/>
-                       </include>
-                  FROM posts JOIN users ON posts.author = users.id
-                 WHERE posts.isDeleted = 'N'
+          FROM (SELECT <include refid="postColumns"/>
+                  FROM postLikes
+                       JOIN posts ON postLikes.post = posts.id
+                       JOIN users ON posts.author = users.id
+                 WHERE postLikes.userId = #{likedBy}
+                   AND posts.isDeleted = 'N'
+                   AND (SELECT isDeleted
+                          FROM users
+                         WHERE id = #{likedBy}) = 'N'
                  <if test="since!=null">
-                   AND posts.postDate &lt; #{since}
+                   AND postLikes.likedTime &lt; #{since}
                  </if>
-                   AND users.id = #{id}
-                 ORDER BY postDate DESC)
+                 ORDER BY likedTime DESC)
          WHERE ROWNUM &lt;= #{pages}
     </select>
 
@@ -78,7 +93,13 @@
             parameterType="map"
             resultMap="postResultMap">
         SELECT <include refid="postColumns"/>
-          FROM posts JOIN users ON posts.author = users.id
+          FROM posts
+               JOIN users ON posts.author = users.id
+          <if test="loginUser != null">
+               LEFT JOIN postLikes
+                 ON posts.id = postLikes.post
+                AND #{loginUser} = postLikes.userId
+          </if>
          WHERE posts.id = #{id}
            AND posts.isDeleted = 'N'
     </select>
@@ -124,12 +145,19 @@
         INSERT INTO postlikes(userId, post)
         VALUES (#{loginUser}, #{post})
     </insert>
-    
+
     <delete id="removeLike"
             parameterType="map">
         DELETE FROM postlikes
          WHERE userId = #{loginUser}
            AND post = #{post}
     </delete>
+
+    <select id="getLikes"
+            resultType="Integer">
+        SELECT COUNT(*)
+          FROM postLikes
+         WHERE post = #{it}
+    </select>
 
 </mapper>
