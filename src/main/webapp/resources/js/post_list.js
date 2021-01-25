@@ -37,7 +37,7 @@ function fetchPost(){
 							<div class='contentBox'>
 								<a class='btnLike'
 									><i class='far fa-heart'></i>
-									<span class='likeCount'>0</span
+									<span class='likeCount'>${e.likes}</span
 								></a>
 								<div class='content'>${e.text}</div>
 								<div class='postDate'>${date_short}</div>
@@ -49,14 +49,13 @@ function fetchPost(){
 							//console.log(this);
 							
 							let likeCount = $(this).children(".likeCount");
-							if(likeCount){
-								likeCount == true;
-								$(".far fa-heart").css("color", "#865449");
-								likeCount.text(parseInt(likeCount.text())+1);
+							let newLike = $(this).children(".fa-heart");
+							if(!likeCount.hasClass("liked")){
+								newLike.attr("data-prefix", "fas");
+								likeCount.addClass("liked").text(parseInt(likeCount.text())+1);
 							}else{
-								likeCount == false;
-								$(".far fa-heart").css("color", "#fff");
-								likeCount.text(parseInt(likeCount.text())-1);
+								newLike.attr("data-prefix", "far");
+								likeCount.removeClass("liked").text(parseInt(likeCount.text())-1);
 							}
 							
 							console.log(`asdfasdfasdfasdf ${id}`);

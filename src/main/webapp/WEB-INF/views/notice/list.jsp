@@ -49,11 +49,11 @@
 		</tr>
 		</c:forEach>
 	</table>
-	<c:if test="${!empty loginUser }">
 	<ul class="notice">
-		<li><a href="new" class="btnNew">글쓰기</a></li>
+		<c:if test="${loginUser.getUserId() eq '1'}">
+			<li><a href="new" class="btnNew">글쓰기</a></li>
+		</c:if>
 	</ul>
-	</c:if>
 </div>
 <div style="margin:50px auto; text-align: center;">
 	<jsp:include page="/WEB-INF/views/include/page.jsp"/>

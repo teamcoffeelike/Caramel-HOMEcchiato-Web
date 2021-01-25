@@ -121,7 +121,7 @@ textarea {
 	transition: 0.3s;
 }
 
-.btnSubmit:hover, .btnCancel:hover {
+.btnSubmit:hover, .btnCancel:hover, .btnModify:hover, .btnDelete:hover {
 	background-color: #F4EAE1;
 }
 
@@ -132,4 +132,22 @@ textarea {
     padding: 5px 10px;
     cursor: pointer;
     text-decoration: none;
+}
+
+.btnModifyDelete {
+	width: 80%;
+	margin: 20px auto;
+	text-align: right;
+}
+
+.btnModify, .btnDelete {
+	text-align: center;
+	padding: 3px 10px;
+    color: #67432a;
+	border-radius: 3px; 
+	transition: 0.3s;
+}
+
+.btnModify {
+	margin-right: 5px;
 }
