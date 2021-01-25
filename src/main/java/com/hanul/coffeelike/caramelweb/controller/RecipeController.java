@@ -2,6 +2,7 @@ package com.hanul.coffeelike.caramelweb.controller;
 
 import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.Recipe;
+import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
 import com.hanul.coffeelike.caramelweb.data.RecipeStep;
 import com.hanul.coffeelike.caramelweb.service.RecipeService;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
@@ -21,9 +22,15 @@ public class RecipeController{
 
 	@RequestMapping("/recipeList")
 	public String list(HttpSession session,
-	                     Model model){
+	                   Model model,
+	                   @RequestParam(required = false) @Nullable String category){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return "loginRequired";
+
+		RecipeCategory recipeCategory = category==null ? null : RecipeCategory.fromString(category);
+		if(recipeCategory==null) return "redirect:recipeList?category=hot_coffee";
+		model.addAttribute("category", recipeCategory);
+
 		return "recipe/list";
 	}
 

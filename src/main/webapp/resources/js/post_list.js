@@ -27,20 +27,22 @@ function fetchPost(){
 						var date = new Date(e.postDate);
 						var date_short = date.toLocaleDateString();
 						$(".postList").append(
-							`<div class='userBox'>
-								<img class='profile-image' src='${e.author.profileImage ? e.author.profileImage : "imgs/profile.png"}'/>
-								<a class='profile-name' href='profile?userId=${e.author.id}'>${e.author.name}</a>
-							</div>
-							
-							<a href='post?id=${e.id}'><img class='post-image' src='${e.image?e.image : "imgs/post.png"}'></a>
-							
-							<div class='contentBox'>
-								<a class='btnLike'
-									><i class='far fa-heart'></i>
-									<span class='likeCount'>${e.likes}</span
-								></a>
-								<div class='content'>${e.text}</div>
-								<div class='postDate'>${date_short}</div>
+							`<div class='postDetail'>
+								<div class='userBox'>
+									<img class='profile-image' src='${e.author.profileImage ? e.author.profileImage : "imgs/profile.png"}'/>
+									<a class='profile-name' href='profile?userId=${e.author.id}'>${e.author.name}</a>
+								</div>
+
+								<a href='post?id=${e.id}'><img class='post-image' src='${e.image?e.image : "imgs/post.png"}'></a>
+
+								<div class='contentBox'>
+									<a class='btnLike'
+										><i class='far fa-heart'></i>
+										<span class='likeCount'>${e.likes}</span
+									></a>
+									<div class='content'>${e.text}</div>
+									<div class='postDate'>${date_short}</div>
+								</div>
 							</div>`
 						);
 
@@ -77,32 +79,5 @@ $(function(){
 		if(scrolled($(".postEnd").offset().top)) fetchPost();
 	});
 	fetchPost();
-
-	// $(document).on("click", "#btnLike", function(){
-	// 	if(!ajaxSent){
-	// 		ajaxSent == true;
-	// 		$.ajax({
-	// 			url: "api/likePost",
-	// 			type: "get",
-	// 			data: {  },
-	// 			dataType: "json",
-	// 			success: function(data){
-	// 				ajaxSent = false;
-	// 				if(data.error){
-	// 					alert("Error: "+data.error);
-	// 					return;
-	// 				}
-	// 				if(data.like == 0){
-	// 					$(".far fa-heart").addClass();
-	// 				}else{
-	// 					$(".far fa-heart").css("color", "#865449");
-	// 				}
-	// 			}, error: function(req, text){
-	// 				ajaxSent = false;
-	// 				alert(text+':'+req.status);
-	// 			}
-	// 		});
-	// 	}
-	// });
 });
 

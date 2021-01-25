@@ -4,32 +4,22 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="css/userBox.css">
 <style type="text/css">
 .postList{ width: 600px; margin: 0 auto; }
-.post-image { display: block; width: 600px; }
-
-.userBox { 
-	height: 70px; line-height: 70px;
-	vertical-align: middle; padding: 10px;
-	overflow: hidden;
+.postDetail{
+	width: 600px;
+	margin-bottom: 20px;
+	box-sizing: content-box;
 	border: 1px solid #ccc;
 }
 
-.profile-image{
-	width: 50px; height: 50px; 
-	border-radius: 55px; margin-right: 10px;
-	float: left;
-}
-
-.profile-name{
-	width: 50px; height: 50px; 
-	line-height: 50px; float: left;
-}
+.post-image { display: block; width: 600px; }
 
 .contentBox{
-	border: 1px solid #ccc; 
-	margin-bottom: 20px; padding: 10px;
-	overflow: hidden; vertical-align: middle;
+	overflow: hidden;
+	vertical-align: middle;
+	padding: 10px;
 }
 
 .content{

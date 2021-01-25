@@ -19,6 +19,22 @@ public enum RecipeCategory{
 	SMOOTHIE,
 	ETC;
 
+	public String getName(){
+		return toString();
+	}
+
+	public String getReadableName(){
+		switch(this){
+		case HOT_COFFEE: return "HOT Coffee";
+		case ICE_COFFEE: return "ICE Coffee";
+		case TEA: return "Tea";
+		case ADE: return "Ade";
+		case SMOOTHIE: return "Smoothie";
+		case ETC: return "Etc.";
+		default: throw new IllegalStateException("Unreachable");
+		}
+	}
+
 	@Override public String toString(){
 		return name().toLowerCase();
 	}

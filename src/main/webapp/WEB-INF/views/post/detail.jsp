@@ -7,10 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="css/postDetail.css">
-<script type="text/javascript">
-	
-
-</script>
+<link rel="stylesheet" href="css/userBox.css">
 </head>
 <body>
 	<div class="postDetail">
