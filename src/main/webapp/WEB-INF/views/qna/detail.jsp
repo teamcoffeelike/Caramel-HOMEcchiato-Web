@@ -37,18 +37,23 @@
  	</tr>
 </table>
 <!-- 댓글 입력창 -->
-<div class="commentDiv">
-	<div id="commentList" class="left">
-		<jsp:include page="/WEB-INF/views/qna/comment/commentList.jsp" />
+
+	<div class="commentDiv">
+		<div id="commentList" class="left">
+			<jsp:include page="/WEB-INF/views/qna/comment/commentList.jsp" />
+		</div>
+	<c:if test="${isAdmin}">
+		<div id="comment_regist">
+			<textarea id="comment"></textarea>
+			<span class="commentBtn"><a onclick="comment_regist()">댓글등록</a></span>
+		</div>
+	</c:if>
+		<div id="comment_list" class="left">
+			
+		</div>
 	</div>
-	<div id="comment_regist">
-		<textarea id="comment"></textarea>
-		<span class="commentBtn"><a onclick="comment_regist()">댓글등록</a></span>
-	</div>
-	<div id="comment_list" class="left">
-		
-	</div>
-</div>
+
+
 
 <div class="btn">
 	<a class="list" onclick="$('form').submit()">목록으로</a>

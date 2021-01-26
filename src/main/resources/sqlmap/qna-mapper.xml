@@ -87,7 +87,7 @@
 		SELECT c.*, (SELECT name FROM users u WHERE u.id=writer) name
 		  FROM qnaComments c 
 		 WHERE qnaId = #{qnaId}
-		 ORDER BY id desc
+		 ORDER BY writeDate
 	</select>
 	
 	<update id="updateComment">

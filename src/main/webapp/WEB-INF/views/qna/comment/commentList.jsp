@@ -6,10 +6,12 @@
 <c:forEach items="${list }" var="data">
 <div data-id="${data.id}">
 	<span class="name">${data.name }</span>[${data.writeDate }]
-	<span class="commentBtn">
-		<a class="modify-saveBtn">수정</a>
-		<a class="delete-cancelBtn">삭제</a>
-	</span>
+	<c:if test="${isAdmin}">
+		<span class="commentBtn">
+			<a class="modify-saveBtn">수정</a>
+			<a class="delete-cancelBtn">삭제</a>
+		</span>
+	</c:if>
 	<div class="originalComment">${fn:replace(fn:replace(data.content, lf, "<br>"), crlf, "<br>") }</div>
 	<div class="modifyComment"></div>
 </div>

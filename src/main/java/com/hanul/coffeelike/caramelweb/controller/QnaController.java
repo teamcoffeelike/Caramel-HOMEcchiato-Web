@@ -19,6 +19,7 @@ import com.hanul.coffeelike.caramelweb.data.Page;
 import com.hanul.coffeelike.caramelweb.data.Qna;
 import com.hanul.coffeelike.caramelweb.data.QnaComment;
 import com.hanul.coffeelike.caramelweb.service.QnaService;
+import com.hanul.coffeelike.caramelweb.service.UserService;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 
 @Controller
@@ -27,6 +28,8 @@ public class QnaController {
 	
 	@Autowired
 	private QnaService qnaService;
+	@Autowired
+	private UserService userService;
 	
 	//문의게시판 목록
 	@RequestMapping("/list.qna")
@@ -70,7 +73,13 @@ public class QnaController {
 		
 	//문의글 상세화면 요청
 	@RequestMapping("/detail.qna")
-	public String detailQna(int id, Model model) {
+	public String detailQna(HttpSession session,
+							Model model,
+							@RequestParam int id) {
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		boolean isAdmin = loginUser != null && userService.isAdmin(loginUser.getUserId());
+		model.addAttribute("isAdmin", isAdmin);
+		
 		model.addAttribute("data", qnaService.detailQna(id));
 		model.addAttribute("crlf", "\r\n");
 		return "qna/detail";
@@ -123,8 +132,13 @@ public class QnaController {
 	
 	//문의글 댓글 목록조회 요청
 	@RequestMapping("/qna/comment/{qnaId}")
-	public String qnaCommentList(Model model,
+	public String qnaCommentList(HttpSession session,
+								 Model model,
 								 @PathVariable int qnaId) {
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		boolean isAdmin = loginUser != null && userService.isAdmin(loginUser.getUserId());
+		model.addAttribute("isAdmin", isAdmin);
+		
 		model.addAttribute("list", qnaService.qnaCommentList(qnaId));
 		model.addAttribute("crlf", "\r\n");
 		model.addAttribute("lf", "\n");
