@@ -125,14 +125,15 @@ public class UserService{
 
 	public SearchUserResult searchUserByName(String name, Integer loginUser) {
 		name = name.trim();
-		if(name == "") return new SearchUserResult("no_keyword");
-		return users(dao.searchUserByName(name, loginUser));
+		if(name.isEmpty()) return new SearchUserResult("no_keyword");
+		return new SearchUserResult(dao.searchUserByName(name, loginUser));
 	}
-	
-	public SearchUserResult users(List<UserProfileData> users) {
-		return new SearchUserResult(users);
+
+	public boolean isAdmin(int userId) {
+		return dao.isAdmin(userId);
 	}
-	
+
+
 	public static class SearchUserResult{
 		@Nullable private List<UserProfileData> users;
 		@Nullable private final String error;
@@ -156,5 +157,4 @@ public class UserService{
 			return error;
 		}
 	}
-
 }

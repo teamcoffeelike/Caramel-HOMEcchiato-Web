@@ -11,14 +11,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.Notice;
 import com.hanul.coffeelike.caramelweb.data.Page;
 import com.hanul.coffeelike.caramelweb.service.NoticeService;
+import com.hanul.coffeelike.caramelweb.service.UserService;
+import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 
 @Controller
 public class NoticeController {
 	public static final int NOTICE_PAGE_LIST_SIZE = 10;
 	
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private NoticeService noticeService;
 	
@@ -40,7 +45,9 @@ public class NoticeController {
 			return "pageRequired"; 
 		}
 		
-		page.setCurrentPage(currentPage);
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		boolean isAdmin = loginUser == null ? false : userService.isAdmin(loginUser.getUserId());
+		model.addAttribute("isAdmin", isAdmin);
 		
 		// service로 넘김
 		List<Notice> notices = noticeService.getNotice(page);

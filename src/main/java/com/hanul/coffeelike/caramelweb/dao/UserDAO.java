@@ -97,4 +97,8 @@ public class UserDAO{
 		return sql.selectList("user.searchUserByName", m);
 	}
 
+	public boolean isAdmin(int userId) {
+		return sql.selectOne("user.isAdmin", userId);
+	}
+
 }

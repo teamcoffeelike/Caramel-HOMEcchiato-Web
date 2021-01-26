@@ -178,5 +178,12 @@
 		  FROM users
 		 WHERE LOWER(name) LIKE LOWER('%' || #{name} || '%')
 	</select>
+	
+	<select id="isAdmin"
+			resultType="boolean">
+		SELECT isAdmin
+		  FROM users
+		 WHERE id = #{userId}
+	</select>
 
 </mapper>
