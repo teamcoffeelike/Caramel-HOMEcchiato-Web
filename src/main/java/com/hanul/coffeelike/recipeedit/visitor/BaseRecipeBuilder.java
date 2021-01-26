@@ -1,6 +1,7 @@
 package com.hanul.coffeelike.recipeedit.visitor;
 
 import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
+import com.hanul.coffeelike.caramelweb.util.Validate;
 import com.hanul.coffeelike.recipeedit.exception.RecipeEditorException;
 import com.hanul.coffeelike.recipeedit.exception.runtime.DuplicatedCategorySet;
 import com.hanul.coffeelike.recipeedit.exception.runtime.DuplicatedCoverImageSet;
@@ -9,6 +10,7 @@ import com.hanul.coffeelike.recipeedit.exception.runtime.DuplicatedStepSelection
 import com.hanul.coffeelike.recipeedit.exception.runtime.DuplicatedStepTextSet;
 import com.hanul.coffeelike.recipeedit.exception.runtime.DuplicatedTitleSet;
 import com.hanul.coffeelike.recipeedit.exception.runtime.DuplicatedTotalStepCountSet;
+import com.hanul.coffeelike.recipeedit.exception.runtime.InvalidSteps;
 import com.hanul.coffeelike.recipeedit.exception.runtime.NoStepSelected;
 import com.hanul.coffeelike.recipeedit.exception.runtime.NoStepSet;
 import com.hanul.coffeelike.recipeedit.exception.runtime.NoTotalStepsCountSet;
@@ -37,6 +39,7 @@ public abstract class BaseRecipeBuilder implements RecipeEditorVisitor{
 	}
 	@Override public void setTotalStepCount(int totalStepCount) throws RecipeEditorException{
 		if(t.steps!=null) throw new DuplicatedTotalStepCountSet();
+		if(totalStepCount<=0||totalStepCount>Validate.MAX_RECIPE_STEPS) throw new InvalidSteps(totalStepCount);
 		t.steps = new StepTemplate[totalStepCount];
 	}
 	@Override public void newStep(int step) throws RecipeEditorException{

@@ -29,6 +29,7 @@ public abstract class RecipeEditorException extends Exception{
 	public static final String STEP_OUT_OF_BOUNDS = "step_out_of_bounds";
 	public static final String ORIGINAL_STEP_OUT_OF_BOUNDS = "original_step_out_of_bounds";
 	public static final String NO_STEP_SELECTED = "no_step_selected";
+	public static final String INVALID_STEPS = "invalid_steps";
 
 	public static final String NO_CATEGORY_SET = "no_category_set";
 	public static final String NO_TITLE_SET = "no_title_set";
