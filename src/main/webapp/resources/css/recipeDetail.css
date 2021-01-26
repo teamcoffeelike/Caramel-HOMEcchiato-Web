@@ -1,0 +1,95 @@
+html {
+	scroll-behavior: smooth;
+}
+
+#content {
+	padding: 0px !important;
+}
+
+/*********************
+ * Table of Contents
+ *********************/
+
+.recipe-toc {
+	display: flex;
+	vertical-align: top;
+	align-items: flex-start;
+	position: fixed;
+	height: fit-content;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+	z-index: 5;
+}
+
+.toc-list {
+	overflow: hidden;
+	transition-duration: 0.5s;
+}
+.toc-list .inner {
+	padding: 15px 30px 15px 0;
+	background-color: white;
+	border: 1px black solid;
+	border-top: 0px;
+	border-left: 0px;
+	box-sizing: content-box;
+}
+
+#idk:checked~.toc-list {
+	width: auto;
+	height: auto;
+}
+
+#idk:not(:checked)~.toc-list {
+	width: 0;
+	height: 0;
+}
+
+.toc-button{
+	display: block;
+	width: 30px;
+	height: 30px;
+	background-color: white;
+	border: 1px black solid;
+	border-top: 0px;
+	border-left: 0px;
+	box-sizing: content-box;
+}
+
+.toc-button.close {
+	
+}
+
+#idk:checked~.toc-button.open {
+	display:none;
+}
+
+#idk:not(:checked)~.toc-button.close {
+	display:none;
+}
+
+
+.recipe-toc p {
+	margin: 15px 0;
+}
+
+/*********************
+ * 레시피 페이지
+ *********************/
+
+.recipe-contents {
+	flex-grow: 1;
+	padding-top: 30px;
+}
+
+.page {
+	position: relative;
+	height: 100vh;
+	margin-bottom: 10px;
+	border-radius: 30px;
+	overflow: hidden;
+}
+
+.cover .image {
+	
+}

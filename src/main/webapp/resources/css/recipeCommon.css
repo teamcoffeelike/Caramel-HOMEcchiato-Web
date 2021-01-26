@@ -1,0 +1,16 @@
+
+/* 유저 박스 내부 이름 */
+.profile-name {
+	color: white !important;
+}
+
+/*********************
+ * 배경색
+ *********************/
+
+.c-hot_coffee { background-color: #BA9165; }
+.c-ice_coffee { background-color: #A7B0C8; }
+.c-tea        { background-color: #97A776; }
+.c-ade        { background-color: #E7CB6D; }
+.c-smoothie   { background-color: #D18788; }
+.c-etc        { background-color: #58A785; }

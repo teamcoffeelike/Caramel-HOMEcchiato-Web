@@ -3,8 +3,11 @@ package com.hanul.coffeelike.caramelweb.controller;
 import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.Recipe;
 import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
+import com.hanul.coffeelike.caramelweb.data.RecipeCover;
 import com.hanul.coffeelike.caramelweb.data.RecipeStep;
 import com.hanul.coffeelike.caramelweb.service.RecipeService;
+import com.hanul.coffeelike.caramelweb.util.AttachmentFileResolver;
+import com.hanul.coffeelike.caramelweb.util.AttachmentURLConverter;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -37,8 +40,7 @@ public class RecipeController{
 	@RequestMapping("/recipe")
 	public String recipe(HttpSession session,
 	                     Model model,
-	                     @RequestParam int recipe,
-	                     @RequestParam(required = false) @Nullable Integer step){
+	                     @RequestParam int recipe){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return "loginRequired";
 
@@ -48,17 +50,20 @@ public class RecipeController{
 			model.addAttribute("redirect", "recipeList");
 			return "recipe/recipeError";
 		}
-		if(step!=null){
-			if(step<1||step>r.getSteps().size()){
-				return "redirect:recipe?recipe="+recipe;
-			}
-			RecipeStep recipeStep = r.getSteps().get(step-1);
-			model.addAttribute("step", recipeStep);
-			model.addAttribute("recipe", r.getCover());
-			return "recipe/stepDetail";
+		RecipeCover cover = r.getCover();
+		if(AttachmentFileResolver.doesRecipeCoverImageExists(cover.getCoverImage())){
+			cover.setCoverImage(AttachmentURLConverter.recipeCoverImageFromId(cover.getId()));
 		}else{
-			model.addAttribute("recipe", r.getCover());
-			return "recipe/coverDetail";
+			cover.setCoverImage("imgs/post.png");
 		}
+		for(RecipeStep step : r.getSteps()){
+			if(AttachmentFileResolver.doesRecipeStepImageExists(step.getImage())){
+				step.setImage(AttachmentURLConverter.recipeStepImageFromId(step.getRecipe(), step.getStep()));
+			}else{
+				step.setImage("imgs/post.png");
+			}
+		}
+		model.addAttribute("recipe", r);
+		return "recipe/detail";
 	}
 }

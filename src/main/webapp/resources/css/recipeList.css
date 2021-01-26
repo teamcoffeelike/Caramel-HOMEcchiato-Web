@@ -1,6 +1,6 @@
 
 #content {
-	padding: 0px;
+	padding: 0px !important;
 }
 
 .recipe-list-content {
@@ -24,7 +24,7 @@
 }
 
 .recipe-category .text {
-	color: #00000040;
+	color: #00000080;
 	transition-duration: 0.2s;
 }
 .recipe-category.selected .text {
@@ -115,18 +115,3 @@
 	background-color: #00000020;
 	border-radius: 20px;
 }
-
-.profile-name {
-	color: white !important;
-}
-
-/*********************
- * 배경색
- *********************/
-
-.c-hot_coffee { background-color: #BA9165; }
-.c-ice_coffee { background-color: #A7B0C8; }
-.c-tea        { background-color: #97A776; }
-.c-ade        { background-color: #E7CB6D; }
-.c-smoothie   { background-color: #D18788; }
-.c-etc        { background-color: #58A785; }

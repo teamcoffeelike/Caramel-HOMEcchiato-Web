@@ -3,6 +3,7 @@
 <%@ page import="com.hanul.coffeelike.caramelweb.data.RecipeCategory" %>
 <link rel="stylesheet" href="css/userBox.css">
 <link rel="stylesheet" href="css/recipeList.css">
+<link rel="stylesheet" href="css/recipeCommon.css">
 <script src="js/recipe_list.js"></script>
 <script>
 const CATEGORY = "${category.name}";
