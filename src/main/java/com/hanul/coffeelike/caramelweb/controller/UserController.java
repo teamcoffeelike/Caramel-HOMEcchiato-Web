@@ -40,15 +40,30 @@ public class UserController {
 		Map<Integer, UserProfileData> users = new HashMap<>();
 		
 		for(UserProfileData u : followers) {
+			String profileImage = u.getProfileImage();
+			if(AttachmentFileResolver.doesProfileImageExists(profileImage)) {
+				String profileImageURL = AttachmentURLConverter.profileImageFromId(u.getId());
+				u.setProfileImage(profileImageURL);
+			}else {
+				u.setProfileImage("imgs/profile.png");
+			}
 			users.put(u.getId(), u);
 		}
 		for(UserProfileData u : following) {
+			String profileImage = u.getProfileImage();
+			if(AttachmentFileResolver.doesProfileImageExists(profileImage)) {
+				String profileImageURL = AttachmentURLConverter.profileImageFromId(u.getId());
+				u.setProfileImage(profileImageURL);
+			}else {
+				u.setProfileImage("imgs/profile.png");
+			}
 			users.put(u.getId(), u);
 		}
-		
+
 		model.addAttribute("followers", followers);
 		model.addAttribute("following", following);
 		model.addAttribute("userMap", users);
+
 		return "mypage/follows";
 	}
 	

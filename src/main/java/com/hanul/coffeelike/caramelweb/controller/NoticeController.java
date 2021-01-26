@@ -46,7 +46,7 @@ public class NoticeController {
 		}
 		
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
-		boolean isAdmin = loginUser == null ? false : userService.isAdmin(loginUser.getUserId());
+		boolean isAdmin = loginUser!=null&&userService.isAdmin(loginUser.getUserId());
 		model.addAttribute("isAdmin", isAdmin);
 		
 		// service로 넘김
@@ -97,15 +97,19 @@ public class NoticeController {
 	
 	//공지글 상세화면 요청
 	@RequestMapping("/detail.no")
-	public String detailNotice(Model model,
+	public String detailNotice(HttpSession session,
+			                   Model model,
 	                           @RequestParam(required = false) @Nullable String search,
 	                           @RequestParam(required = false) @Nullable String keyword,
 	                           int id){
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		boolean isAdmin = loginUser!=null&&userService.isAdmin(loginUser.getUserId());
 		Notice notice = noticeService.detailNotice(id);
 		model.addAttribute("search", search);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("data", notice);
 		model.addAttribute("crlf", "\r\n");
+		model.addAttribute("isAdmin", isAdmin);
 		return "notice/detail";
 	}
 	 

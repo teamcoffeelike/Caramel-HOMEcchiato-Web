@@ -39,8 +39,8 @@ $(function(){
 			<ul>
 				<c:forEach var="u" items="${followers}">
 					<li class="follow-content">
-						<img src="${empty u.profileImage ? 'imgs/profile.png' : u.profileImage }">
-						<span class="followList-name">${u.name }</span>
+						<img src="${u.profileImage}">
+						<span class="followList-name">${u.name}</span>
 						<a class="btnFollow id${u.id}"><span class="text"></span></a>
 					</li>
 				</c:forEach>
@@ -51,8 +51,8 @@ $(function(){
 			<ul>
 				<c:forEach var="u" items="${following}">
 					<li class="follow-content">
-						<img src="${empty u.profileImage ? 'imgs/profile.png' : u.profileImage }">
-						<span class="followList-name">${u.name }</span>
+						<img src="${u.profileImage}">
+						<span class="followList-name">${u.name}</span>
 						<a class="btnFollow id${u.id}"><span class="text"></span></a>
 					</li>
 				</c:forEach>

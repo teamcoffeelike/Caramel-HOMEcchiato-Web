@@ -50,7 +50,7 @@
 		</c:forEach>
 	</table>
 	<ul class="notice">
-		<c:if test="${isAdmin eq 'Y'}">
+		<c:if test="${isAdmin}">
 			<li><a href="new" class="btnNew">글쓰기</a></li>
 		</c:if>
 	</ul>

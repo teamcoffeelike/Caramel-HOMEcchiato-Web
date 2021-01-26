@@ -15,7 +15,7 @@
 	<span>Caramel HOMEcchiato 서비스의 오류, 장애, 기타 공지사항을 안내드립니다.</span>
 </div>
 <div class="btnModifyDelete">
-	<c:if test="${isAdmin eq 'Y'}">
+	<c:if test="${isAdmin}">
 		<a class="btnModify" href="modify.no?id=${data.id}">수정</a>
 		<a class="btnDelete" onclick="if( confirm('정말 삭제하시겠습니까?') ){href='delete.no?id=${data.id }'}">삭제</a>
 	</c:if>
