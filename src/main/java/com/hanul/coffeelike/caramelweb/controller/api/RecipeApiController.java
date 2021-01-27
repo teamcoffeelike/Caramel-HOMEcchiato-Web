@@ -62,6 +62,7 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 *       }
 	 *       postDate: Date
 	 *       [ lastEditDate ]: Date
+	 *       ratings: Integer
 	 *       [ averageRating ]: Number # 평가 평균
 	 *       [ yourRating ]: Number # 로그인한 유저의 평가
 	 *     }
@@ -117,6 +118,7 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 	 *   }
 	 *   postDate: Date
 	 *   [ lastEditDate ]: Date
+	 *   ratings: Integer
 	 *   [ averageRating ]: Number # 평가 평균
 	 *   [ yourRating ]: Number # 로그인한 유저의 평가
 	 *   steps: [

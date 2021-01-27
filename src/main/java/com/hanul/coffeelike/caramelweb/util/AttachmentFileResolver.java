@@ -1,5 +1,9 @@
 package com.hanul.coffeelike.caramelweb.util;
 
+import com.hanul.coffeelike.caramelweb.data.Recipe;
+import com.hanul.coffeelike.caramelweb.data.RecipeCover;
+import com.hanul.coffeelike.caramelweb.data.RecipeStep;
+import com.hanul.coffeelike.caramelweb.data.UserProfileData;
 import org.springframework.lang.Nullable;
 
 import java.io.File;
@@ -57,4 +61,28 @@ public final class AttachmentFileResolver{
 		return filename!=null&&getRecipeStepImageFile(filename).exists();
 	}
 
+	public static void resolve(Recipe r){
+		RecipeCover cover = r.getCover();
+		resolve(cover);
+		for(RecipeStep step : r.getSteps()){
+			if(AttachmentFileResolver.doesRecipeStepImageExists(step.getImage())){
+				step.setImage(AttachmentURLConverter.recipeStepImageFromId(step.getRecipe(), step.getStep()));
+			}else{
+				step.setImage(null);
+			}
+		}
+	}
+
+	public static void resolve(RecipeCover cover){
+		if(AttachmentFileResolver.doesRecipeCoverImageExists(cover.getCoverImage())){
+			cover.setCoverImage(AttachmentURLConverter.recipeCoverImageFromId(cover.getId()));
+		}else cover.setCoverImage("imgs/post.png");
+		resolve(cover.getAuthor());
+	}
+
+	public static void resolve(UserProfileData user){
+		if(AttachmentFileResolver.doesProfileImageExists(user.getProfileImage())){
+			user.setProfileImage(AttachmentURLConverter.profileImageFromId(user.getId()));
+		}else user.setProfileImage("imgs/profile.png");
+	}
 }

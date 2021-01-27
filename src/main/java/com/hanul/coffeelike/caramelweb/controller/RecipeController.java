@@ -4,11 +4,13 @@ import com.hanul.coffeelike.caramelweb.data.AuthToken;
 import com.hanul.coffeelike.caramelweb.data.Recipe;
 import com.hanul.coffeelike.caramelweb.data.RecipeCategory;
 import com.hanul.coffeelike.caramelweb.data.RecipeCover;
-import com.hanul.coffeelike.caramelweb.data.RecipeStep;
+import com.hanul.coffeelike.caramelweb.data.RecipeCoverListResult;
 import com.hanul.coffeelike.caramelweb.service.RecipeService;
+import com.hanul.coffeelike.caramelweb.service.UserService;
 import com.hanul.coffeelike.caramelweb.util.AttachmentFileResolver;
-import com.hanul.coffeelike.caramelweb.util.AttachmentURLConverter;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
@@ -20,8 +22,12 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class RecipeController{
+	private static final Logger LOGGER = LoggerFactory.getLogger(RecipeController.class);
+
 	@Autowired
 	private RecipeService recipeService;
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping("/recipeList")
 	public String list(HttpSession session,
@@ -37,6 +43,24 @@ public class RecipeController{
 		return "recipe/list";
 	}
 
+	@RequestMapping("/myRecipe")
+	public String myRecipe(HttpSession session,
+	                       Model model,
+	                       @RequestParam int author){
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		if(loginUser==null) return "loginRequired";
+
+		if(!userService.checkIfUserExists(author)){
+			model.addAttribute("msg", "존재하지 않는 유저입니다.\n레시피 목록으로 돌아갑니다.");
+			model.addAttribute("redirect", "recipeList");
+			return "recipe/recipeError";
+		}
+
+		model.addAttribute("author", author);
+
+		return "recipe/myRecipe";
+	}
+
 	@RequestMapping("/recipe")
 	public String recipe(HttpSession session,
 	                     Model model,
@@ -50,18 +74,14 @@ public class RecipeController{
 			model.addAttribute("redirect", "recipeList");
 			return "recipe/recipeError";
 		}
-		RecipeCover cover = r.getCover();
-		if(AttachmentFileResolver.doesRecipeCoverImageExists(cover.getCoverImage())){
-			cover.setCoverImage(AttachmentURLConverter.recipeCoverImageFromId(cover.getId()));
+		AttachmentFileResolver.resolve(r);
+		RecipeCoverListResult result = recipeService.list(loginUser.getUserId(), null, 6, null, r.getCover().getAuthor().getId());
+		if(result.getRecipes()==null){
+			// 위 서비스 내에서 발생할 수 있는 에러는 모두 코드 내부 에러
+			LOGGER.error("recipe 서비스 내부에서 예상치 못한 오류 발생");
 		}else{
-			cover.setCoverImage("imgs/post.png");
-		}
-		for(RecipeStep step : r.getSteps()){
-			if(AttachmentFileResolver.doesRecipeStepImageExists(step.getImage())){
-				step.setImage(AttachmentURLConverter.recipeStepImageFromId(step.getRecipe(), step.getStep()));
-			}else{
-				step.setImage("imgs/post.png");
-			}
+			for(RecipeCover c : result.getRecipes()) AttachmentFileResolver.resolve(c);
+			model.addAttribute("otherRecipes", result.getRecipes());
 		}
 		model.addAttribute("recipe", r);
 		return "recipe/detail";

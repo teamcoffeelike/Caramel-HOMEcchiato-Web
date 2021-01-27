@@ -11,53 +11,34 @@ html {
  *********************/
 
 .recipe-toc {
-	display: flex;
-	vertical-align: top;
-	align-items: flex-start;
 	position: fixed;
-	height: fit-content;
 	top: 0;
 	left: 0;
 	overflow: hidden;
 	z-index: 5;
+	box-shadow: 0px 0px 10px black;
 }
 
-.toc-list {
-	overflow: hidden;
-	transition-duration: 0.5s;
-}
-.toc-list .inner {
-	padding: 15px 30px 15px 0;
-	background-color: white;
-	border: 1px black solid;
-	border-top: 0px;
-	border-left: 0px;
-	box-sizing: content-box;
-}
-
-#idk:checked~.toc-list {
-	width: auto;
-	height: auto;
-}
-
-#idk:not(:checked)~.toc-list {
-	width: 0;
-	height: 0;
+.recipe-toc .list {
+	padding: 10px 20px 15px 10px;
+	background-color: #00000080;
+	max-height: 70vh;
+	overflow-y: auto;
 }
 
 .toc-button{
 	display: block;
-	width: 30px;
-	height: 30px;
-	background-color: white;
-	border: 1px black solid;
-	border-top: 0px;
-	border-left: 0px;
-	box-sizing: content-box;
-}
-
-.toc-button.close {
-	
+	position: fixed;
+	top: 0;
+	left: 5px;
+	width: 150px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	color: white;
+	z-index: 7;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
 }
 
 #idk:checked~.toc-button.open {
@@ -68,9 +49,20 @@ html {
 	display:none;
 }
 
+.toc {
+	margin: 15px 5px 15px 0;
+	color: #FFF;
+}
 
-.recipe-toc p {
-	margin: 15px 0;
+.toc.on {
+	color: #EA0;
+	margin-left: 5px;
+	margin-right: 0px;
+}
+
+.toc * {
+	color: inherit;
+	text-shadow: 1px 1px 2px black;
 }
 
 /*********************
@@ -84,12 +76,168 @@ html {
 
 .page {
 	position: relative;
-	height: 100vh;
-	margin-bottom: 10px;
+	margin-bottom: 50px;
 	border-radius: 30px;
 	overflow: hidden;
 }
 
-.cover .image {
-	
+.page:not(.cover):not(.rate) {
+	border: 1px #CCC solid;
+}
+
+/*********************
+ * 레시피 커버
+ *********************/
+
+.cover.page {
+	display: flex;
+	height: 720px;
+}
+
+.cover.page .image-box {
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	width: 720px;
+	box-shadow: 1px 0 7px #00000080;
+	z-index: 1;
+}
+
+.cover.page .image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.cover.page .title-box {
+	flex-grow: 1;
+}
+
+.cover.page .title {
+	margin-top: 50px;
+	padding: 50px 0;
+	text-align: center;
+	background-color: white;
+}
+
+.cover.page .userBox {
+	background-color: #00000020;
+	border-radius: 20px;
+	margin: 100px 20px 0 20px;
+}
+
+/*********************
+ * 레시피 페이지
+ *********************/
+
+.step.page {
+	display: flex;
+	min-height: 500px;
+}
+
+.step.page:nth-child(2n+1) {
+	flex-direction: row;
+}
+
+.step.page:nth-child(2n) {
+	flex-direction: row-reverse;
+}
+
+.step.page:nth-child(2n+1) .image-box,
+.step.page:nth-child(2n+1) .color-box {
+	box-shadow: 1px 0 7px #000000CC;
+}
+.step.page:nth-child(2n) .image-box,
+.step.page:nth-child(2n) .color-box {
+	box-shadow: -1px 0 7px #000000CC;
+}
+
+.step.page .color-box {
+	width: 120px;
+}
+
+.step.page .image {
+	width: 640px;
+	height: 100%;
+	object-fit: cover;
+}
+
+.step.page .text-box {
+	flex-grow: 1;
+	padding: 20px;
+}
+
+/*********************
+ * 레시피 평가
+ *********************/
+
+.rate.page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 50px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.rate.page .rate-box {
+	text-align: center;
+	margin-top: 80px;
+	padding: 30px 20px;
+	background-color: #00000020;
+	border-radius: 30px;
+}
+
+.rating-bar .star {
+	pointer-events: none;
+	user-select: none;
+}
+
+.rate-box button {
+	margin-top: 15px;
+	padding: 10px;
+	border: none;
+	background: none;
+	color: white;
+}
+
+#submitRating, #editRating {
+	float: right;
+}
+
+#removeRating {
+	float: left;
+}
+
+.suggestion-box {
+	margin-top: 50px;
+	width: 100%;
+}
+
+.suggestion-box .text {
+	margin-left: 15px;
+	color: white;
+}
+
+.suggestion-box > .userBox {
+	background-color: #00000020;
+	border-radius: 20px;
+	margin-top: 10px;
+}
+
+.suggestion-box .recipe-list-box {
+	margin-top: 10px;
+	padding: 20px;
+	background-color: #00000020;
+	border-radius: 20px;
+}
+
+.suggestion-box .recipe-list {
+	display: flex;
+	overflow-x: auto;
+}
+
+.suggestion-box .recipe {
+	height: 480px; /* ?? */
 }

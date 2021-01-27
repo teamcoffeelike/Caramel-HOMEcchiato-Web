@@ -22,16 +22,18 @@
 			
 			<!-- 로그인한 상태 -->
 			<c:if test="${!empty loginUser}">
-			<li class="subMenu"><a>마이페이지</a>
+			<li class="subMenu">
+				<a>마이페이지</a>
 				<ul class="hide">
 					<li><a href="profile?userId=${loginUser.userId}">내 프로필</a></li>
 					<li><a href="follows">팔로워/팔로잉</a></li>
 					<li><a href="likePost">좋아요</a></li>
-					<li><a href="myrecipe">내 레시피</a></li>
+					<li><a href="myRecipe?author=${loginUser.userId}">내 레시피</a></li>
 					<li><a href="settings">설정</a></li>
 					<li><a href="list.qna">문의</a></li>
 					<li><a href="logout">로그아웃</a></li>
 				</ul>
+			</li>
 			</c:if>
 		</ul>
 	</div>
