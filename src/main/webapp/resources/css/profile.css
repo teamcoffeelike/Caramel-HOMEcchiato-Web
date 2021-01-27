@@ -23,6 +23,7 @@
 	width: 200px; height: 200px;
 	flex-wrap:wrap; margin: 6px; 
 	justify-content: space-around;
+	object-fit: cover;
 }
 
 .imgBox {
