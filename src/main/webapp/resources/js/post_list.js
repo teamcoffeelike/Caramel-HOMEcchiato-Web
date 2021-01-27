@@ -60,7 +60,7 @@ function fetchPost(){
 								likeCount.removeClass("liked").text(parseInt(likeCount.text())-1);
 							}
 							
-							console.log(`asdfasdfasdfasdf ${id}`);
+							//console.log(`asdfasdfasdfasdf ${id}`);
 						});
 					}
 					let lastData = data.posts[data.posts.length-1];

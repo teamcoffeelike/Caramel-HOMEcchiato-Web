@@ -153,4 +153,11 @@ public class PostController {
 		}
 		return "redirect:post?id=" + id;
 	}
+	
+	//좋아요 화면 요청
+	@RequestMapping("/likePost")
+	public String likePost() {
+		
+		return "mypage/like";
+	}
 }

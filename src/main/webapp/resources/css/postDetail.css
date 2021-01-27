@@ -48,6 +48,6 @@ a.btn-fill:hover, a.btn-empty:hover {
 }
 
 .btnLike {
-	cursor: pointer; font-size: 20px; border: none;
+	cursor: pointer; border: none;
 	background-color: white;
 }

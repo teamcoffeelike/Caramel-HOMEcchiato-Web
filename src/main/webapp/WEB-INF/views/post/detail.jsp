@@ -25,7 +25,9 @@
 		<img class='post-image' src='${postImage}'>
 
 		<div class='contentBox'>
-			<a id='btnLike'><i class="fas fa-heart fa-spin"></i></a>
+			<a class='btnLike'><i class="far fa-heart"></i>
+				<span class='likeCount'>${post.likes}</span
+			></a>
 			<div class='content'>${fn:replace(post.text, crlf, '<br>')}</div>
 			<div class='postDate'>${post.postDate}</div>
 		</div>
@@ -39,5 +41,20 @@
 <form method="post" action='modifyPost'>
 	<input type='hidden' name='id' value='${post.id}' />
 </form>
+
+<script>
+$(".btnLike").on("click", function(){
+	let likeCount = $(".likeCount");
+	let newLike = $(".fa-heart");
+	if(!likeCount.hasClass("liked")){
+		newLike.attr("data-prefix", "fas");
+		likeCount.addClass("liked").text(parseInt(likeCount.text())+1);
+	}else{
+		newLike.attr("data-prefix", "far");
+		likeCount.removeClass("liked").text(parseInt(likeCount.text())-1);
+	}
+	console.log(`aaa {post.id}`);
+});
+</script>
 </body>
 </html>
