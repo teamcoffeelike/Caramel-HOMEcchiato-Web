@@ -6,6 +6,6 @@ public class DuplicatedTotalStepCountSet extends InterpretationException{
 	}
 
 	@Override public String jsonErrorMessage(){
-		return DUPLICATED_TOTAL_STEP_COUNT;
+		return DUPLICATED_TOTAL_STEP_COUNT_SET;
 	}
 }

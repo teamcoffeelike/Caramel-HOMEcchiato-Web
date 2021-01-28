@@ -18,7 +18,7 @@ public abstract class RecipeEditorException extends Exception{
 	public static final String DUPLICATED_CATEGORY_SET = "duplicated_category_set";
 	public static final String DUPLICATED_TITLE_SET = "duplicated_title_set";
 	public static final String DUPLICATED_COVER_IMAGE_SET = "duplicated_cover_image_set";
-	public static final String DUPLICATED_TOTAL_STEP_COUNT = "duplicated_total_step_count";
+	public static final String DUPLICATED_TOTAL_STEP_COUNT_SET = "duplicated_total_step_count_set";
 
 	public static final String DUPLICATED_STEP_SELECTION = "duplicated_step_selection";
 	public static final String DUPLICATED_ORIGINAL_STEP_SELECTION = "duplicated_original_step_selection";

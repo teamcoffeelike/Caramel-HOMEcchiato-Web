@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.http.HttpSession;
+import java.io.EOFException;
 import java.sql.Date;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -248,11 +249,13 @@ public class RecipeApiController extends BaseExceptionHandlingController{
 		}catch(RecipeEditorException ex){
 			logger.error("RecipeEditorException", ex);
 			return ex.toJson();
+		}catch(EOFException ex){
+			logger.error("End of File", ex);
+			return JsonHelper.failure(RecipeEditorException.MALFORMED_INSTRUCTION);
 		}catch(Exception ex){
 			logger.error("레시피 edit 중 오류 발생", ex);
+			return JsonHelper.failure("unexpected");
 		}
-
-		return JsonHelper.failure("ok");
 	}
 
 	/**
