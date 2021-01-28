@@ -120,6 +120,16 @@ function removeRating(){
 	updateRatingBar($(".rating-bar").first());
 }
 
+function onMouseEvent(event){
+	if(currentRatingBar){
+		let ratingCache = calculateRatingInput(currentRatingBar, event.pageX);
+		if(rating!=ratingCache){
+			rating = ratingCache;
+			updateRatingBar(currentRatingBar);
+		}
+	}
+}
+
 $(function(){
 	// 페이지 인덱스
 	$(window).on("scroll", function(){
@@ -142,19 +152,13 @@ $(function(){
 	$(".rating-bar").on("mousedown", function(event){
 		currentRatingBar = this;
 		event.preventDefault();
+		onMouseEvent(event);
 	});
 
-	$(window).on("mousemove", function(event){
-		if(currentRatingBar){
-			let ratingCache = calculateRatingInput(currentRatingBar, event.screenX);
-			if(rating!=ratingCache){
-				rating = ratingCache;
-				updateRatingBar(currentRatingBar);
-			}
-		}
-	}).on("mouseup", function(){
-		currentRatingBar = null;
-	});
+	$(window).on("mousemove", onMouseEvent)
+		.on("mouseup", function(){
+			currentRatingBar = null;
+		});
 
 	// 현재 목차 설정
 	calculateCurrentPage(true);
