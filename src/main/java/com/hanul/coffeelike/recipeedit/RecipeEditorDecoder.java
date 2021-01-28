@@ -13,6 +13,7 @@ import com.hanul.coffeelike.recipeedit.ast.SetTitle;
 import com.hanul.coffeelike.recipeedit.ast.SetTotalStepCount;
 import com.hanul.coffeelike.recipeedit.ast.StepSelector;
 import com.hanul.coffeelike.recipeedit.exception.RecipeEditorException;
+import com.hanul.coffeelike.recipeedit.exception.compile.InvalidRecipeCategory;
 import com.hanul.coffeelike.recipeedit.exception.compile.InvalidResourceReference;
 import com.hanul.coffeelike.recipeedit.exception.compile.MalformedInstruction;
 import com.hanul.coffeelike.recipeedit.exception.compile.UnknownFunction;
@@ -134,9 +135,13 @@ public final class RecipeEditorDecoder{
 		int selector = reader.readUnsignedByte();
 		RecipeEditorAST fun;
 		switch(selector){
-		case OP_SET_CATEGORY:
-			fun = new SetCategory(RecipeCategory.fromString(reader.readUTF()));
+		case OP_SET_CATEGORY:{
+			String read = reader.readUTF();
+			RecipeCategory category = RecipeCategory.fromString(read);
+			if(category==null) throw new InvalidRecipeCategory(read);
+			fun = new SetCategory(category);
 			break;
+		}
 		case OP_SET_TITLE:
 			fun = new SetTitle(reader.readUTF());
 			break;

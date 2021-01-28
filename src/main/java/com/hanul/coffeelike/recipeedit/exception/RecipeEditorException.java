@@ -9,6 +9,7 @@ public abstract class RecipeEditorException extends Exception{
 	public static final String UNKNOWN_MODE = "unknown_mode";
 	public static final String UNKNOWN_FUNCTION = "unknown_function";
 	public static final String INVALID_RESOURCE_REFERENCE = "invalid_resource_reference";
+	public static final String INVALID_RECIPE_CATEGORY = "invalid_recipe_category";
 
 	/////////// Runtime Error ///////////
 
