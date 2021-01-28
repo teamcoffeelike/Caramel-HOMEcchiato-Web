@@ -33,10 +33,14 @@ public class QnaController {
 	
 	//문의게시판 목록
 	@RequestMapping("/list.qna")
-	public String qna(Model model,
+	public String qna(HttpSession session,
+					  Model model,
 					  @RequestParam(required = false) @Nullable String search,
 					  @RequestParam(required = false) @Nullable String keyword,
 					  @RequestParam(defaultValue = "1") int currentPage) {
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		if(loginUser == null) return "loginRequired";
+		
 		Page page = new Page(qnaService.totalCount(search, keyword),
 				currentPage,
 				search,

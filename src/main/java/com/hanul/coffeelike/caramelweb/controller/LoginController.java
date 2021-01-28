@@ -14,6 +14,7 @@ import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,6 +69,7 @@ public class LoginController{
 	//카카오 callback URL 처리
 	@RequestMapping("/loginWithKakaoCallback")
 	public String loginWithKakaoCallback(HttpSession session,
+										 Model model,
 	                                     @RequestParam String state,
 	                                     @RequestParam(required = false) String code,
 	                                     @RequestParam(required = false) String error,
@@ -93,12 +95,18 @@ public class LoginController{
 					.setRequestProperty("Authorization", type+" "+token)
 					.setRequestProperty("property_keys", "[\"properties.nickname\"]")
 					.readAsJsonObject();
-			if(!response.isSuccess()) return getResponseError(response);
+			
+			
+			if(!response.isSuccess()) return getResponseError(model, response);
+			
 			long kakaoUserId = response.getResponse().get("id").getAsLong();
 
 			if(name==null){
 				name = getName(response);
-				if(name==null) return JsonHelper.failure("needs_agreement");
+				if(name==null) {
+					model.addAttribute("msg", "프로필정보 수집 항목에 동의해야 합니다!");
+					return "kakaoLoginRequired";
+				}
 			}
 
 			//카카오톡 회원가입
@@ -130,21 +138,27 @@ public class LoginController{
 		return nickname.getAsString();
 	}
 
-	private static String getResponseError(HttpConnector.Response<JsonObject> response){
+	private static String getResponseError(Model model,
+										   HttpConnector.Response<JsonObject> response){
 		if(response.isSuccess()) throw new IllegalArgumentException("Response not failed");
 
 		int errorCode = response.getResponse().get("code").getAsInt();
 		switch(errorCode){
 		case -1: // 카카오 사망
-			return JsonHelper.failure("kakao_service_unavailable");
+			model.addAttribute("msg", "존재하지 않는 카카오 계정입니다.");
+			break;
 		case -2: // 몬가이상함
 		case -401: // 만료됨
-			return JsonHelper.failure("bad_kakao_login_token");
+			model.addAttribute("msg", "토큰이 만료되었습니다.");
+			break;
 		default:
 			// TODO 카카오 로그아웃?
-			return JsonHelper.failure("unknown");
+			model.addAttribute("msg", "예상치 못한 오류가 발생했습니다. 다시 시도해주세요");
+			break;
 		}
+		return "kakaoLoginRequired";
 	}
+	
 
 	//로그아웃 처리
 	@RequestMapping("/logout")
