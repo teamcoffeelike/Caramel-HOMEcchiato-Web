@@ -144,15 +144,10 @@ public class LoginController{
 
 		int errorCode = response.getResponse().get("code").getAsInt();
 		switch(errorCode){
-		case -1: // 카카오 사망
-			model.addAttribute("msg", "존재하지 않는 카카오 계정입니다.");
-			break;
-		case -2: // 몬가이상함
 		case -401: // 만료됨
 			model.addAttribute("msg", "토큰이 만료되었습니다.");
 			break;
 		default:
-			// TODO 카카오 로그아웃?
 			model.addAttribute("msg", "예상치 못한 오류가 발생했습니다. 다시 시도해주세요");
 			break;
 		}
