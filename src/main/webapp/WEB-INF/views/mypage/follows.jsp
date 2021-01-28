@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="css/userBox.css">
 <link rel="stylesheet" href="css/follows.css">
 <script type="text/javascript" src="js/follows.js"></script>
 <script src="js/search_friend.js"></script>
@@ -38,11 +39,11 @@ $(function(){
 		<div class="follow-tab on">
 			<ul>
 				<c:forEach var="u" items="${followers}">
-					<li class="follow-content">
-						<img src="${u.profileImage}">
-						<span class="followList-name">${u.name}</span>
-						<a class="btnFollow id${u.id}"><span class="text"></span></a>
-					</li>
+					<div class="userBox"
+						><img class="profile-image" src="${u.profileImage}"/>
+						<a class="profile-name" href="profile?userId=${u.id}">${u.name}</a
+						><a class="btnFollow id${u.id}"><span class="text"></span></a
+					></div>
 				</c:forEach>
 			</ul>
 		</div>
@@ -50,11 +51,11 @@ $(function(){
 		<div class="follow-tab">
 			<ul>
 				<c:forEach var="u" items="${following}">
-					<li class="follow-content">
-						<img src="${u.profileImage}">
-						<span class="followList-name">${u.name}</span>
-						<a class="btnFollow id${u.id}"><span class="text"></span></a>
-					</li>
+					<div class="userBox"
+						><img class="profile-image" src="${u.profileImage}"/>
+						<a class="profile-name" href="profile?userId=${u.id}">${u.name}</a
+						><a class="btnFollow id${u.id}"><span class="text"></span></a
+					></div>
 				</c:forEach>
 			</ul>
 		</div>

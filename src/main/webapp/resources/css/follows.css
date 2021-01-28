@@ -33,12 +33,12 @@
   height: 600px;
 }
 
-.tab-content div {
+.tab-content .follow-tab {
   display: none;
   text-align: center;
 }
 
-.tab-content div.on {
+.tab-content .follow-tab.on {
   display: block;
 }
 
@@ -51,37 +51,19 @@
 	height: 70px;
 }
 
-.follow-content img {
-	width: 70px;
-	height: 70px;
-	float: left;
-}
-
-.followList-name {
-	display: flex;
-	height: 70px;
-	padding-left: 20px;
-	align-items: center;
-	float: left;
-	font-size: 18px;
-}
-
 .btnFollow {
-	padding: 6px 15px;
+	padding: 3px 10px;
 	color: #e67461;
 	border: 1px solid #e67461;
 	border-radius: 5px;
-	float: right;
-	margin: 10px;
+	margin-left: auto;
 }
 
 .btnFollow.following {
-	padding: 6px 15px;
+	padding: 3px 10px;
 	background-color: #e67461;
 	border: 1px solid #e67461;
 	border-radius: 5px;
-	float: right;
-	margin: 10px;
 }
 
 /* 친구검색창 */

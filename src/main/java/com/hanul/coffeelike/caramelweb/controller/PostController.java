@@ -74,7 +74,6 @@ public class PostController {
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		Post post = postService.post(id, loginUser==null ? null : loginUser.getUserId());
 		model.addAttribute("post", post);
-		model.addAttribute("crlf", "\r\n");
 		//포스트사진
 		if(AttachmentFileResolver.doesPostImageExists(post.getImage()))
 			model.addAttribute("postImage", AttachmentURLConverter.postImageFromId(post.getId()));
@@ -156,8 +155,11 @@ public class PostController {
 	
 	//좋아요 화면 요청
 	@RequestMapping("/likePost")
-	public String likePost() {
-		
-		return "mypage/like";
+	public String likePost(Model model,
+						   HttpSession session) {
+		AuthToken loginUser = SessionAttributes.getLoginUser(session);
+		if(loginUser == null) return "loginRequired";
+		model.addAttribute("likedPosts", true);
+		return "post/list";
 	}
 }

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,6 +34,26 @@
 </style>
 <script type="text/javascript" src="js/readmore.min.js"></script>
 <script type="text/javascript" src="js/post_list.js"></script>
+<script>
+<c:choose>
+	<c:when test="${likedPosts}">
+$(function(){
+	$(window).on("scroll", function(){
+		if(scrolled($(".postEnd").offset().top)) fetchLikedPost(${loginUser.userId});
+	});
+	fetchLikedPost(${loginUser.userId});
+});
+	</c:when>
+	<c:otherwise>
+$(function(){
+	$(window).on("scroll", function(){
+		if(scrolled($(".postEnd").offset().top)) fetchPost();
+	});
+	fetchPost();
+});
+	</c:otherwise>
+</c:choose>
+</script>
 </head>
 <body>
 	<div class="postList"></div>

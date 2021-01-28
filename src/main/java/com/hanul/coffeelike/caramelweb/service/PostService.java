@@ -168,15 +168,17 @@ public class PostService{
 	}
 
 	public PostLikeResult likePost(int loginUser, int post, boolean like){
-		Post postData = postDAO.findPost(post, null);
+		Post postData = postDAO.findPost(post, loginUser);
 
 		if(postData==null)
 			return new PostLikeResult("no_post");
 
-		if(like)
-			postDAO.like(loginUser, post);
-		else
-			postDAO.removeLike(loginUser, post);
+		if(postData.getLikedByYou()!=like) {
+			if(like)
+				postDAO.like(loginUser, post);
+			else
+				postDAO.removeLike(loginUser, post);
+		}
 		return new PostLikeResult(postDAO.getLikes(post));
 	}
 

@@ -25,7 +25,7 @@
 		<img class='post-image' src='${postImage}'>
 
 		<div class='contentBox'>
-			<a class='btnLike'><i class="far fa-heart"></i>
+			<a class='btnLike${post.likedByYou ? " liked" : ""}'><i class="${post.likedByYou ? "fas" : "far"} fa-heart"></i>
 				<span class='likeCount'>${post.likes}</span
 			></a>
 			<div class='content'>${fn:replace(post.text, crlf, '<br>')}</div>
@@ -43,17 +43,39 @@
 </form>
 
 <script>
-$(".btnLike").on("click", function(){
+$(function(){
 	let likeCount = $(".likeCount");
-	let newLike = $(".fa-heart");
-	if(!likeCount.hasClass("liked")){
-		newLike.attr("data-prefix", "fas");
-		likeCount.addClass("liked").text(parseInt(likeCount.text())+1);
-	}else{
-		newLike.attr("data-prefix", "far");
-		likeCount.removeClass("liked").text(parseInt(likeCount.text())-1);
-	}
-	console.log(`aaa {post.id}`);
+
+	$(".btnLike").on("click", function(){
+		let like;
+		
+		if(!$(this).hasClass("liked")){
+			/* 좋아요 누를 때 */
+			$(this).addClass("liked");
+			likeCount.text(parseInt(likeCount.text())+1);
+			$(".fa-heart").attr("data-prefix", "fas");
+			like = true;
+		}else{
+			/* 좋아요 취소할 때 */
+			$(this).removeClass("liked");
+			likeCount.text(parseInt(likeCount.text())-1);
+			$(".fa-heart").attr("data-prefix", "far");
+			like = false;
+		}
+
+		$.ajax({
+			url: "api/likePost",
+			type: "post",
+			data: { "post": ${post.id}, "like": like },
+			success: function(data){
+				if(data.error){
+					alert("Error: "+data.error);
+				}
+			}, error: function(req, text){
+				alert(text+':'+req.status);
+			}
+		});
+	});
 });
 </script>
 </body>
