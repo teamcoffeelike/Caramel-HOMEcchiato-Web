@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" href="css/userBox.css">
 <link rel="stylesheet" href="css/recipeList.css">
+<link rel="stylesheet" href="css/recipeGrid.css">
 <link rel="stylesheet" href="css/recipeCommon.css">
 <script src="js/recipe_list.js"></script>
 <script>

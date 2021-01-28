@@ -33,6 +33,7 @@ function calculateCurrentPage(reset){
 	if(reset||(page!=pageCache)){
 		if(page) $(".toc."+page).removeClass("on");
 		$(".toc."+pageCache).addClass("on");
+		history.replaceState(undefined, undefined, "#"+pageCache);
 		page = pageCache;
 		pageSize = {
 			y: pageOffset,
@@ -237,10 +238,14 @@ $(function(){
 					<div class="recipe-list-box">
 						<div class="recipe-list">
 							<c:forEach var="e" items="${otherRecipes}">
-								<div class="recipe">
+								<a class="suggested-recipe" href="recipe?recipe=${e.id}">
 									<img src="${e.coverImage}">
-									${e.title}
-								</div>
+									<div class="title-container">
+										<div class="circle c-${e.category.name}"></div>
+										<img class="category" src="imgs/${e.category.name}_icon.png">
+										<div class="title">${e.title}</div>
+									</div>
+								</a>
 							</c:forEach>
 						</div>
 					</div>

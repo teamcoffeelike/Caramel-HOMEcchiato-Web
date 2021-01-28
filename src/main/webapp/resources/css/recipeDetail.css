@@ -39,6 +39,7 @@ html {
 	z-index: 7;
 	border-bottom-right-radius: 10px;
 	border-bottom-left-radius: 10px;
+	box-shadow: inset 0px -5px 0px 0px #00000020;
 }
 
 #idk:checked~.toc-button.open {
@@ -76,13 +77,13 @@ html {
 
 .page {
 	position: relative;
-	margin-bottom: 50px;
 	border-radius: 30px;
 	overflow: hidden;
 }
 
-.page:not(.cover):not(.rate) {
-	border: 1px #CCC solid;
+.cover.page,
+.step.page {
+	margin-bottom: 50px;
 }
 
 /*********************
@@ -134,6 +135,7 @@ html {
 .step.page {
 	display: flex;
 	min-height: 500px;
+	border: 1px #CCC solid;
 }
 
 .step.page:nth-child(2n+1) {
@@ -159,7 +161,7 @@ html {
 
 .step.page .image {
 	width: 640px;
-	height: 100%;
+	min-height: 100%;
 	object-fit: cover;
 }
 
@@ -236,8 +238,46 @@ html {
 .suggestion-box .recipe-list {
 	display: flex;
 	overflow-x: auto;
+	align-self: stretch;
 }
 
-.suggestion-box .recipe {
-	height: 480px; /* ?? */
+.suggested-recipe {
+	display: flex;
+	flex-direction: column;
+}
+
+.suggested-recipe img {
+	display: block;
+	width: 400px;
+	height: 300px;
+	object-fit: cover;
+}
+
+.suggested-recipe .title-container {
+	display: block;
+	position: relative;
+	background-color: white;
+	overflow: hidden;
+}
+
+.suggested-recipe .circle {
+	position: absolute;
+	top: -50px;
+	left: -40px;
+	width: 130px;
+	height: 130px;
+	border-radius: 99999px;
+}
+
+.suggested-recipe .category {
+	position: absolute;
+	top: -3px;
+	left: 5px;
+	width: 40px;
+	height: 40px;
+}
+
+.suggested-recipe .title {
+	margin: 5px 0 5px 100px;
+	z-index: 9;
 }

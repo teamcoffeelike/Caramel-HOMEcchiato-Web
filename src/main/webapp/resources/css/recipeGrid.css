@@ -1,0 +1,17 @@
+
+.recipe-list {
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.recipe {
+	display: inline-flex;
+	width: 500px;
+	justify-content: space-between;
+}
+
+.recipe-cover {
+	height: 300px;
+	object-fit: cover;
+}
