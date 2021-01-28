@@ -132,6 +132,12 @@ $(function(){
 		else $(".recipe-toc").slideUp();
 	});
 
+	// 레시피 toc anchor 클릭
+	$(".recipe-toc").on("click", "a", function(event){
+		window.location.replace(this.href);
+		event.preventDefault();
+	});
+
 	// 레이팅바 인풋
 	$(".rating-bar").on("mousedown", function(event){
 		currentRatingBar = this;
@@ -181,73 +187,71 @@ $(function(){
 	<label for="idk" class="toc-button close c-${recipe.cover.category.name}">레시피 목차 접기</label>
 	<label for="idk" class="toc-button open c-${recipe.cover.category.name}">레시피 목차 열기</label>
 
-	<div class="main">
-		<div class="recipe-contents">
-			<div id="cover" class="cover page c-${recipe.cover.category.name}">
-				<div class="image-box">
-					<img class="image" src="${recipe.cover.coverImage}">
-				</div>
-
-				<div class="title-box">
-					<h1 class="title">${recipe.cover.title}</h1>
-					
-					<div class="userBox"
-						><img class="profile-image" src="${recipe.cover.author.profileImage ? recipe.cover.author.profileImage : "imgs/profile.png"}"/>
-						<a class="profile-name" href="profile?userId=${recipe.cover.author.id}">${recipe.cover.author.name}</a
-					></div>
-				</div>
+	<div class="recipe-contents">
+		<div id="cover" class="cover page c-${recipe.cover.category.name}">
+			<div class="image-box">
+				<img class="image" src="${recipe.cover.coverImage}">
 			</div>
 
-			<c:forEach var="e" items="${recipe.steps}">
-				<div id="s${e.step}" class="step page">
-					<c:choose>
-						<c:when test="${empty e.image}">
-							<div class="color-box c-${recipe.cover.category.name}"></div>
-						</c:when>
-						<c:otherwise>
-							<div class="image-box">
-								<img class="image" src="${e.image}">
-							</div>
-						</c:otherwise>
-					</c:choose>
-					<div class="text-box">${fn:replace(e.text, newLine, "<br>")}</div>
-				</div>
-			</c:forEach>
+			<div class="title-box">
+				<h1 class="title">${recipe.cover.title}</h1>
+				
+				<div class="userBox"
+					><img class="profile-image" src="${recipe.cover.author.profileImage ? recipe.cover.author.profileImage : "imgs/profile.png"}"/>
+					<a class="profile-name" href="profile?userId=${recipe.cover.author.id}">${recipe.cover.author.name}</a
+				></div>
+			</div>
+		</div>
 
-			<div id="rate" class="rate page c-${recipe.cover.category.name}">
-				<div class="rate-box">
-					<div class="rating-bar" draggable="false"
-						><img class="star" draggable="false" src="imgs/no_star.svg"
-						><img class="star" draggable="false" src="imgs/no_star.svg"
-						><img class="star" draggable="false" src="imgs/no_star.svg"
-						><img class="star" draggable="false" src="imgs/no_star.svg"
-						><img class="star" draggable="false" src="imgs/no_star.svg"
-					></div>
-
-					<button id="submitRating">평가하기</button>
-					<button id="editRating">평가 수정</button>
-					<button id="removeRating">평가 삭제</button>
-				</div>
-
-				<div class="suggestion-box">
-					<div class="text">같은 유저의 레시피</div>
-					<div class="userBox"
-						><img class="profile-image" src="${recipe.cover.author.profileImage ? recipe.cover.author.profileImage : "imgs/profile.png"}"/>
-						<a class="profile-name" href="profile?userId=${recipe.cover.author.id}">${recipe.cover.author.name}</a
-					></div>
-					<div class="recipe-list-box">
-						<div class="recipe-list">
-							<c:forEach var="e" items="${otherRecipes}">
-								<a class="suggested-recipe" href="recipe?recipe=${e.id}">
-									<img src="${e.coverImage}">
-									<div class="title-container">
-										<div class="circle c-${e.category.name}"></div>
-										<img class="category" src="imgs/${e.category.name}_icon.png">
-										<div class="title">${e.title}</div>
-									</div>
-								</a>
-							</c:forEach>
+		<c:forEach var="e" items="${recipe.steps}">
+			<div id="s${e.step}" class="step page">
+				<c:choose>
+					<c:when test="${empty e.image}">
+						<div class="color-box c-${recipe.cover.category.name}"></div>
+					</c:when>
+					<c:otherwise>
+						<div class="image-box">
+							<img class="image" src="${e.image}">
 						</div>
+					</c:otherwise>
+				</c:choose>
+				<div class="text-box">${fn:replace(e.text, newLine, "<br>")}</div>
+			</div>
+		</c:forEach>
+
+		<div id="rate" class="rate page c-${recipe.cover.category.name}">
+			<div class="rate-box">
+				<div class="rating-bar" draggable="false"
+					><img class="star" draggable="false" src="imgs/no_star.svg"
+					><img class="star" draggable="false" src="imgs/no_star.svg"
+					><img class="star" draggable="false" src="imgs/no_star.svg"
+					><img class="star" draggable="false" src="imgs/no_star.svg"
+					><img class="star" draggable="false" src="imgs/no_star.svg"
+				></div>
+
+				<button id="submitRating">평가하기</button>
+				<button id="editRating">평가 수정</button>
+				<button id="removeRating">평가 삭제</button>
+			</div>
+
+			<div class="suggestion-box">
+				<div class="text">같은 유저의 레시피</div>
+				<div class="userBox"
+					><img class="profile-image" src="${recipe.cover.author.profileImage ? recipe.cover.author.profileImage : "imgs/profile.png"}"/>
+					<a class="profile-name" href="profile?userId=${recipe.cover.author.id}">${recipe.cover.author.name}</a
+				></div>
+				<div class="recipe-list-box">
+					<div class="recipe-list">
+						<c:forEach var="e" items="${otherRecipes}">
+							<a class="suggested-recipe" href="recipe?recipe=${e.id}">
+								<img src="${e.coverImage}">
+								<div class="title-container">
+									<div class="circle c-${e.category.name}"></div>
+									<img class="category" src="imgs/${e.category.name}_icon.png">
+									<div class="title">${e.title}</div>
+								</div>
+							</a>
+						</c:forEach>
 					</div>
 				</div>
 			</div>

@@ -72,7 +72,7 @@ html {
 
 .recipe-contents {
 	flex-grow: 1;
-	padding-top: 30px;
+	padding: 30px 50px 0 50px;
 }
 
 .page {
@@ -120,6 +120,7 @@ html {
 	padding: 50px 0;
 	text-align: center;
 	background-color: white;
+	border-right: 1px solid #CCC;
 }
 
 .cover.page .userBox {
@@ -246,10 +247,14 @@ html {
 	flex-direction: column;
 }
 
+.suggested-recipe:not(:last-child) {
+	margin-right: 10px;
+}
+
 .suggested-recipe img {
 	display: block;
-	width: 400px;
-	height: 300px;
+	width: 320px;
+	height: 240px;
 	object-fit: cover;
 }
 

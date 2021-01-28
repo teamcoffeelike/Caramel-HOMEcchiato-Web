@@ -3,6 +3,7 @@
 <%@ page import="com.hanul.coffeelike.caramelweb.data.RecipeCategory" %>
 <link rel="stylesheet" href="css/userBox.css">
 <link rel="stylesheet" href="css/recipeList.css">
+<link rel="stylesheet" href="css/recipeGrid.css"> <%-- 주석처리하면 1열 레이아웃으로 돌아감 --%>
 <link rel="stylesheet" href="css/recipeCommon.css">
 <script src="js/recipe_list.js"></script>
 <script>

@@ -43,7 +43,7 @@ $(document).on('click', '#tabs li', function(){
 						<input type="hidden" name="profileImageChanged" id="profileImageChanged" value="false">
 						<input type="file" name="profileImage" id="img-attach" accept=".png,.jpg,.jpeg,.gif"/>
 						<label>
-							<img id="profile-img" class="profile-img" src="${profileImage}" />
+							<img id="profile-img" class="profile-img" src="${data.user.profileImage}" />
 							<!-- src > db에 유저프로필 사진없으면 기본프로필 있으면 유저정보 -->
 						</label>
 					</div>
