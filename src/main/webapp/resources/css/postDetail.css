@@ -7,38 +7,53 @@
 	box-sizing: content-box;
 }
 
-.post-image { display: block; width: 600px; }
+.top {
+	display: flex;
+	align-items: center;
+}
 
-.contentBox{
+.userBox {
+	flex: 1;
+}
+
+.btnSet1 {
+	margin: 10px 10px 10px 0;
+	text-align: center;
+}
+
+.post-image {
+	display: block;
+	width: 600px;
+}
+
+.contentBox {
 	margin-bottom: 20px; padding: 10px;
 	overflow: hidden; vertical-align: middle;
 }
 
-.content{
+.content {
 	width:580px;
 	overflow: hidden; float: left;
 }
-
 
 .moreContent, .reaction {
 	color: #ccc; font-size: 0.8em;
 	cursor: pointer; 
 }
 
-.postDate{
+.postDate {
 	color: rgb(117, 117, 117); font-size: 0.8em;
 }
 
-.btnSet1 { 
-	height: 50px; line-height: 50px;
-	margin-top:10px; text-align: center; float: right; 
+.btnSet2 {
+	margin-top:10px;
+	text-align: center;
 }
-.btnSet2 { margin-top:10px; text-align: center;}
 
 a.btn-fill, a.btn-empty {
 	text-align: center;
 	padding: 3px 10px;
-    color: #67432a;
+	color: #67432a;
 	border-radius: 3px; 
 	transition: 0.3s;
 }

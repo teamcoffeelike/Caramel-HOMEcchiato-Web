@@ -3,5 +3,5 @@
 <!DOCTYPE html>
 <script>
 alert("${msg}");
-location.href="writePostView";
+location.href="${empty redirect ? "writePostView" : redirect}";
 </script>

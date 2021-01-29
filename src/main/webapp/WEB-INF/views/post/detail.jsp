@@ -11,9 +11,11 @@
 </head>
 <body>
 	<div class="postDetail">
-		<div class="userBox">
-			<img class="profile-image" src="${profileImage}" />
-			<a class='profile-name' href='profile?userId=${post.author.id}'>${post.author.name}</a>
+		<div class="top">
+			<div class="userBox">
+				<img class="profile-image" src="${post.author.profileImage}" />
+				<a class='profile-name' href='profile?userId=${post.author.id}'>${post.author.name}</a>
+			</div>
 			<c:if test="${loginUser.userId eq post.author.id}">
 				<div class="btnSet1">
 					<a class="btn-empty" onclick="$('form').submit();">수정</a>
@@ -22,7 +24,7 @@
 			</c:if>
 		</div>
 
-		<img class='post-image' src='${postImage}'>
+		<img class='post-image' src='${post.image}'>
 
 		<div class='contentBox'>
 			<a class='btnLike${post.likedByYou ? " liked" : ""}'><i class="${post.likedByYou ? "fas" : "far"} fa-heart"></i>

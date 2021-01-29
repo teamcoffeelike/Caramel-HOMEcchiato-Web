@@ -1,5 +1,6 @@
 package com.hanul.coffeelike.caramelweb.util;
 
+import com.hanul.coffeelike.caramelweb.data.Post;
 import com.hanul.coffeelike.caramelweb.data.Recipe;
 import com.hanul.coffeelike.caramelweb.data.RecipeCover;
 import com.hanul.coffeelike.caramelweb.data.RecipeStep;
@@ -84,5 +85,12 @@ public final class AttachmentFileResolver{
 		if(AttachmentFileResolver.doesProfileImageExists(user.getProfileImage())){
 			user.setProfileImage(AttachmentURLConverter.profileImageFromId(user.getId()));
 		}else user.setProfileImage("imgs/profile.png");
+	}
+
+	public static void resolve(Post post){
+		if(AttachmentFileResolver.doesPostImageExists(post.getImage())){
+			post.setImage(AttachmentURLConverter.postImageFromId(post.getId()));
+		}else post.setImage("imgs/post.png");
+		resolve(post.getAuthor());
 	}
 }
