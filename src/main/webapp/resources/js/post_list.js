@@ -104,6 +104,6 @@ function onFetchSuccess(data){
 			});
 		}
 		let lastData = data.posts[data.posts.length-1];
-		oldest = lastData.postDate;
+		oldest = lastData.likedDate ? lastData.likedDate : lastData.postDate;
 	}
 }
