@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +35,7 @@
 		<header class="intro-header">
 			<div class="subheading"></div>
 			<div data-splitting>
-				<h2 class="heading">Recipe</h2>
+				<h2 class="heading"><a href="recipeList">Recipe</a></h2>
 			</div>
 		</header>
 		<p class="paragraph">
@@ -55,7 +56,7 @@
 	<div class="intro-content">
 		<header class="intro-header">
 			<div class="subheading"></div>
-			<h2 class="heading">Post</h2>
+			<h2 class="heading"><a href="allPostList">Post</a></h2>
 		</header>
 		<p class="paragraph">
 			인기 포스트를 통해 다양한 레시피와 일상을 공유할 수 있습니다.<br/>
@@ -75,7 +76,7 @@
 	<div class="intro-content">
 		<header class="intro-header">
 			<div class="subheading"></div>
-			<h2 class="heading">Follow</h2>
+			<h2 class="heading"><a href="follows">Follow</a></h2>
 		</header>
 		<p class="paragraph">
 			친구를 검색하고 팔로우 할 수 있습니다.<br/>
@@ -95,7 +96,7 @@
 	<div class="intro-content">
 		<header class="intro-header">
 			<div class="subheading"></div>
-			<h2 class="heading">Like</h2>
+			<h2 class="heading"><a href="likePost">Like</a></h2>
 		</header>
 		<p class="paragraph">
 			게시물에 좋아요를 누르고 보관할 수 있습니다.<br/>
@@ -115,7 +116,7 @@
 	<div class="intro-content">
 		<header class="intro-header">
 			<div class="subheading"></div>
-			<h2 class="heading">My Page</h2>
+			<h2 class="heading"><a href="profile?userId=${loginUser.userId}">My Page</a></h2>
 		</header>
 		<p class="paragraph">
 			내 프로필을 설정하고 자유롭게 글을 올릴 수 있습니다.<br/>
