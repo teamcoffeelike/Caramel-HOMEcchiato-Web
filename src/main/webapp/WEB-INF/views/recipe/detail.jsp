@@ -201,7 +201,7 @@ $(function(){
 				<h1 class="title">${recipe.cover.title}</h1>
 				
 				<div class="userBox"
-					><img class="profile-image" src="${recipe.cover.author.profileImage ? recipe.cover.author.profileImage : "imgs/profile.png"}"/>
+					><img class="profile-image" src="${recipe.cover.author.profileImage}"/>
 					<a class="profile-name" href="profile?userId=${recipe.cover.author.id}">${recipe.cover.author.name}</a
 				></div>
 			</div>
@@ -241,7 +241,7 @@ $(function(){
 			<div class="suggestion-box">
 				<div class="text">같은 유저의 레시피</div>
 				<div class="userBox"
-					><img class="profile-image" src="${recipe.cover.author.profileImage ? recipe.cover.author.profileImage : "imgs/profile.png"}"/>
+					><img class="profile-image" src="${recipe.cover.author.profileImage}"/>
 					<a class="profile-name" href="profile?userId=${recipe.cover.author.id}">${recipe.cover.author.name}</a
 				></div>
 				<div class="recipe-list-box">
