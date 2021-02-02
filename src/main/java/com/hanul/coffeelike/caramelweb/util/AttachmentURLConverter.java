@@ -1,7 +1,6 @@
 package com.hanul.coffeelike.caramelweb.util;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 public final class AttachmentURLConverter{
 	private AttachmentURLConverter(){}
@@ -23,18 +22,6 @@ public final class AttachmentURLConverter{
 	}
 
 	private static String resolve(String type, String query){
-		return "http://"+AddressLazy.ADDRESS+"/caramelweb/images/"+type+"?"+query;
-	}
-
-	private static final class AddressLazy{
-		private static final String ADDRESS; // TODO https://stackoverflow.com/q/38916213
-
-		static{
-			try{
-				ADDRESS = InetAddress.getLocalHost().getHostAddress();
-			}catch(UnknownHostException e){
-				throw new IllegalStateException(e);
-			}
-		}
+		return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString()+"/images/"+type+"?"+query;
 	}
 }

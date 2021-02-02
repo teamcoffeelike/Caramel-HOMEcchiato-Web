@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class LoginController{
 
 		String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&&scope=profile"
 				+"&client_id="+KakaoApiUtils.KAKAO_API_KEY
-				+"&redirect_uri="+"http://localhost/caramelweb/loginWithKakaoCallback"
+				+"&redirect_uri="+ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString()+"/loginWithKakaoCallback"
 				+"&state="+state;
 
 		return "redirect:"+url;
