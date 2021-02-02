@@ -11,7 +11,15 @@
 	justify-content: space-between;
 }
 
-.recipe-cover {
+.recipe-cover-container {
+	display: flex;
+	align-items: center;
 	height: 300px;
+	overflow: hidden;
+}
+
+.recipe-cover {
+	min-height: 100%;
+	width: 100%;
 	object-fit: cover;
 }

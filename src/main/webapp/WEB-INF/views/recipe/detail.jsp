@@ -248,7 +248,9 @@ $(function(){
 					<div class="recipe-list">
 						<c:forEach var="e" items="${otherRecipes}">
 							<a class="suggested-recipe" href="recipe?recipe=${e.id}">
-								<img src="${e.coverImage}">
+								<div class="image-container">
+									<img class="image" src="${e.coverImage}">
+								</div>
 								<div class="title-container">
 									<div class="circle c-${e.category.name}"></div>
 									<img class="category" src="imgs/${e.category.name}_icon.png">

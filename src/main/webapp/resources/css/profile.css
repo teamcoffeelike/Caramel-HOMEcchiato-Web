@@ -17,11 +17,19 @@
 	padding: 10px 0px; box-sizing: border-box;
 }
 
-.imageBox { display: inline-flex;}
+.imageBox {
+	display: inline-flex;
+	align-items: center;
+	overflow: hidden;
+	width: 200px;
+	height: 200px;
+	margin: 6px;
+}
 
 .post-image {
-	width: 200px; height: 200px;
-	flex-wrap:wrap; margin: 6px; 
+	flex-wrap:wrap;
+	width: 100%;
+	min-height: 100%;
 	justify-content: space-around;
 	object-fit: cover;
 }
