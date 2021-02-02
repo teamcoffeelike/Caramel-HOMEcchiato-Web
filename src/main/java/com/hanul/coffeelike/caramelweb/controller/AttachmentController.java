@@ -1,6 +1,7 @@
 package com.hanul.coffeelike.caramelweb.controller;
 
 import com.hanul.coffeelike.caramelweb.service.FileService;
+import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class AttachmentController{
 
 	@Autowired
 	private FileService fileService;
+
+	private final Tika tika = new Tika();
 
 	@RequestMapping(value = "/images/profileImage")
 	public void profileImage(HttpServletResponse response,
@@ -83,16 +86,18 @@ public class AttachmentController{
 	}
 
 	private void paste(File file, HttpServletResponse response){
-		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-		try(OutputStream os = response.getOutputStream();
-		    BufferedOutputStream bos = new BufferedOutputStream(os);
-		    InputStream is = new FileInputStream(file);
-		    BufferedInputStream bis = new BufferedInputStream(is)){
+		try{
+			response.setContentType(tika.detect(file));
+			try(OutputStream os = response.getOutputStream();
+			    BufferedOutputStream bos = new BufferedOutputStream(os);
+			    InputStream is = new FileInputStream(file);
+			    BufferedInputStream bis = new BufferedInputStream(is)){
 
-			while(true){
-				int b = bis.read();
-				if(b==-1) break;
-				bos.write(b);
+				while(true){
+					int b = bis.read();
+					if(b==-1) break;
+					bos.write(b);
+				}
 			}
 		}catch(IOException e){
 			LOGGER.error("응답 중 에러 발생", e);
