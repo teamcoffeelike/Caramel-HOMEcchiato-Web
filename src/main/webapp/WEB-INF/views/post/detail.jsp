@@ -36,7 +36,7 @@
 	</div>
 
 	<div class="btnSet2">
-		<a class="btn-fill" href="allPostList">목록보기</a>
+		<a class="btn-fill" onclick="history.go(-1)">목록보기</a>
 	</div>
 	
 	
