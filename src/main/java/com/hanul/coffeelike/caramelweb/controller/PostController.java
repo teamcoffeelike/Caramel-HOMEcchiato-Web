@@ -100,7 +100,7 @@ public class PostController{
 	public String modifyPost(Model model,
 	                         HttpSession session,
 	                         @RequestParam int id,
-	  	                     @RequestParam(required = false) @Nullable String from){
+	                         @RequestParam(required = false) @Nullable String from){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return "loginRequired";
 
@@ -127,7 +127,7 @@ public class PostController{
 	                       @RequestParam MultipartFile image,
 	                       @RequestParam boolean textChanged,
 	                       @RequestParam boolean postImageChanged,
-	  	                   @RequestParam(required = false) @Nullable String from){
+	                       @RequestParam(required = false) @Nullable String from){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return "loginRequired";
 
