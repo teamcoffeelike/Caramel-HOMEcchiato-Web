@@ -100,7 +100,8 @@ public class AttachmentController{
 				}
 			}
 		}catch(IOException e){
-			LOGGER.error("응답 중 에러 발생", e);
+			if(!e.getClass().getName().equals("org.apache.catalina.connector.ClientAbortException")) // 쓰레기같은놈들
+				LOGGER.error("응답 중 에러 발생", e);
 		}
 	}
 }

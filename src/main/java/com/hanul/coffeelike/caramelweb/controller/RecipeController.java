@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.Iterator;
+import java.util.List;
 
 @Controller
 public class RecipeController{
@@ -76,12 +78,17 @@ public class RecipeController{
 		}
 		AttachmentFileResolver.resolve(r);
 		RecipeCoverListResult result = recipeService.list(loginUser.getUserId(), null, 6, null, r.getCover().getAuthor().getId());
-		if(result.getRecipes()==null){
+		List<RecipeCover> otherRecipes = result.getRecipes();
+		if(otherRecipes==null){
 			// 위 서비스 내에서 발생할 수 있는 에러는 모두 코드 내부 에러
 			LOGGER.error("recipe 서비스 내부에서 예상치 못한 오류 발생");
 		}else{
-			for(RecipeCover c : result.getRecipes()) AttachmentFileResolver.resolve(c);
-			model.addAttribute("otherRecipes", result.getRecipes());
+			for(Iterator<RecipeCover> it = otherRecipes.iterator(); it.hasNext();){
+				RecipeCover next = it.next();
+				if(next.getId()==recipe) it.remove();
+				else AttachmentFileResolver.resolve(next);
+			}
+			model.addAttribute("otherRecipes", otherRecipes);
 		}
 		model.addAttribute("recipe", r);
 		return "recipe/detail";
