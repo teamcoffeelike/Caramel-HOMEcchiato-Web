@@ -8,6 +8,7 @@ import com.hanul.coffeelike.caramelweb.service.PostService.PostWriteResult;
 import com.hanul.coffeelike.caramelweb.util.AttachmentFileResolver;
 import com.hanul.coffeelike.caramelweb.util.SessionAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +67,8 @@ public class PostController{
 	@RequestMapping("/post")
 	public String post(HttpSession session,
 	                   Model model,
-	                   @RequestParam int id){
+	                   @RequestParam int id,
+	                   @RequestParam(required = false) @Nullable String from){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		Post post = postService.post(id, loginUser==null ? null : loginUser.getUserId());
 		if(post==null){
@@ -76,6 +78,7 @@ public class PostController{
 		}
 		AttachmentFileResolver.resolve(post);
 		model.addAttribute("post", post);
+		if(from!=null) model.addAttribute("from", from);
 		return "post/detail";
 	}
 
@@ -96,7 +99,8 @@ public class PostController{
 	@RequestMapping("/modifyPost")
 	public String modifyPost(Model model,
 	                         HttpSession session,
-	                         @RequestParam int id){
+	                         @RequestParam int id,
+	  	                     @RequestParam(required = false) @Nullable String from){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return "loginRequired";
 
@@ -110,6 +114,7 @@ public class PostController{
 		}
 		AttachmentFileResolver.resolve(post);
 		model.addAttribute("post", post);
+		if(from!=null) model.addAttribute("from", from);
 		return "post/modify";
 	}
 
@@ -121,7 +126,8 @@ public class PostController{
 	                       @RequestParam String text,
 	                       @RequestParam MultipartFile image,
 	                       @RequestParam boolean textChanged,
-	                       @RequestParam boolean postImageChanged){
+	                       @RequestParam boolean postImageChanged,
+	  	                   @RequestParam(required = false) @Nullable String from){
 		AuthToken loginUser = SessionAttributes.getLoginUser(session);
 		if(loginUser==null) return "loginRequired";
 
@@ -145,7 +151,9 @@ public class PostController{
 				return "post/postRequired";
 			}
 		}
-		return "redirect:post?id="+id;
+		return from==null ?
+				"redirect:post?id="+id :
+				"redirect:post?id="+id+"&from="+from;
 	}
 
 	//좋아요 화면 요청

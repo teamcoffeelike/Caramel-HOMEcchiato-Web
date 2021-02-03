@@ -10,7 +10,6 @@ function necessary(){
 			$(this).val('');
 			$(this).focus();
 			ok = false;
-			return ok;
 		}
 	});
 	return ok;

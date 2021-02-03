@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,18 +56,21 @@ $(function(){
 <body>
 	<div id="post">
 	<form action="editPost" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="id" value="${post.id }" />
+		<input type="hidden" name="id" value="${post.id}">
+		<c:if test="${!empty from}">
+			<input type="hidden" name="from" value="${from}">
+		</c:if>
 		<div class="imgbox">
 			<input type="hidden" name="postImageChanged" id="postImageChanged" value="false">
 			<label>
 				<input type="file" name="image" id="img-attach" />
-				<img id="post-img" class="post-img" src="${postImage }" />
+				<img id="post-img" class="post-img" src="${post.image}">
 			</label>
 		</div>
 		
 		<div class="postbox">
 			<input type="hidden" name="textChanged" id="textChanged" value="false">
-			<textarea id="text" name="text" title="내용" class="mandatory">${post.text }</textarea>
+			<textarea id="text" name="text" title="내용" class="mandatory">${post.text}</textarea>
 		</div>
 	</form>
 	

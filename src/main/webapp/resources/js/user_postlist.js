@@ -27,8 +27,13 @@ function fetchPost(){
 					for(e of data.posts){
 						var date = new Date(e.postDate);
 						var date_short = date.toLocaleDateString();
+						
+						let par = new URLSearchParams();
+						par.append("id", e.id);
+						par.append("from", `profile?userId=${userId}`);
+						
 						$(".postList").append(
-							`<a class='imageBox' href='post?id=${e.id}'>
+							`<a class='imageBox' href='post?${par}'>
 								<img class='post-image' src='${e.image?e.image : "imgs/post.png"}'>
 							</a>`
 						);
