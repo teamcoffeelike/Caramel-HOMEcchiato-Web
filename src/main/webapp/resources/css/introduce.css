@@ -20,39 +20,41 @@
 }
 
 @keyframes bounce {
-  100% {
-    top: -20px;
-    text-shadow: 0 1px 0 #CCC,
-                 0 2px 0 #CCC,
-                 0 3px 0 #CCC,
-                 0 4px 0 #CCC,
-                 0 5px 0 #CCC,
-                 0 6px 0 #CCC,
-                 0 7px 0 #CCC,
-                 0 8px 0 #CCC,
-                 0 9px 0 #CCC,
-                 0 50px 25px rgba(0, 0, 0, .2);
-  }
+	100% {
+		top: -20px;
+		text-shadow: 0 1px 0 #CCC,
+		             0 2px 0 #CCC,
+		             0 3px 0 #CCC,
+		             0 4px 0 #CCC,
+		             0 5px 0 #CCC,
+		             0 6px 0 #CCC,
+		             0 7px 0 #CCC,
+		             0 8px 0 #CCC,
+		             0 9px 0 #CCC,
+		             0 50px 25px rgba(0, 0, 0, .2);
+	}
 }
 
-/*	p span{}라고 되어있었는데
- 	p -> 의미없는 적용이었던 것 같은 느낌..? / span -> .intro-point
- 	인 것 같아서 이미 지정해놓은 클래스가 각자 다 있길래 그걸로 바꿨슴다
-*/
-.intro-point {
+.intro-text {
+	display: none;
+}
+
+.intro-text b {
 	color: #e67461;
 	font-weight: bold;
 	font-size: 1.2em;
 }
 
 .content-section {
+	position: relative;
 	--scroll-length: 1.5;
 	height: calc( var(--scroll-length) * 100vh );
 	width: 100%;
+	margin-top: 200px;
 }
 
 /*	content는 다른 클래스랑 겹쳐서 클래스명 변경 */
-.intro-content .subheading, 
+.intro-content .subheading,
 .intro-content .paragraph {
 	opacity: 1; 
 	opacity: calc( 1 + var(--viewport-y) );
@@ -184,12 +186,12 @@ img 기본 태그명이라서 혹시나 다른데서 충돌날까봐 .figure 밑
 }
 
 
-*,
+/* *,
 *:before,
 *:after {
 	position: relative;
 	box-sizing: border-box;
-}
+} */
 
 /*	body, html -> html을 지워도 아무 변화도 일어나지 않길래 일단 지웁니다.. 
 	body 같은 기본 태그에 적용하면 혹시나 common이나 header CSS 파일 영향을 받을까봐 div 만들어서 클래스명으로 변경 */
