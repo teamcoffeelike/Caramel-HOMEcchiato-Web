@@ -38,7 +38,7 @@ $(function(){
 		<div class="imgbox">
 			<label>
 				<input type="file" name="image" id="img-attach" />
-				<img id="post-img" class="post-img" src="http://placehold.it/550x400" />
+				<img id="post-img" class="post-img" src="imgs/post.png" />
 			</label>
 		</div>
 		
