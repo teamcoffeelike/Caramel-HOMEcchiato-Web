@@ -28,15 +28,13 @@ function fetchPost(){
 						var date = new Date(e.postDate);
 						var date_short = date.toLocaleDateString();
 						$(".postList").append(
-                            `
-                            <div class='imageBox'>
-                                <a href='post?id=${e.id}'><img class='post-image' src='${e.image?e.image : "imgs/post.png"}'></a>
-                            </div>
-                            `
+							`<a class='imageBox' href='post?id=${e.id}'>
+								<img class='post-image' src='${e.image?e.image : "imgs/post.png"}'>
+							</a>`
 						);
 					}
 					let lastData = data.posts[data.posts.length-1];
-                    oldest = lastData.postDate;
+					oldest = lastData.postDate;
 				}
 			}, error: function(req, text){
 				ajaxSent = false;
